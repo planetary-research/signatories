@@ -1,0 +1,28 @@
+# Petition parameters
+ACTION_KIND = "Declaration" # "Petition", "Statement", "Letter of Support"
+ACTION_NAME = "Lorem Ipsum"
+ACTION_TEXT = """
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+in culpa qui officia deserunt mollit anim id est laborum.
+"""
+SORT_ALPHABETICAL = false
+
+# Display image at top of page
+USE_BANNER = false
+BANNER_WIDTH = 35  # percentage of column width
+BANNER_FILE = "banner.svg"  # file name with respect to static/img
+
+# Set favicon (use "" for none)
+FAVICON = "favicon.ico"  # file name with respect to static/img
+
+# URL and name of a link displayed in the website footer,
+# such as the association website
+FOOTER_URL_NAME = "Planetary Research Cooperative"
+FOOTER_URL = "https://coop.planetary-research.org/"
+THANK_PRC = false
+
+CONTACT_EMAIL = "tech@planetary-research.org"

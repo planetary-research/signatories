@@ -1,0 +1,139 @@
+# About
+
+**Signatories** is a simply python based program that allows a person to sign
+an online petition using an account at [ORCID](https://orcid.org). The signatory
+may choose to remain anonymous, and they may choose (optionally) to add their
+affiliation to their signature. The signatory may change their signing preferences,
+or remove their signature and personal data at any time. When the signatory's name
+is visible, any user may click on it to inspect their ORCID profile.
+
+By requiring the signatory to authenticate with their ORCID account, each ORCID
+account can sign a petition at most once. By requiring an account at ORCID,
+this code not only helps to avoid bogus signatures, but also helps to limit
+participants to the scientific community (who all should already have an account
+at ORCID). It also ensures that anonymous participants have an active ORCID account.
+
+This code is based on the Planetary Research
+[Reviewer expertise database](https://review.planetary-research.org), which is
+in turn based on the [Seismica](https://seismica.library.mcgill.ca/) reviewer
+expertise database that was created originally by
+[Martijn van den Ende](https://github.com/martijnende).
+
+# Dependencies
+
+```
+conda create -n signatories python=3.13 python-dotenv flask flask-sqlalchemy sqlalchemy-utils orcid waitress -c conda-forge
+```
+
+# Instructions
+
+## Initial setup
+
+When running in production, place the project files in an appropriate directory
+such as `/var/www/signatories`. For testing, any directory will do.
+
+Copy the file `.env.sample` to `.env`, which should look like the following:
+
+```txt
+cookie_secret = '...'  # Random string to cross-check the stored cookie. Any string will do.
+database_name = 'reviewers.db'  # Name of the reviewer database file
+
+# ORCID API credentials
+client_ID = 'APP-ABCDEFGHIJKLMNOP'
+client_secret = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+
+# If the ORCID client credentials correspond to a member account, set to 1
+orcid_member = 0
+
+# Uncomment and provide a public URL when used in production. When public_domain
+# is not set, the app will use the ORCID sandbox API.
+# public_domain = 'https://signatories.example.org'
+```
+
+Then modify the following variables:
+
+1. `cookie_secret`: a random string to cross-check the stored cookie. Any string will do.
+2. `client_ID`, `client_secret`: ORCID API credentials.
+
+> For testing, register for a [sandbox ORCID API](https://sandbox.orcid.org/) using a dummy email address. When the API is enabled, go to [`ORCID profile > developer tools`](https://sandbox.orcid.org/developer-tools) and create a client ID and secret.
+> In production use the main [ORCID API credentials](https://orcid.org/developer-tools).
+
+3. Add a public domain if the application is used in production (not required for local development in sandbox mode).
+4. Create the initial database by executing the command:
+```bash
+python db_init.py
+```
+
+5. Modify the file `signatories.toml` that contains all information about the petition.
+
+Finally, to run the app, use:
+```bash
+python app.py
+```
+
+## System service
+
+To have the application start automatically when the system reboots, create a file `/etc/systemd/system/reviewdb.service` with the following contents:
+
+```
+[Unit]
+Description=Signatories daemon
+After=multi-user.target
+
+[Service]
+ExecStart=/opt/miniforge3/envs/signatories/bin/python /var/www/signatories/app.py &
+Type=simple
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+and then run the following at the command line
+```
+systemctl daemon-reload
+service signatories enable
+service signatories start
+```
+
+## Reverse proxy
+
+Running the application will enable an http web server on port 3000. To use this
+securely with an apache web server, it will be necessary to create a reverse proxy.
+First, create the file `/etc/apache2/sites-available/signatories.conf` with
+the following:
+
+```
+<VirtualHost *:80>
+    ServerName signatories.example.org
+    Redirect / https://signatories.example.org
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName signatories.example.org
+    ProxyPass / http://127.0.0.1:3000/
+    ProxyPassReverse / http://127.0.0.1:3000/
+    ProxyRequests Off
+</VirtualHost>
+
+<Directory /var/www/signatories>
+    Options +FollowSymLinks
+    Options -Indexes
+    AllowOverride All
+    order allow,deny
+    allow from all
+</Directory>
+```
+
+Then execute the following commands:
+```
+a2enmod proxy
+a2enmod proxy_http
+systemctl restart apache2
+a2ensite signatories.conf
+```
+
+## Notes
+
+* The database is by default located at `db/signatories.db`.
+* If you change from sandbox to production modes (by setting `public_domain`), you might need to re-initialize the database.

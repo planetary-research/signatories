@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block content %}
+    <!-- Introduction -->
+    <div class="center">
+        <h3> {{ action_kind | upper }}</h3>
+    </div>
+
+    <div class="row extra-margin">
+
+        <p>
+            {{ action_text }}
+        </p>
+    </div>
+
+    <div class="row extra-margin" style="text-align: center">
+        <p></p>
+        <p><a class="btn btn-default btn-lg" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind }}</a></p>
+    </div>
+
+    <div class="extra-margin">
+        <p></p>
+        <p class="center"><i>
+            To participate, sign in with your <a href="https://orcid.org" target="_blank" class="external">ORCID</a> account using the above link.
+        </i></p>
+    </div>
+
+    <div class="center">
+        <p>Total signatories: {{ total_signatures }}</p>
+    </div>
+    <div class="center">
+      <button data-toggle="collapse" aria-expanded="false" data-target="#show-signatories" aria-controls="show-signatories" class="btn btn-primary btn-sm">Show/Hide signatories</button>
+    </div>
+
+    <div class="results collapse user-list" id="show-signatories">
+        {% for result in visible_signatures %}
+        <div class="row extra-margin">
+            <div class="col-md-4">
+                <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" ><span style="font-weight: bold">{{ result.name }}</span></a>
+            </div>
+            <div class="col-md-8">
+                {{ result.affiliation }}
+            </div>
+
+        </div>
+        {% endfor %}
+        {% if anonymous_signatures > 0 %}
+        <div class="row extra-margin">
+            <div class="col-md-12">
+                Anonymous signatories with ORCID accounts: {{ anonymous_signatures }}
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}

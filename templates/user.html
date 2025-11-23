@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block title %}User page{% endblock %}
+{% block alert %}
+
+{% if alert.info is not none %}
+<div class="alert alert-info alert-dismissable" role="alert">
+    {{ alert.info }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% if alert.success is not none %}
+<div class="alert alert-success alert-dismissable" role="alert">
+    {{ alert.success }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% if alert.warning is not none %}
+<div class="alert alert-warning alert-dismissable" role="alert">
+    {{ alert.warning }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% if alert.danger is not none %}
+<div class="alert alert-danger alert-dismissable" role="alert">
+    {{ alert.danger }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% endblock %}
+{% block content %}
+
+<div class="row" id="nav">
+    <a class="btn btn-primary btn-sm" href="{{ logout_uri }}">Log out</a>
+</div>
+<p></p>
+<div class="row">
+    <div class="row col-md-12">
+        <h2>{{ name }}</h2>
+        <h4>{{ orcid_id }}</h4>
+    </div>
+</div>
+
+<!-- Introduction -->
+<div class="row extra-margin">
+    <p>
+        Please choose whether you would like your name to appear in the signatory list or if you would instead wish to remain anonymous. If you would like to add your professional affiliation (optional), enter it in the text box. You may update these choices at any time.
+    </p>
+
+    <form action="/user" method="POST" id="update_info">
+        <input type="hidden" name="mode" value="update_info">
+        <div class="extra-margin">
+            <input type="radio" id="named" name="anonymous" value="False" required {% if anonymous is false %}checked{% endif %}>
+            <label for="named">Please show my name in the signatory list</label><br>
+            <input type="radio" id="anonymous" name="anonymous" value="True" {% if anonymous is true %}checked{% endif %}>
+            <label for="anonymous">I would like to remain anonymous</label><br>
+        </div>
+        <div class="row col-md-8">
+
+            <input type="text" class="form-control" name="affiliation" placeholder="Affiliation (optional)" value="{{ affiliation }}">
+        </div>
+        <!-- Column 2: submit button -->
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-success">Sign the {{ action_kind }}</button>
+        </div>
+    </form>
+
+</div>
+
+
+{% if in_database is true %}
+<div class="row extra-margin"></div>
+<div class="row">
+    <h3>Remove my signature</h3>
+    <p>
+    If you wish to remove your signature and delete all your data related to this {{ action_kind | lower }}, type "yes" in the input box below.
+    </p>
+
+    <form action="/user" method="POST" id="delete_account">
+        <!-- Column 1: input box -->
+        <div class="row col-md-8">
+            <input type="hidden" name="mode" value="delete">
+            <input type="text" class="form-control" name="confirmation" placeholder="Remove signature?">
+        </div>
+        <!-- Column 2: submit button -->
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+    </form>
+</div>
+{% endif %}
+
+{% endblock %}

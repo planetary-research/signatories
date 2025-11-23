@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Signing successful{% endblock %}
+
+{% block content %}
+
+<!-- Introduction -->
+<div class="row extra-margin">
+    <p></p>
+    <p>
+        Your signature is now included in the list of signatories.</p>
+    <p>If you would like to modify the information associated with your signature, it is only necessary to resign the {{ action_kind | lower}} and apply the changes.</p>
+    <p>If you would like to remove your name from this {{ action_kind | lower}}, choose to resign the statement, at which point you will be given the option to remove your signature and delete all personal data.
+    </p>
+    <div class="row extra-margin">
+        <a class="btn btn-primary btn-sm" href="/">Click here to view the list of signatories</a>
+    </div>
+</div>
+
+
+{% endblock %}

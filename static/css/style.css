@@ -1,0 +1,91 @@
+body {
+  padding: 0;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+hr {
+  border-top: 1px solid #000;
+}
+
+h1 {
+  /* text-align: center; */
+  font-size: 3em;
+  margin-bottom: 30px;
+}
+
+h2 {
+  margin: 0;
+  padding: 0;
+}
+
+h3 {
+  margin-bottom: 1em;
+}
+
+#footer {
+  text-align: center;
+}
+
+a {
+  /* color: #00B7FF; */
+  color: #000;
+}
+
+a.external {
+  color: #00B7FF;
+  text-decoration: underline;
+}
+
+div.jumbotron p {
+  font-size: 1.2em;
+}
+
+
+.exp_group {
+  font-size: 1.2em;
+}
+
+.toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px; }
+.toggle.ios .toggle-handle { border-radius: 20px; }
+
+div.extra-margin {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+div.extra-margin2 {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+
+div.expertise {
+  margin-left: 50px;
+  margin-right: 40px;
+  margin-bottom: 1em;
+  padding: 1em;
+  padding-top: 0.5em;
+  border-bottom: 0px solid #000;
+}
+
+div.user-list {
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-bottom: 0em;
+  padding: 0em;
+  padding-top: 0em;
+}
+
+div.results ul {
+  margin: 0;
+  padding: 0;
+}
+
+div.results ul li {
+  margin: 0;
+  padding: 0;
+  list-style: none;;
+}
+
+.center {
+  text-align: center;
+}

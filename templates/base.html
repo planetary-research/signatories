@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}" />
+    <!-- <link href='//fonts.googleapis.com/css?family=Source+Code+Pro:300' rel='stylesheet' type='text/css'> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+
+    <script src="{{ url_for('static', filename='js/jquery-2.0.3.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+    {% include "controls.html" %}
+
+    <title>{% block title %}{% endblock %} - {{ action_name }}</title>
+    {% endblock %}
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <div class="row">
+                    <div class="center">
+                        {% if use_banner %}
+                            <div>
+                                <a href="/"><img style="width: {{ banner_width }}%;" src="{{ url_for('static', filename=banner_file) }}"></a>
+                            </div>
+                        {% endif %}
+
+                        <h1><a href="/">{{ action_name }}</a></h1>
+                        <!-- <h3> {{ action_kind | upper }}</h3> -->
+                    </div>
+                </div>
+
+                <div class="jumbotron">
+                    {% block alert %}{% endblock %}
+                    <div class="row extra-margin"></div>
+                    <div id="content">{% block content %}{% endblock %}</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8" id="footer">
+                {% block footer %}
+                <a href="{{ footer_url }}" target="_blank">{{ footer_url_name }}</a> | <a href="/privacy">Privacy Policy</a> | <a href="mailto:{{ contact_email }}">contact</a> {% if thank_prc is true %}
+                <br /> <br />Created by the <a href="https://coop.planetary-research.org">Planetary Research Cooperative</a>
+                {% endif %}
+                {% endblock %}
+            </div>
+        </div>
+        <div class="row extra-margin"></div>
+    </div>
+</body>
+</html>
