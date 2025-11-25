@@ -1,7 +1,7 @@
 # Petition parameters
 ACTION_KIND = "Statement"  # "Petition", "Declaration", "Letter of Support"
 ACTION_NAME = "Signatories"
-ACTION_SHORT_DESCRIPTION = "Support the Signatories project"
+ACTION_SHORT_DESCRIPTION = "Say yes to open source signing!"
 ACTION_TEXT = '''
 <p>
 <u>Signatories</u> is a simple web-based program that allows a person to sign
@@ -25,7 +25,7 @@ have an ORCID account.
 To see how it works, sign this statement by clicking the link below!
 </p>
 '''
-ACTION_SLUG = ""
+ACTION_SLUG = ""  # subdirectory for URL
 SORT_ALPHABETICAL = false
 
 # Display image at top of page

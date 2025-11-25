@@ -28,38 +28,39 @@
                 <a href="/"><img style="width: {{ banner_width }}%;" src="{{ url_for('static', filename=banner_file) }}"></a>
             </div>
             {% endif %}
-            <div class="container center">
+            <div class="container">
                 <h1><a href="/">{{ action_name }}</a></h1>
+                <h3 class="short">{{ action_short_description }}</h3>
            </div>
         </div>
     </header>
 
     <main>
         <div class="container extra-margin">
-            <div class="row">
-                <div class="col-md-offset-2 col-md-8">
-                    <div class="main-text">
-                        {% block alert %}{% endblock %}
-                        <div class="row extra-margin"></div>
-                        <div id="content">{% block content %}{% endblock %}</div>
-                    </div>
-                </div>
+            <div class="main-text">
+                {% block alert %}{% endblock %}
+                <div class="row extra-margin"></div>
+                <div id="content">{% block content %}{% endblock %}</div>
             </div>
         </div>
     </main>
 
     <footer>
-        <div class="footer center">
-            {% block footer %}
-            <p>
-            <a href="{{ footer_url }}" target="_blank">{{ footer_url_name }}</a>
-            </p>
-            <p><a href="mailto:{{ contact_email }}">Contact</a> | <a href="https://github.com/planetary-research/signatories">Github</a> | <a href="/privacy">Privacy Policy</a>
-            </p>
-            {% if thank_prc is true %}
-            <p>Created by the <a href="https://coop.planetary-research.org">Planetary Research Cooperative</a></p
-            {% endif %}
-            {% endblock %}
+        <div class="footer">
+            <div class="container">
+                {% block footer %}
+                <p>
+                    <a href="{{ footer_url }}" target="_blank">{{ footer_url_name }}</a>
+                </p>
+                <p>
+                    <a href="mailto:{{ contact_email }}">Contact</a> | <a href="https://github.com/planetary-research/signatories">Github</a> | <a href="/privacy">Privacy Policy</a>
+                </p>
+                {% if thank_prc is true %}
+                <p>
+                    Created by the <a href="https://coop.planetary-research.org">Planetary Research Cooperative</a></p>
+                {% endif %}
+                {% endblock %}
+            </div>
         </div>
     </footer>
 

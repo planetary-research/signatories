@@ -2,25 +2,20 @@
 {% block title %}Index{% endblock %}
 {% block content %}
     <!-- Introduction -->
-    <div class="center">
+    <div class="extra-margin">
         <h3> {{ action_kind | upper }}</h3>
     </div>
 
-    <div class="row extra-margin action_text">
+    <div class="extra-margin action_text">
             {{ action_text | safe }}
     </div>
 
-    <div class="orcid-text">
-        <p class="center">
-            To participate, authenticate with your <a href="https://orcid.org" target="_blank" class="external">ORCID</a> account
-        </p>
+    <div class="orcid-box">
+      <p><a class="btn btn-default btn-lg" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind }}</a> <span class="orcid-text">To participate, authenticate with your <a href="https://orcid.org" target="_blank" class="external">ORCID</a> account</span
+      </p>
     </div>
 
-    <div class="orcid-box center">
-        <p><a class="btn btn-default btn-lg" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind }}</a></p>
-    </div>
-
-    <div class="center toggle-signatories">
+    <div class="toggle-signatories">
         <p>Total signatories: {{ total_signatures }}</p>
         <p><a class="toggle-text" data-toggle="collapse" aria-expanded="false" data-target="#show-signatories" aria-controls="show-signatories"><i class="bi bi-arrows-expand" style="font-size: 0.9em; padding-right: 0.9em;"></i>show / hide</a></p>
     </div>
