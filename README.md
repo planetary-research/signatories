@@ -61,12 +61,7 @@ Then modify the following variables:
 > In production use the main [ORCID API credentials](https://orcid.org/developer-tools).
 
 3. Add a public domain if the application is used in production (not required for local development in sandbox mode).
-4. Create the initial database by executing the command:
-```bash
-python db_init.py
-```
-
-5. Modify the file `signatories.toml` that contains all information about the petition.
+4. Modify the file `signatories.toml` that contains all information about the petition.
 
 Finally, to run the app, use:
 ```bash
@@ -138,4 +133,4 @@ a2ensite signatories.conf
 ## Notes
 
 * The database is by default located at `db/signatories.db`.
-* If you change from sandbox to production modes (by setting `public_domain`), you might need to re-initialize the database.
+* If you change from sandbox to production modes (by setting `public_domain`), you should re-initialize the database. Otherwise sandbox accounts will appear in the production database.

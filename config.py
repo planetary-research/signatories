@@ -30,7 +30,3 @@ else:
 basedir = os.path.abspath(os.path.dirname(__file__))
 campaigndir = os.path.join(basedir, "campaigns")
 dbdir = os.path.join(basedir, "db")
-
-dbname = os.getenv("database_name")
-dbpath = os.path.abspath(os.path.join(dbdir, dbname))
-db_URI = "sqlite:////" + dbpath

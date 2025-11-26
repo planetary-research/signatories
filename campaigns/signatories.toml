@@ -25,13 +25,16 @@ have an ORCID account.
 To see how it works, sign this statement by clicking the link below!
 </p>
 '''
-ACTION_SLUG = ""  # subdirectory for URL
-SORT_ALPHABETICAL = false
+ACTION_SLUG = "demo"  # subdirectory for URL
+
+DATABASE_NAME = "signatories.db"
 
 # Display image at top of page
 USE_BANNER = false
 BANNER_WIDTH = 35  # percentage of column width
 BANNER_FILE = "banner.svg"  # file name with respect to static/img
+
+SORT_ALPHABETICAL = false
 
 # Set favicon (use "" for none)
 FAVICON = "favicon.ico"  # file name with respect to static/img

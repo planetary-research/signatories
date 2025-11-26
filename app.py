@@ -11,22 +11,39 @@ import tomllib
 
 import config
 from db_models import db, User
+from db_sandbox import create_dummy_users
 
-app = Flask(__name__)
+
+base_campaign = 'signatories.toml'
 
 
 """ App configuration """
+app = Flask(__name__)
 
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_DATABASE_URI = config.db_URI
+app.config.from_file(os.path.join(config.campaigndir, base_campaign), load=tomllib.load, text=False)
+dbpath = os.path.abspath(os.path.join(config.dbdir, app.config['DATABASE_NAME']))
+db_URI = "sqlite:////" + dbpath
+print(f"Database: {app.config['DATABASE_NAME']}")
+print(db_URI)
 
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = db_URI
 app.config["SECRET_KEY"] = config.cookie_secret
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=7)
 app.config.from_object(__name__)
-app.config.from_file(os.path.join(config.campaigndir, "signatories.toml"), load=tomllib.load, text=False)
 
 """ Database """
 db.init_app(app)
+
+if not os.path.exists(dbpath):
+    print(f"Database doesn't exist. Creating new database: {db_URI}")
+    if not os.path.isdir(config.dbdir):
+        os.mkdir(config.dbdir)
+    with app.app_context():
+        db.create_all()
+        db.session.commit()
+        if config.sandbox:
+            create_dummy_users()
 
 """ ORCID API """
 if config.orcid_member:
@@ -43,12 +60,15 @@ else:
 
 action_slug = app.config["ACTION_SLUG"]
 
+home_URI = os.path.join("/", action_slug)
 logout_URI = os.path.join("/", action_slug, "logout")
 user_URI = os.path.join("/", action_slug, "user")
 thank_you_URI = os.path.join("/", action_slug, "thank-you")
-privacy_URI = "/privacy"
+privacy_URI = os.path.join("/", action_slug, "privacy")
+
 
 base_data = {
+    "home_uri": home_URI,
     "logout_uri": logout_URI,
     "user_uri": user_URI,
     "privacy_uri": privacy_URI,
@@ -105,7 +125,14 @@ def favicon():
         app.config["FAVICON"], mimetype='image/vnd.microsoft.icon')
 
 
-@app.route("/")
+@app.route('/')
+def base():
+    if action_slug == "":
+        return home()
+    else:
+        return redirect(home_URI)
+
+@app.route(home_URI)
 def home():
     # Get the ORCID authentication URI
     URI = api.get_login_url(scope="/authenticate", redirect_uri=config.code_callback_URI)
@@ -163,7 +190,7 @@ def privacy():
 def user():
     # Check if the user is logged in
     if session.get("orcid") is None:
-        return redirect("/")
+        return redirect(home_URI)
 
     user = User.query.filter_by(orcid=session["orcid"]).first()
 
@@ -255,7 +282,13 @@ def logout():
     if session.get("orcid") is not None:
         session.pop("name", None)
         session.pop("orcid", None)
-    return redirect("/")
+    return redirect(home_URI)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    # we should instead render a 404.html page
+    return redirect(home_URI)
 
 
 if __name__ == "__main__":
