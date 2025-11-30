@@ -2,7 +2,7 @@
 {% block head %}
 {{ super() }}
 {% endblock %}
-{% block title %}User page{% endblock %}
+{% block title %}Sign{% endblock %}
 {% block alert %}
 
 {% if alert.info is not none %}
@@ -49,30 +49,35 @@
     <h4>{{ orcid_id }}</h4>
 </div>
 
-<div id="nav">
-    <a class="btn btn-primary btn-sm" href="{{ logout_uri }}">Log out</a>
-</div>
 
 <!-- Introduction -->
-<div class="sign maint-text">
+<div class="sign">
     <h3>Sign the {{ action_kind }}</h3>
+    {% if allow_anonymous %}
     <p>
-        Please choose whether you would like your name to appear in the signatory list or if you would like to remain anonymous. You may add your professional affiliation (optional) in the text box below. These choices may be updated at any time.
+        Please choose whether you would like your name to appear in the signatory list or if you would like to remain anonymous, and then click Sign. You may add your professional affiliation (optional) in the text box below. These choices may be updated at any time.
     </p>
+    {% else %}
+    <p>
+        This {{ action_kind }} does not allow anonymous signing. Please choose to add your name to the signatory list and then click Sign. You may add your professional affiliation (optional) in the text box below. These choices may be updated at any time.
+    </p>
+    {% endif %}
 
-    <form action="{{ user_uri }}" method="POST" id="update_info">
+    <form action="{{ user_uri_defined }}" method="POST" id="update_info">
         <input type="hidden" name="mode" value="update_info">
-        <div class="extra-margin">
+        <div class="form-choice-margin">
             <input type="radio" id="named" name="anonymous" value="False" required {% if anonymous is false %}checked{% endif %}>
             <label for="named">Please show my name in the signatory list</label><br>
+            {% if allow_anonymous %}
             <input type="radio" id="anonymous" name="anonymous" value="True" {% if anonymous is true %}checked{% endif %}>
             <label for="anonymous">I would like to remain anonymous</label><br>
+            {% endif %}
         </div>
         <div class="row col-md-8">
             <input type="text" class="form-control" name="affiliation" placeholder="Affiliation (optional)" value="{{ affiliation }}">
         </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-success">Sign</button>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-success">Sign</button>  <a href="{{ logout_uri }}"><button type="button" class="btn btn-primary">Log out</button></a>
         </div>
     </form>
 
@@ -86,7 +91,7 @@
     If you wish to remove your signature and delete all your data related to this {{ action_kind | lower }}, type "yes" in the input box below.
     </p>
 
-    <form action="{{ user_uri }}" method="POST" id="delete_account">
+    <form action="{{ user_uri_defined }}" method="POST" id="delete_account">
         <!-- Column 1: input box -->
         <div class="row col-md-8">
             <input type="hidden" name="mode" value="delete">

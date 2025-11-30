@@ -1,19 +1,33 @@
-from db_models import User
+from db_models import User, Admin, Campaign
 from app import app
 
-file = "export.txt"
+campaigns_file = "campaigns.txt"
+admins_file = "admins.txt"
+signatories_file = "signatories.txt"
 
 with app.app_context():
 
-    with open(file, "w") as f:
+    with open(signatories_file, "w") as f:
+        f.write("ID, ORCID, Name, Affiliation, Campaign, Anonymous\n")
+        for user in User.query.all():
+            f.write(f"{user.id}, {user.orcid}, {user.name}, {user.affiliation}, {user.campaign}, {user.anonymous}\n")
 
-        for signatory in User.query.all():
-            if (signatory.anonymous):
-                f.write(f"{signatory.name} (anonymous), {signatory.affiliation}\n")
-                print(f"{signatory.name} (anonymous), {signatory.affiliation}")
-            else:
-                f.write(f"{signatory.name}, {signatory.affiliation}\n")
-                print(f"{signatory.name}, {signatory.affiliation}")
+    with open(admins_file, "w") as f:
+        f.write("ORCID, Name, Role\n")
+        for user in Admin.query.all():
+            f.write(f"{user.orcid}, {user.name}, {user.role}\n")
 
-    print(f"User count: {len(User.query.all())}")
-    print(f"Database exported to file: {file}")
+    with open(campaigns_file, "w") as f:
+        f.write("Slug, ORCID Ownder, Kind, Name, Short Description, Text, Sort alphabetical, Allow anonymous, Creation date\n")
+        for campaign in Campaign.query.all():
+            f.write(
+                f"{campaign.action_slug}, \
+                {campaign.owner_orcid}, \
+                {campaign.action_kind}, \
+                {campaign.action_name}, \
+                {campaign.action_short_description}, \
+                {campaign.action_text}, \
+                {campaign.sort_alphabetical}, \
+                {campaign.allow_anonymous}, \
+                {campaign.creation_date}\n"
+            )

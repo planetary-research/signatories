@@ -23,13 +23,8 @@
 
     <header>
         <div class="header">
-            {% if use_banner %}
-            <div>
-                <a href="/"><img style="width: {{ banner_width }}%;" src="{{ url_for('static', filename=banner_file) }}"></a>
-            </div>
-            {% endif %}
             <div class="container">
-                <h1><a href="/">{{ action_name }}</a></h1>
+                <h1><a href={{ action_path }}>{{ action_name }}</a></h1>
                 <h3 class="short">{{ action_short_description }}</h3>
            </div>
         </div>
@@ -49,16 +44,18 @@
         <div class="footer">
             <div class="container">
                 {% block footer %}
-                <p>
+                <h4><a href="{{ signatories_url }}"><b>Signatories</b></a></h4>
+                <p class="footer-small">
                     <a href="{{ footer_url }}" target="_blank">{{ footer_url_name }}</a>
                 </p>
-                <p>
-                    <a href="mailto:{{ contact_email }}">Contact</a> | <a href="https://github.com/planetary-research/signatories">Github</a> | <a href="{{ privacy_uri }}">Privacy Policy</a>
-                </p>
                 {% if thank_prc is true %}
-                <p>
+                <p class="footer-small">
                     Created by the <a href="https://coop.planetary-research.org">Planetary Research Cooperative</a></p>
                 {% endif %}
+                <p class="social">
+                    <a href="https://github.com/planetary-research/signatories" title="Github"><i class="bi bi-github"></i></a> <a href="mailto:{{ contact_email }}" title="Contact"><i class="bi bi-envelope"></i></a>  <a class="footer-small" href="{{ privacy_uri }}">Privacy Policy</a>
+                </p>
+
                 {% endblock %}
             </div>
         </div>

@@ -38,7 +38,23 @@ Copy the file `.env.sample` to `.env`, which should look like the following:
 
 ```txt
 cookie_secret = '...'  # Random string to cross-check the stored cookie. Any string will do.
-database_name = 'signatories.db'
+port = 3000
+
+# Orcid ID of the site admin that is added to the database at creation
+admin_orcid = 'xxxx-xxxx-xxxx-xxxx'
+
+# Set favicon (use "" for none). File name is with respect to static/img
+favicon = "favicon.ico"
+
+# URL and name of a link displayed in the website footer, such as the association website
+footer_url_name = "My-Organization"
+footer_url = "https://my.organization.example.org/"
+
+# Add a statement in the footer that states Signatories was created by the Planetary Research Cooperative
+thank_prc = false
+
+# Contact email in the footer
+contact_email = "tech@my-organization.example.org"
 
 # ORCID API credentials
 client_ID = 'APP-ABCDEFGHIJKLMNOP'
@@ -61,7 +77,7 @@ Then modify the following variables:
 > In production use the main [ORCID API credentials](https://orcid.org/developer-tools).
 
 3. Add a public domain if the application is used in production (not required for local development in sandbox mode).
-4. Modify the file `signatories.toml` that contains all information about the petition.
+4. Update the parameters `favicon`, `footer_url_name`, `footer_url`, `thank_prc`, and `contact_email`.
 
 Finally, to run the app, use:
 ```bash
