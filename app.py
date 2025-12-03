@@ -91,6 +91,8 @@ privacy_URI = "/privacy"
 action_URI = "/<slug>"
 admin_URI = "/admin"
 insufficient_privileges_URI = "/insufficient-privileges"
+create_URI = "/create"
+edit_URI = "/edit"
 
 base_data = {
     "home_uri": home_URI,
@@ -100,6 +102,8 @@ base_data = {
     "thank_you_uri": thank_you_URI,
     "signature_removed_URI": signature_removed_URI,
     "admin_uri": admin_URI,
+    "create_uri": create_URI,
+    "edit_uri": edit_URI,
     "action_kind": config.action_kind,
     "action_name": config.action_name,
     "action_path": config.action_path,
@@ -110,7 +114,8 @@ base_data = {
     "thank_prc": config.thank_prc,
     "contact_email": config.contact_email,
     "orcid_url": config.orcid_url,
-    "authorization_uri_admin": api.get_login_url(scope="/authenticate",
+    "authorization_uri_admin": api.get_login_url(
+        scope="/authenticate",
         redirect_uri=config.code_callback_URI + "-admin")
 }
 
@@ -323,7 +328,6 @@ def user(slug):
         "in_database": in_database,
     }
 
-    # Serve user page
     return render_template("user.html", **(base_data | data))
 
 
@@ -348,7 +352,6 @@ def admin():
     role = UserRole.query.filter_by(role_id=result.role_id).first()
     user_roles = UserRole.query.all()
 
-    # Default alerts (= None)
     alerts = base_alerts.copy()
 
     # If an update is pushed
@@ -420,6 +423,90 @@ def admin():
 
     # Serve the admin page
     return render_template("admin.html", **(base_data | data))
+
+
+@app.route(create_URI, methods=["POST", "GET"])
+def create():
+    # Check if the user is logged in
+    if session.get("orcid") is None:
+        print("User session not set")
+        return redirect("/")
+
+    # Query database for user's ORCID
+    user = Admin.query.filter_by(orcid=session["orcid"]).first()
+    if user is None:
+        print("User is not in the Admin database")
+        return redirect(insufficient_privileges_URI)
+
+    # Check if the user has sufficient permissions
+    if user.role_id < 2:
+        print("Insufficient permissions to view this page")
+        return redirect(insufficient_privileges_URI)
+
+    # Default alerts (= None)
+    alerts = base_alerts.copy()
+
+    new_campaign = Campaign(
+        action_slug="",
+        action_kind="",
+        action_name="",
+        action_short_description="",
+        action_text="",
+        sort_alphabetical=None,
+        allow_anonymous=None,
+        owner_orcid=None,
+    )
+    # If an update is pushed
+    if request.method == "POST":
+        if request.form.get("mode") == "create_campaign":
+            if request.form["sort_alphabetical"] == "True":
+                sort_alphabetical = True
+            else:
+                sort_alphabetical = False
+            if request.form["allow_anonymous"] == "True":
+                allow_anonymous = True
+            else:
+                allow_anonymous = False
+
+            action_slug = escape(request.form["action_slug"])
+            new_campaign = Campaign(
+                action_slug=action_slug,
+                action_kind=escape(request.form["action_kind"]),
+                action_name=escape(request.form["action_name"]),
+                action_short_description=escape(request.form["action_short_description"]),
+                action_text=escape(request.form["action_text"]),
+                sort_alphabetical=sort_alphabetical,
+                allow_anonymous=allow_anonymous,
+                owner_orcid=session["orcid"],
+            )
+
+            if Campaign.query.filter_by(action_slug=action_slug).first() is not None:
+                alerts["danger"] = "Action slug already exists. Please choose another."
+
+            else:
+                db.session.add(new_campaign)
+                db.session.commit()
+                return redirect(admin_URI)
+
+    data = {
+        "action_name": session["name"],
+        "action_short_description": session["orcid"],
+        "action_path": admin_URI,
+        "name": session["name"],
+        "orcid_id": session["orcid"],
+        "role_id": user.role_id,
+        "alert": alerts,
+        "page": 'create',
+        "form_slug": new_campaign.action_slug,
+        "form_kind": new_campaign.action_kind,
+        "form_name": new_campaign.action_name,
+        "form_short_description": new_campaign.action_short_description,
+        "form_text": new_campaign.action_text,
+        "form_sort_alphabetical": new_campaign.sort_alphabetical,
+        "form_allow_anonymous": new_campaign.allow_anonymous,
+    }
+
+    return render_template("create.html", **(base_data | data))
 
 
 @app.route(thank_you_URI)

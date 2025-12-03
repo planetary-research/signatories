@@ -35,14 +35,30 @@
 
 
     <div>
-        <h3>LIST OF CAMPAIGNS</h3>
+        <h3>DEMONSTRATIONS</h3>
     </div>
 
     <div class="campaign-list">
         {% for name, desc in campaigns.items() %}
+        {% if name == "demo" or name == "demo-no-anonymous" %}
         <p class="campaign-entries">
             <a href="/{{ name }}"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
         </p>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <div>
+        <h3>ACTIVE CAMPAIGNS</h3>
+    </div>
+
+    <div class="campaign-list">
+        {% for name, desc in campaigns.items() %}
+        {% if name != "demo" and name != "demo-no-anonymous" %}
+        <p class="campaign-entries">
+            <a href="/{{ name }}"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
+        </p>
+        {% endif %}
         {% endfor %}
     </div>
 

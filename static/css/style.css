@@ -146,6 +146,19 @@ p.campaign-entries {
   margin-bottom: 4em;
 }
 
+.create-item-top {
+  margin-top: 4em;
+  margin-bottom: 2em;
+}
+.create-item-middle {
+  margin-top: 2em;
+  margin-bottom: 0em;
+}
+.create-item-bottom {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
 .form-choice-margin {
   font-size: 0.9em;
   margin-top: 2em;
@@ -228,10 +241,12 @@ p.campaign-entries {
 
 .footer-small {
   font-size: 0.9em;
+  margin-bottom: 0.3em;
 }
 
 .social {
   margin-top: 1.3em;
+  margin-bottom: 0.3em;
 }
 .social i {
   margin-right: 0.5em;

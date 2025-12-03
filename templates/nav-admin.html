@@ -5,8 +5,8 @@
       <a class="btn btn-{% if page == 'admin' %}success{% else %}primary{% endif %} btn-sm" href="{{ admin_uri }}">Admin</a>
       {% endif %}
       {% if role_id >= 2%}
-      <a class="btn btn-{% if page == 'create' %}success{% else %}primary{% endif %} btn-sm" href="{{ user_uri }}">Create</a>
-      <a class="btn btn-{% if page == 'edit' %}success{% else %}primary{% endif %} btn-sm" href="{{ editor_uri }}">Edit/Delete</a>
+      <a class="btn btn-{% if page == 'create' %}success{% else %}primary{% endif %} btn-sm" href="{{ create_uri }}">Create</a>
+      <a class="btn btn-{% if page == 'edit' %}success{% else %}primary{% endif %} btn-sm" href="{{ edit_uri }}">Edit/Delete</a>
       {% endif %}
       <a class="btn btn-primary btn-sm" href="{{ logout_uri }}">Log out</a>
     </div>

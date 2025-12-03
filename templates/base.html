@@ -45,7 +45,7 @@
             <div class="container">
                 {% block footer %}
                 <table width="100%">
-                  <td>
+                  <td width="85%"">
                     <h4><a href="{{ signatories_url }}"><b>Signatories</b></a></h4>
                     <p class="footer-small">
                       <a href="{{ footer_url }}" target="_blank">{{ footer_url_name }}</a>
@@ -56,11 +56,12 @@
                     {% endif %}
 
                     <p class="social">
-                        <a href="https://github.com/planetary-research/signatories" title="Github"><i class="bi bi-github"></i></a> <a href="mailto:{{ contact_email }}" title="Contact"><i class="bi bi-envelope"></i></a>  <a class="footer-small" href="{{ privacy_uri }}">Privacy Policy</a>
+                        <a href="https://github.com/planetary-research/signatories" title="Github"><i class="bi bi-github"></i></a> <a href="mailto:{{ contact_email }}" title="Contact"><i class="bi bi-envelope"></i></a>
                     </p>
                     {% endblock %}
-                  </td>
-                  <td style="text-align: right; vertical-align: bottom;">
+                  </td width="15%">
+                  <td style="text-align: left; vertical-align: top;">
+                    <p class="footer-small"><a href="{{ privacy_uri }}">Privacy Policy</a></p>
                     <p class="footer-small"><a href="{{ authorization_uri_admin }}">Administer<a></p>
                   </td>
                 </table>
