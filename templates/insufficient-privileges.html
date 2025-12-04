@@ -5,18 +5,20 @@
 {% block content %}
 
 <!-- Introduction -->
-<div class="thank-you-text main-text">
+<div class="text-no-header main-text">
     <p>
     You do not have sufficient privileges to access the adminisration settings.
     </p>
     <p>
-    If you would like to create a new campaign, please contact the site
-    administrator and provide them with your ORCID iD.
-  </p>
+      If you would like to create a campaign, please provide the
+      <a href="mailto:{{ contact_email }}">site administrator</a> with your
+      ORCID iD. After you are added to the administrator
+      database, you will be able to create campaigns and then edit or delete
+      those for which you are the owner.
+    </p>
     <div class="return-to-signatories">
         <a class="btn btn-primary btn-md" href="{{ home_uri }}">Return to the home page</a>
     </div>
 </div>
-
 
 {% endblock %}

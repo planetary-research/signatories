@@ -37,14 +37,14 @@
 
 {% include "nav-admin.html" %}
 
-<div class="admin-top">
-    <h3>Create a new campaign</h3>
+<div class="edit-top">
+    <h3>Edit campaign</h3>
     <p>
-      To create a new campaign, fill in the following fields and then click on the button "Create".
+      To edit this campaign, fill in the following fields and then click on the button "Update".
     </p>
 
-    <form action="{{ create_uri }}" method="POST" id="create_campaign">
-        <input type="hidden" name="mode" value="create_campaign">
+    <form action="{{ edit_uri }}" method="POST" id="edit_campaign">
+        <input type="hidden" name="mode" value="edit_campaign">
 
         <div>
             <p class="create-item-top">Action kind (Petition, Statement, Declaration, Letter of support, etc.)</p>
@@ -59,11 +59,6 @@
         <div>
             <p class="create-item-middle">Short description</p>
             <input type="text" class="form-control" name="action_short_description" placeholder="" value="{{ form_short_description }}">
-        </div>
-
-        <div>
-            <p class="create-item-middle">Action slug: a unique string that will be used as part of the campaign URL</p>
-            <input type="text" class="form-control" name="action_slug" placeholder="" value="">
         </div>
 
         <div>
@@ -88,15 +83,33 @@
         </div>
 
         <div>
-          <button type="submit" class="btn btn-success">Create</button>
+          <button type="submit" class="btn btn-success">Update</button>
         </div>
 
     </form>
 
 </div>
 
+<hr />
 
+<div class="edit-bottom">
+    <h3>Delete campaign</h3>
+    <p>
+    To delete this campaign, type "delete" in the box below.
+    </p>
 
+    <form action="{{ edit_uri }}" method="POST" id="delete_campaign">
+        <input type="hidden" name="mode" value="delete_campaign">
+        <div class="row">
+            <div class="col-md-6">
+              <input type="text" class="form-control" name="confirmation" placeholder="">
+            </div>
+            <div class="col-md-2">
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </form>
 
+</div>
 
 {% endblock %}

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block title %}Editor{% endblock %}
+{% block alert %}
+
+{% if alert.success is not none %}
+<div class="alert alert-success alert-dismissable" role="alert">
+    {{ alert.success }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% if alert.warning is not none %}
+<div class="alert alert-warning alert-dismissable" role="alert">
+    {{ alert.warning }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% if alert.danger is not none %}
+<div class="alert alert-danger alert-dismissable" role="alert">
+    {{ alert.danger }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% endblock %}
+{% block content %}
+
+{% include "nav-admin.html" %}
+
+<div class="admin-top">
+    <p>
+      <b>Click on a campaign to edit or delete.</b>
+    </p>
+    <h3>My campaigns</h3>
+
+    <div class="campaign-list">
+        {% for name, desc in my_campaigns.items() %}
+        <p class="campaign-entries">
+            <a href="/{{ name }}/edit"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
+        </p>
+        {% endfor %}
+    </div>
+
+    {% if role_id == 3 %}
+    <h3>All campaigns</h3>
+
+    <div class="campaign-list">
+        {% for name, desc in all_campaigns.items() %}
+        <p class="campaign-entries">
+            <a href="/{{ name }}/edit"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
+        </p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+
+
+
+
+
+{% endblock %}
