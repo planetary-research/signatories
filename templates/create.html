@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block title %}Create campaign{% endblock %}
+{% block alert %}
+
+{% if alert.success is not none %}
+<div class="alert alert-success alert-dismissable" role="alert">
+    {{ alert.success }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% if alert.warning is not none %}
+<div class="alert alert-warning alert-dismissable" role="alert">
+    {{ alert.warning }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% if alert.danger is not none %}
+<div class="alert alert-danger alert-dismissable" role="alert">
+    {{ alert.danger }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% endblock %}
+{% block content %}
+
+{% include "nav-admin.html" %}
+
+<div class="admin-top">
+    <h3>Create a new campaign</h3>
+    <p>
+      To create a new campaign, fill in the following fields and then click on the button "Create".
+    </p>
+
+    <form action="{{ create_uri }}" method="POST" id="create_campaign">
+        <input type="hidden" name="mode" value="create_campaign">
+
+        <div>
+            <p class="create-item-top">Action kind (Petition, Statement, Declaration, Letter of support, etc.)</p>
+            <input type="text" class="form-control" name="action_kind" placeholder="" value="{{ form_kind }}">
+        </div>
+
+        <div>
+            <p class="create-item-middle">Action name</p>
+            <input type="text" class="form-control" name="action_name" placeholder="" value="{{ form_name }}">
+        </div>
+
+        <div>
+            <p class="create-item-middle">Short description</p>
+            <input type="text" class="form-control" name="action_short_description" placeholder="" value="{{ form_short_description }}">
+        </div>
+
+        <div>
+            <p class="create-item-middle">Action slug: a unique string that will be used as part of the campaign URL</p>
+            <input type="text" class="form-control" name="action_slug" placeholder="" value="">
+        </div>
+
+        <div>
+            <p class="create-item-middle">Action text (paste input as HTML)</p>
+            <textarea class="input form-control" name="action_text" placeholder="">{{ form_text }}</textarea>
+        </div>
+
+        <div class="form-choice-margin">
+            <p>Sort signatories alphabetially:</p>
+            <input type="radio" id="no-sort" name="sort_alphabetical" value="False" required {% if form_sort_alphabetical is false %}checked{% endif %}>
+            <label for="no-sort">False</label><br>
+            <input type="radio" id="sort" name="sort_alphabetical" value="True" {% if form_sort_alphabetical is true %}checked{% endif %}>
+            <label for="sort">True</label><br>
+        </div>
+
+        <div class="form-choice-margin">
+            <p>Allow anonymous signatories:</p>
+            <input type="radio" id="no-sort" name="allow_anonymous" value="False" required {% if form_allow_anonymous is false %}checked{% endif %}>
+            <label for="no-sort">False</label><br>
+            <input type="radio" id="sort" name="allow_anonymous" value="True" {% if form_allow_anonymous is true %}checked{% endif %}>
+            <label for="sort">True</label><br>
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-success">Create</button>
+        </div>
+
+    </form>
+
+</div>
+
+
+
+
+
+{% endblock %}

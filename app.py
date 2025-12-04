@@ -1,17 +1,18 @@
 import os
+import re
 from datetime import timedelta
 import tomllib
 from flask import Flask
 from flask import request, session
 from flask import redirect, render_template
-from flask import send_from_directory
+from flask import send_from_directory, send_file
 from markupsafe import escape
 from waitress import serve
 import orcid
 
 import config
-from db_models import db, User, Admin, Campaign
-from utils import get_orcid_name
+from db_models import db, User, Admin, Campaign, UserRole
+from utils import get_orcid_name, checksum
 
 
 """ ORCID API """
@@ -46,8 +47,14 @@ if not os.path.exists(config.dbpath):
         db.create_all()
         # get admin name from orcid
         name = get_orcid_name(api, config.admin_orcid)
-        admin = Admin(orcid=config.admin_orcid, name=name, role=3)
+        admin = Admin(orcid=config.admin_orcid, name=name, role_id=3)
         db.session.add(admin)
+        db.session.commit()
+
+        for role_name in ("Delete", "Editor", "Administrator"):
+            role = UserRole(name=role_name)
+            db.session.add(role)
+
         db.session.commit()
 
 """ Read files in Campaigns and add to database if they don't already exist """
@@ -82,6 +89,12 @@ thank_you_URI = "/<slug>/thank-you"
 signature_removed_URI = "/<slug>/signature-removed"
 privacy_URI = "/privacy"
 action_URI = "/<slug>"
+admin_URI = "/admin"
+insufficient_privileges_URI = "/insufficient-privileges"
+create_URI = "/create"
+editor_URI = "/editor"
+edit_URI = "/<slug>/edit"
+
 
 base_data = {
     "home_uri": home_URI,
@@ -90,6 +103,9 @@ base_data = {
     "privacy_uri": privacy_URI,
     "thank_you_uri": thank_you_URI,
     "signature_removed_URI": signature_removed_URI,
+    "admin_uri": admin_URI,
+    "create_uri": create_URI,
+    "editor_uri": editor_URI,
     "action_kind": config.action_kind,
     "action_name": config.action_name,
     "action_path": config.action_path,
@@ -100,6 +116,9 @@ base_data = {
     "thank_prc": config.thank_prc,
     "contact_email": config.contact_email,
     "orcid_url": config.orcid_url,
+    "authorization_uri_admin": api.get_login_url(
+        scope="/authenticate",
+        redirect_uri=config.code_callback_URI + "-admin")
 }
 
 base_alerts = {
@@ -198,6 +217,29 @@ def authorize():
     return "Fetching ORCID account details..."
 
 
+@app.route("/authorization-code-callback-admin", methods=["GET"])
+def authorize_admin():
+    # Instantiate the return code
+    code = None
+
+    # If a GET request is made
+    if request.method == "GET":
+        # Fetch (and sanitise) the return code
+        code = escape(request.args["code"])
+
+        # Exchange the security code for a token
+        token = api.get_token_from_authorization_code(code, config.code_callback_URI+"-admin")
+
+        # Extract the ORCID and user name from the token, and set to session
+        session["orcid"] = escape(token["orcid"])
+        session["name"] = escape(token["name"])
+        session.permanent = True
+
+        return redirect(editor_URI)
+
+    return "Fetching ORCID account details..."
+
+
 @app.route(privacy_URI)
 def privacy():
     data = {}
@@ -287,8 +329,316 @@ def user(slug):
         "in_database": in_database,
     }
 
-    # Serve user page
     return render_template("user.html", **(base_data | data))
+
+
+@app.route(admin_URI, methods=["POST", "GET"])
+def admin():
+    # Check if the user is logged in
+    if session.get("orcid") is None:
+        print("User session not set")
+        return redirect("/")
+
+    # Query database for user's ORCID
+    result = Admin.query.filter_by(orcid=session["orcid"]).first()
+    if result is None:
+        print("User is not in the Admin database")
+        return redirect(insufficient_privileges_URI)
+
+    # Check if the user has sufficient permissions
+    if result.role_id < 3:
+        print("Insufficient permissions to view the Admin page")
+        return redirect(insufficient_privileges_URI)
+
+    role = UserRole.query.filter_by(role_id=result.role_id).first()
+    user_roles = UserRole.query.all()
+
+    alerts = base_alerts.copy()
+
+    # If an update is pushed
+    if request.method == "POST":
+
+        # Add or modify a user
+        if request.form.get("mode") == "modify_user":
+            # Get the user's ORCID
+            user_id = escape(request.form["user_id"])
+            # Get the desired user role
+            role_id = int(request.form["user_role"])
+
+            # Check if we are not accidently changing self
+            if user_id == session["orcid"]:
+                alerts["danger"] = "You cannot modify yourself"
+            # Check if the ORCID is valid (4 groups of 4 digits)
+            elif (re.match(r"\d{4}-\d{4}-\d{4}-\d{3}[0-9|xX]", user_id.strip()) is None) or not checksum(user_id.strip()):
+                alerts["danger"] = "Invalid ORCID iD"
+            # All good
+            else:
+                # Try to get user from DB
+                user = Admin.query.filter_by(orcid=user_id).first()
+                if user is None and role_id > 1:
+                    # Try to get public name and email from orcid profile
+                    orcid_name = get_orcid_name(api, user_id)
+                    if orcid_name == '':
+                        alerts["warning"] = "The ORCID user name is marked as private and will not be shown"
+                    # Add new user
+                    user = Admin(orcid=user_id, name=orcid_name, role_id=role_id)
+                    db.session.add(user)
+                    alerts["success"] = "New user added"
+                elif user is None and role_id == 1:
+                    alerts["warning"] = "User does not exist and can not be deleted"
+                elif role_id > 1:
+                    # Modify role ID
+                    if user.role_id == role_id:
+                        alerts["success"] = "User role did not need to be modified"
+                    else:
+                        user.role_id = role_id
+                        alerts["success"] = "User role modified"
+                else:
+                    db.session.delete(user)
+                    alerts["success"] = "User deleted"
+
+                db.session.commit()
+
+        # Download database file
+        if request.form.get("mode") == "backup_db":
+            return send_file(config.dbpath, as_attachment=True)
+
+    # Create a list of administrators and editors and count all users
+    admins = Admin.query.filter_by(role_id=3).order_by(Admin.name.asc()).all()
+    editors = Admin.query.filter_by(role_id=2).order_by(Admin.name.asc()).all()
+
+    data = {
+        "action_name": session["name"],
+        "action_short_description": session["orcid"],
+        "action_path": admin_URI,
+        "name": session["name"],
+        "orcid_id": session["orcid"],
+        "role": role.name.capitalize(),
+        "role_id": role.role_id,
+        "user_roles": user_roles,
+        "alert": alerts,
+        "editors": editors,
+        "admins": admins,
+        "page": 'admin'
+    }
+
+    # Serve the admin page
+    return render_template("admin.html", **(base_data | data))
+
+
+@app.route(create_URI, methods=["POST", "GET"])
+def create():
+    # Check if the user is logged in
+    if session.get("orcid") is None:
+        print("User session not set")
+        return redirect("/")
+
+    # Query database for user's ORCID
+    user = Admin.query.filter_by(orcid=session["orcid"]).first()
+    if user is None:
+        print("User is not in the Admin database")
+        return redirect(insufficient_privileges_URI)
+
+    # Check if the user has sufficient permissions
+    if user.role_id < 2:
+        print("Insufficient permissions to view this page")
+        return redirect(insufficient_privileges_URI)
+
+    # Default alerts (= None)
+    alerts = base_alerts.copy()
+
+    new_campaign = Campaign(
+        action_slug="",
+        action_kind="",
+        action_name="",
+        action_short_description="",
+        action_text="",
+        sort_alphabetical=None,
+        allow_anonymous=None,
+        owner_orcid=None,
+    )
+    # If an update is pushed
+    if request.method == "POST":
+        if request.form.get("mode") == "create_campaign":
+            if request.form["sort_alphabetical"] == "True":
+                sort_alphabetical = True
+            else:
+                sort_alphabetical = False
+            if request.form["allow_anonymous"] == "True":
+                allow_anonymous = True
+            else:
+                allow_anonymous = False
+
+            action_slug = escape(request.form["action_slug"])
+            new_campaign = Campaign(
+                action_slug=action_slug,
+                action_kind=escape(request.form["action_kind"]),
+                action_name=escape(request.form["action_name"]),
+                action_short_description=escape(request.form["action_short_description"]),
+                action_text=request.form["action_text"],
+                sort_alphabetical=sort_alphabetical,
+                allow_anonymous=allow_anonymous,
+                owner_orcid=session["orcid"],
+            )
+
+            if Campaign.query.filter_by(action_slug=action_slug).first() is not None:
+                alerts["danger"] = "Action slug already exists. Please choose another."
+
+            else:
+                db.session.add(new_campaign)
+                db.session.commit()
+                return redirect(editor_URI)
+
+    data = {
+        "action_name": session["name"],
+        "action_short_description": session["orcid"],
+        "action_path": admin_URI,
+        "name": session["name"],
+        "orcid_id": session["orcid"],
+        "role_id": user.role_id,
+        "alert": alerts,
+        "page": 'create',
+        "form_slug": new_campaign.action_slug,
+        "form_kind": new_campaign.action_kind,
+        "form_name": new_campaign.action_name,
+        "form_short_description": new_campaign.action_short_description,
+        "form_text": new_campaign.action_text,
+        "form_sort_alphabetical": new_campaign.sort_alphabetical,
+        "form_allow_anonymous": new_campaign.allow_anonymous,
+    }
+
+    return render_template("create.html", **(base_data | data))
+
+
+@app.route(editor_URI)
+def editor():
+    # Check if the user is logged in
+    if session.get("orcid") is None:
+        print("User session not set")
+        return redirect("/")
+
+    # Query database for user's ORCID
+    user = Admin.query.filter_by(orcid=session["orcid"]).first()
+    if user is None:
+        print("User is not in the Admin database")
+        return redirect(insufficient_privileges_URI)
+
+    # Check if the user has sufficient permissions
+    if user.role_id < 2:
+        print("Insufficient permissions to view the Editor page")
+        return redirect(insufficient_privileges_URI)
+
+    # Default alerts (= None)
+    alerts = base_alerts.copy()
+
+    my_campaigns = dict()
+    all_campaigns = dict()
+    # Create list of signatory campaigns
+    for row in Campaign.query.order_by(Campaign.action_name.asc()).all():
+        if row.owner_orcid == session["orcid"]:
+            my_campaigns[row.action_slug] = [row.action_name, row.action_short_description]
+
+    if user.role_id == 3:
+        for row in Campaign.query.order_by(Campaign.action_name.asc()).all():
+            all_campaigns[row.action_slug] = [row.action_name, row.action_short_description]
+
+    data = {
+        "action_name": session["name"],
+        "action_short_description": session["orcid"],
+        "action_path": editor_URI,
+        "name": session["name"],
+        "orcid_id": session["orcid"],
+        "role_id": user.role_id,
+        "alert": alerts,
+        "page": 'editor',
+        "my_campaigns": my_campaigns,
+        "all_campaigns": all_campaigns,
+    }
+
+    return render_template("editor.html", **(base_data | data))
+
+
+@app.route(edit_URI, methods=["POST", "GET"])
+def edit(slug):
+    # Check if the user is logged in
+    if session.get("orcid") is None:
+        print("User session not set")
+        return redirect("/")
+
+    # Query database for user's ORCID
+    user = Admin.query.filter_by(orcid=session["orcid"]).first()
+    if user is None:
+        print("User is not in the Admin database")
+        return redirect(insufficient_privileges_URI)
+
+    # Check if the user has sufficient permissions
+    if user.role_id < 2:
+        print("Insufficient permissions to view this page")
+        return redirect(insufficient_privileges_URI)
+
+    edit_campaign = Campaign.query.filter_by(action_slug=slug).first()
+    if not edit_campaign:
+        return render_template("campaign-not-found.html", **(base_data))
+
+    # For editors, check if the user is the campaign owner
+    if user.role_id == 2:
+        if edit_campaign.orcid_owner != session["orcid"]:
+            print("Insufficient permissions to edit this action")
+            return redirect(insufficient_privileges_URI)
+
+    # Default alerts (= None)
+    alerts = base_alerts.copy()
+
+    # If an update is pushed
+    if request.method == "POST":
+        if request.form.get("mode") == "edit_campaign":
+            if request.form["sort_alphabetical"] == "True":
+                sort_alphabetical = True
+            else:
+                sort_alphabetical = False
+            if request.form["allow_anonymous"] == "True":
+                allow_anonymous = True
+            else:
+                allow_anonymous = False
+
+            edit_campaign.action_kind = escape(request.form["action_kind"])
+            edit_campaign.action_name = escape(request.form["action_name"])
+            edit_campaign.action_short_description = escape(request.form["action_short_description"])
+            edit_campaign.action_text = request.form["action_text"]
+            edit_campaign.sort_alphabetical = sort_alphabetical
+            edit_campaign.allow_anonymous = allow_anonymous
+
+            db.session.commit()
+            return redirect(editor_URI)
+
+        if request.form.get("mode") == "delete_campaign":
+            if request.form["confirmation"].lower() == "delete":
+                Campaign.query.filter_by(action_slug=slug).delete()
+                db.session.commit()
+                return redirect(editor_URI)
+            else:
+                alerts["info"] = "Please confirm your response with \"Delete\""
+            db.session.commit()
+            return redirect(editor_URI)
+
+    data = {
+        "action_name": session["name"],
+        "action_short_description": session["orcid"],
+        "action_path": admin_URI,
+        "name": session["name"],
+        "orcid_id": session["orcid"],
+        "role_id": user.role_id,
+        "alert": alerts,
+        "page": 'editor',
+        "form_kind": edit_campaign.action_kind,
+        "form_name": edit_campaign.action_name,
+        "form_short_description": edit_campaign.action_short_description,
+        "form_text": edit_campaign.action_text,
+        "form_sort_alphabetical": edit_campaign.sort_alphabetical,
+        "form_allow_anonymous": edit_campaign.allow_anonymous,
+    }
+
+    return render_template("edit.html", **(base_data | data))
 
 
 @app.route(thank_you_URI)
@@ -331,6 +681,11 @@ def signature_removed(slug):
     base_data["signature_removed_URI_defined"] = None
 
     return render_template("signature-removed.html", **(base_data | data))
+
+
+@app.route(insufficient_privileges_URI)
+def insufficient_privileges():
+    return render_template("insufficient-privileges.html", **base_data)
 
 
 @app.route(logout_URI)

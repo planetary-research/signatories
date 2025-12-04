@@ -46,6 +46,14 @@ h3.short {
   margin-top: 0.6em;
   font-size: 1.3em;
 }
+h4.orcid {
+  margin-top: 0.5em;
+
+}
+h4 {
+  margin-bottom: 0.5em;
+  margin-top: 0em;
+}
 
 a {
   color: #333333;
@@ -83,14 +91,23 @@ a.external:hover {
 .no-margin {
   margin: 0;
 }
+.no-margin-bottom {
+  margin-bottom: 0em;
+}
+.no-padding {
+  padding: 0;
+}
 
 .user-list {
   font-size: 0.8em;
-  margin-left: 2em;
+  margin-left: 1em;
   margin-right: 0;
-  margin-bottom: 2em;
+  margin-bottom: 3em;
   padding: 0;
   margin-top: 0;
+}
+.user-list#show-admins {
+  margin-bottom: 0em;
 }
 
 .toggle-signatories {
@@ -116,13 +133,49 @@ p.campaign-entries {
   margin-bottom: 8em;
 }
 
+.admin-top {
+  margin-top: 5em;
+  margin-bottom: 8em;
+}
+.admin-middle {
+  margin-top: 4em;
+  margin-bottom: 4em;
+}
+.admin-bottom {
+  margin-top: 5em;
+  margin-bottom: 4em;
+}
+
+.edit-top {
+  margin-top: 5em;
+  margin-bottom: 4em;
+}
+.edit-bottom {
+  margin-top: 0em;
+  margin-bottom: 4em;
+}
+
+.create-item-top {
+  margin-top: 4em;
+  margin-bottom: 2em;
+}
+.create-item-middle {
+  margin-top: 2em;
+  margin-bottom: 0em;
+}
+.create-item-bottom {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
 .form-choice-margin {
   font-size: 0.9em;
   margin-top: 2em;
   margin-bottom: 1em;
 }
-.thank-you-text {
-  margin-top: 4em
+
+.text-no-header {
+  margin-top: 3em
 }
 
 .return-to-signatories {
@@ -184,7 +237,7 @@ p.campaign-entries {
   width: 100%;
   margin-left: 0;
   margin-right: 0;
-  padding-top: 2em;
+  padding-top: 2.5em;
   padding-bottom: 3em;
 }
 .footer a {
@@ -198,10 +251,12 @@ p.campaign-entries {
 
 .footer-small {
   font-size: 0.9em;
+  margin-bottom: 0.3em;
 }
 
-p.social {
-  margin-top: 1.2em;
+.social {
+  margin-top: 1em;
+  margin-bottom: 0.3em;
 }
 .social i {
   margin-right: 0.5em;

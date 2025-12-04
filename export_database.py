@@ -15,7 +15,7 @@ with app.app_context():
     with open(admins_file, "w") as f:
         f.write("ORCID, Name, Role\n")
         for user in Admin.query.all():
-            f.write(f"{user.orcid}, {user.name}, {user.role}\n")
+            f.write(f"{user.orcid}, {user.name}, {user.role_id}\n")
 
     with open(campaigns_file, "w") as f:
         f.write("Slug, ORCID Ownder, Kind, Name, Short Description, Text, Sort alphabetical, Allow anonymous, Creation date\n")

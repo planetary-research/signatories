@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block title %}Admin page{% endblock %}
+{% block alert %}
+
+{% if alert.success is not none %}
+<div class="alert alert-success alert-dismissable" role="alert">
+    {{ alert.success }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% if alert.warning is not none %}
+<div class="alert alert-warning alert-dismissable" role="alert">
+    {{ alert.warning }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% if alert.danger is not none %}
+<div class="alert alert-danger alert-dismissable" role="alert">
+    {{ alert.danger }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% endblock %}
+{% block content %}
+
+{% include "nav-admin.html" %}
+
+<div class="admin-top">
+    <h3>Add/delete users or update permissions</h3>
+    <p>
+      Update or delete a user's access permissions based on their ORCID iD.
+      If the ORCID iD does not exist in the database, a new user will be created.
+    </p>
+
+    <form action="{{ admin_uri }}" method="POST", id="modify_user">
+      <div class="row col-md-2">
+          <select name="user_role" class="btn">
+          {% for role in user_roles %}
+          <option value="{{ role.role_id }}"> {{ role.name }}</option>
+          {% endfor %}
+          </select>
+      </div>
+      <div class="col-md-4">
+          <input type="hidden" name="mode" value="modify_user">
+          <input type="text" class="form-control" name="user_id" placeholder="User ORCID iD">
+      </div>
+      <div class="col-md-6">
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+</div>
+
+<div class="admin-middle">
+    <h3>Backup database</h3>
+    <p>
+        Download a copy of the complete database.
+    </p>
+
+    <form action="{{ admin_uri }}" method="POST", id="backup_db">
+        <!-- <input type="hidden" name="mode" value="backup_db"> -->
+        <button type="submit" class="btn btn-success" name="mode" value="backup_db">Backup DB</button>
+    </form>
+
+</div>
+
+<div class="admin-bottom">
+    <h3>Database</h3>
+    <button data-toggle="collapse" aria-expanded="false" data-target="#show-admins" aria-controls="show-admins" class="btn btn-primary btn-sm">Show admins: {{ admins|length }}</button>
+    <button data-toggle="collapse" aria-expanded="false" data-target="#show-editors" aria-controls="show-editors" class="btn btn-primary btn-sm">Show editors: {{ editors|length }}</button>
+
+    <div class="collapse user-list" id="show-admins">
+        <div class="row">
+          <div class="col-md-6">
+            <hr />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <p>Administrators</p>
+          </div>
+        </div>
+        {% for result in admins %}
+        <div class="row extra-margin">
+            <div class="col-md-3">
+                <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank"><span style="font-weight: bold">{{ result.name }}</span></a>
+            </div>
+            <div class="col-md-3">
+                {{ result.orcid }} &nbsp;
+                <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" class="external"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.5em; margin-right: 0.5em;" /></a>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="row">
+          <div class="col-md-6">
+            <hr />
+          </div>
+        </div>
+    </div>
+
+    <div class="collapse user-list" id="show-editors">
+        <div class="row">
+          <div class="col-md-6">
+            <hr />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <p>Editors</p>
+          </div>
+        </div>
+        {% for result in editors %}
+        <div class="row extra-margin">
+            <div class="col-md-3">
+                <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank"><span style="font-weight: bold">{{ result.name }}</span></a>
+            </div>
+            <div class="col-md-3">
+                {{ result.orcid }} &nbsp;
+                <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" class="external"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.5em; margin-right: 0.5em;" /></a>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="row">
+          <div class="col-md-6">
+            <hr />
+          </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

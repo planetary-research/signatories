@@ -18,8 +18,8 @@ class User(db.Model):
 
 class Admin(db.Model):
     orcid = db.Column(db.String(length=19), primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    role = db.Column(db.Integer, nullable=False, default=1)
+    name = db.Column(db.String)
+    role_id = db.Column(db.Integer, db.ForeignKey("user_role.role_id"), nullable=False, default=1)
 
     def __repr__(self):
         return "<Admin %s>" % self.orcid
@@ -38,3 +38,11 @@ class Campaign(db.Model):
 
     def __repr__(self):
         return "<Campaign %s>" % self.action_slug
+
+
+class UserRole(db.Model):
+    role_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(length=255), nullable=False)
+
+    def __repr__(self):
+        return "<UserRole %s>" % self.name

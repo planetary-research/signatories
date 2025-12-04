@@ -5,10 +5,11 @@ an online petition, a declaration, a statement, or any form of communication
 that requires community support. Designed for academics, signing is accomplished
 by authenticating with an account at [ORCID](https://orcid.org).
 
-The signatory may choose to remain anonymous. They may choose to add
-their professional affiliation. After signing, they can modify their
-signing preferences or remove their signature altogether. When the signatory's
-name is visible, any user may click on it to inspect their ORCID profile.
+Campaigns can choose to allow for anonymous signatures or not. Signatories
+to a campaign may choose to add their professional affiliation, and they can
+modify their preferences or remove their signature after signing. When the
+signatory's name is visible, any user may click on it to inspect their ORCID
+profile.
 
 By requiring an account at ORCID to sign, not only are bogus signatures
 avoided, but this helps to limit participants to the academic community. An

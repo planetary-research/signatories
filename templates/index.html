@@ -8,15 +8,15 @@
 
     <div class="extra-margin action_text">
       <p>
-      <u>Signatories</u> is a simple web-based program that allows a person to sign
+      Signatories is a simple web-based program that allows a person to sign
       an online petition, a declaration, a statement, or any form of communication
       that requires community support. Designed for academics, signing is accomplished
       by authenticating with an account at <a href="https://orcid.org" target="_blank">ORCID</a>.
       </p>
       <p>
-      Campaigns may decide to allow for anonymous signatures. Signatories may choose to add
-      their professional affiliation, and after signing, they can modify their
-      preferences or remove their signature altogether. When the signatory's
+      Campaigns can choose to allow for anonymous signatures or not. Signatories
+      to a campaign may choose to add their professional affiliation, and they can modify their
+      preferences or remove their signature after signing. When the signatory's
       name is visible, any user may click on it to inspect their ORCID profile.
       </p>
       <p>
@@ -26,23 +26,40 @@
       have an ORCID account.
       </p>
       <p>
-      To start a new campaign, create a file like
-      <a href="https://github.com/planetary-research/signatories/blob/main/campaigns/demo.toml" target="_blank">this</a>
-      and send it to the administrator. We will soon be implementing editor controls
-      that will allow you to create your own campaigns directly.
+      If you would like to create a campaign, pleaese provide the
+      <a href="mailto:{{ contact_email }}">site administrator</a> with your
+      ORCID iD. After you are added to the administrator
+      database, you will be able to create campaigns, and then edit or delete
+      those for which you are the owner.
       </p>
     </div>
 
 
     <div>
-        <h3>LIST OF CAMPAIGNS</h3>
+        <h3>DEMONSTRATIONS</h3>
     </div>
 
     <div class="campaign-list">
         {% for name, desc in campaigns.items() %}
+        {% if name == "demo" or name == "demo-no-anonymous" %}
         <p class="campaign-entries">
             <a href="/{{ name }}"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
         </p>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <div>
+        <h3>ACTIVE CAMPAIGNS</h3>
+    </div>
+
+    <div class="campaign-list">
+        {% for name, desc in campaigns.items() %}
+        {% if name != "demo" and name != "demo-no-anonymous" %}
+        <p class="campaign-entries">
+            <a href="/{{ name }}"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
+        </p>
+        {% endif %}
         {% endfor %}
     </div>
 

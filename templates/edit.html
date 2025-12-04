@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block title %}Create campaign{% endblock %}
+{% block alert %}
+
+{% if alert.success is not none %}
+<div class="alert alert-success alert-dismissable" role="alert">
+    {{ alert.success }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% if alert.warning is not none %}
+<div class="alert alert-warning alert-dismissable" role="alert">
+    {{ alert.warning }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% if alert.danger is not none %}
+<div class="alert alert-danger alert-dismissable" role="alert">
+    {{ alert.danger }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% endblock %}
+{% block content %}
+
+{% include "nav-admin.html" %}
+
+<div class="edit-top">
+    <h3>Edit campaign</h3>
+    <p>
+      To edit this campaign, fill in the following fields and then click on the button "Update".
+    </p>
+
+    <form action="{{ edit_uri }}" method="POST" id="edit_campaign">
+        <input type="hidden" name="mode" value="edit_campaign">
+
+        <div>
+            <p class="create-item-top">Action kind (Petition, Statement, Declaration, Letter of support, etc.)</p>
+            <input type="text" class="form-control" name="action_kind" placeholder="" value="{{ form_kind }}">
+        </div>
+
+        <div>
+            <p class="create-item-middle">Action name</p>
+            <input type="text" class="form-control" name="action_name" placeholder="" value="{{ form_name }}">
+        </div>
+
+        <div>
+            <p class="create-item-middle">Short description</p>
+            <input type="text" class="form-control" name="action_short_description" placeholder="" value="{{ form_short_description }}">
+        </div>
+
+        <div>
+            <p class="create-item-middle">Action text (paste input as HTML)</p>
+            <textarea class="input form-control" name="action_text" placeholder="">{{ form_text }}</textarea>
+        </div>
+
+        <div class="form-choice-margin">
+            <p>Sort signatories alphabetially:</p>
+            <input type="radio" id="no-sort" name="sort_alphabetical" value="False" required {% if form_sort_alphabetical is false %}checked{% endif %}>
+            <label for="no-sort">False</label><br>
+            <input type="radio" id="sort" name="sort_alphabetical" value="True" {% if form_sort_alphabetical is true %}checked{% endif %}>
+            <label for="sort">True</label><br>
+        </div>
+
+        <div class="form-choice-margin">
+            <p>Allow anonymous signatories:</p>
+            <input type="radio" id="no-sort" name="allow_anonymous" value="False" required {% if form_allow_anonymous is false %}checked{% endif %}>
+            <label for="no-sort">False</label><br>
+            <input type="radio" id="sort" name="allow_anonymous" value="True" {% if form_allow_anonymous is true %}checked{% endif %}>
+            <label for="sort">True</label><br>
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-success">Update</button>
+        </div>
+
+    </form>
+
+</div>
+
+<hr />
+
+<div class="edit-bottom">
+    <h3>Delete campaign</h3>
+    <p>
+    To delete this campaign, type "delete" in the box below.
+    </p>
+
+    <form action="{{ edit_uri }}" method="POST" id="delete_campaign">
+        <input type="hidden" name="mode" value="delete_campaign">
+        <div class="row">
+            <div class="col-md-6">
+              <input type="text" class="form-control" name="confirmation" placeholder="">
+            </div>
+            <div class="col-md-2">
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}

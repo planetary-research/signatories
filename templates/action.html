@@ -23,10 +23,10 @@
     <div class="collapse user-list" id="show-signatories">
         {% for result in visible_signatures %}
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" ><span style="font-weight: bold">{{ result.name }}</span></a>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-9">
                 {{ result.affiliation }}
             </div>
 
