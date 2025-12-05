@@ -8,7 +8,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     orcid = db.Column(db.String(length=19), nullable=False)
     name = db.Column(db.String, nullable=False)
-    campaign = db.Column(db.String, db.ForeignKey("campaign.action_slug"), nullable=False)
+    campaign = db.Column(db.String, db.ForeignKey("campaign.action_slug", ondelete='CASCADE'), nullable=False)
     affiliation = db.Column(db.String)
     anonymous = db.Column(db.Boolean, nullable=False, default=False)
 
@@ -34,6 +34,7 @@ class Campaign(db.Model):
     action_text = db.Column(db.String, nullable=False)
     sort_alphabetical = db.Column(db.Boolean, nullable=False, default=False)
     allow_anonymous = db.Column(db.Boolean, nullable=False, default=True)
+    is_active = db.Column(db.Boolean, nullable=False, default=True)
     creation_date = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now(datetime.UTC))
 
     def __repr__(self):

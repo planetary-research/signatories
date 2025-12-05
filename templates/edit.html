@@ -62,7 +62,7 @@
         </div>
 
         <div>
-            <p class="create-item-middle">Action text (paste input as HTML)</p>
+            <p class="create-item-middle">Action text (input as HTML)</p>
             <textarea class="input form-control" name="action_text" placeholder="">{{ form_text }}</textarea>
         </div>
 
@@ -80,6 +80,35 @@
             <label for="no-sort">False</label><br>
             <input type="radio" id="sort" name="allow_anonymous" value="True" {% if form_allow_anonymous is true %}checked{% endif %}>
             <label for="sort">True</label><br>
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-success">Update</button>
+        </div>
+
+    </form>
+
+</div>
+
+<hr />
+
+<div class="edit-middle">
+    <h3>Activate or close campaign</h3>
+    <p>
+      When a campaign is closed, no further users will be able to sign it.
+      Closed campaigs will be accessible by their previous URL, but they will
+      not appears in the list of active campaings on the website home page.
+    </p>
+
+    <form action="{{ edit_uri }}" method="POST" id="close_activate">
+        <input type="hidden" name="mode" value="close_activate">
+
+        <div class="form-choice-margin">
+            <p>Campaign is:</p>
+            <input type="radio" id="active" name="is_active" value="Active" required {% if is_active is true %}checked{% endif %}>
+            <label for="active">Active</label><br>
+            <input type="radio" id="closed" name="is_active" value="Closed" {% if is_active is false %}checked{% endif %}>
+            <label for="closed">Closed</label><br>
         </div>
 
         <div>

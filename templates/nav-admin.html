@@ -2,8 +2,8 @@
 <div class="row nav">
     <div class="col-md-12">
       {% if role_id >= 2%}
-      <a class="btn btn-{% if page == 'create' %}success{% else %}primary{% endif %} btn-sm" href="{{ create_uri }}">Create</a>
       <a class="btn btn-{% if page == 'editor' %}success{% else %}primary{% endif %} btn-sm" href="{{ editor_uri }}">Edit/Delete</a>
+      <a class="btn btn-{% if page == 'create' %}success{% else %}primary{% endif %} btn-sm" href="{{ create_uri }}">Create</a>
       {% endif %}
       {% if role_id >= 3%}
       <a class="btn btn-{% if page == 'admin' %}success{% else %}primary{% endif %} btn-sm" href="{{ admin_uri }}">Admin</a>

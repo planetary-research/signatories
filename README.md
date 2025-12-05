@@ -16,6 +16,10 @@ avoided, but this helps to limit participants to the academic community. An
 ORCID account may sign at most once, and anonymous participants are assured to
 have an ORCID account.
 
+Administrators can assign users as editors.
+Editors can create campaigns, or modify, delete or close campaigns for which they
+are the owner.
+
 This code is based on the Planetary Research
 [Reviewer expertise database](https://review.planetary-research.org), which is
 in turn based on the [Seismica](https://seismica.library.mcgill.ca/) reviewer

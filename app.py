@@ -118,7 +118,8 @@ base_data = {
     "orcid_url": config.orcid_url,
     "authorization_uri_admin": api.get_login_url(
         scope="/authenticate",
-        redirect_uri=config.code_callback_URI + "-admin")
+        redirect_uri=config.code_callback_URI + "-admin"),
+    "redirect_alerts": None,
 }
 
 base_alerts = {
@@ -143,7 +144,7 @@ def favicon():
 def home():
     campaign_list = dict()
     # Create list of signatory campaigns
-    for row in Campaign.query.all():
+    for row in Campaign.query.filter_by(is_active=True).all():
         campaign_list[row.action_slug] = [row.action_name, row.action_short_description]
     data = {
         "campaigns": campaign_list,
@@ -185,6 +186,7 @@ def action(slug):
         "total_signatures": total_signatures,
         "anonymous_signatures": anonymous_signatures,
         "visible_signatures": visible_signatures,
+        "is_active": action_data.is_active,
     }
     base_data["user_URI_defined"] = "/" + slug + "/user"
     base_data["thank_you_URI_defined"] = "/" + slug + "/thank-you"
@@ -379,23 +381,23 @@ def admin():
                     # Try to get public name and email from orcid profile
                     orcid_name = get_orcid_name(api, user_id)
                     if orcid_name == '':
-                        alerts["warning"] = "The ORCID user name is marked as private and will not be shown"
+                        alerts["warning"] = "The ORCID user name is marked as private and will not be shown."
                     # Add new user
                     user = Admin(orcid=user_id, name=orcid_name, role_id=role_id)
                     db.session.add(user)
                     alerts["success"] = "New user added"
                 elif user is None and role_id == 1:
-                    alerts["warning"] = "User does not exist and can not be deleted"
+                    alerts["warning"] = "User does not exist and can not be deleted."
                 elif role_id > 1:
                     # Modify role ID
                     if user.role_id == role_id:
-                        alerts["success"] = "User role did not need to be modified"
+                        alerts["success"] = "User role did not need to be modified."
                     else:
                         user.role_id = role_id
-                        alerts["success"] = "User role modified"
+                        alerts["success"] = "User role modified."
                 else:
                     db.session.delete(user)
-                    alerts["success"] = "User deleted"
+                    alerts["success"] = "User deleted."
 
                 db.session.commit()
 
@@ -483,10 +485,16 @@ def create():
 
             if Campaign.query.filter_by(action_slug=action_slug).first() is not None:
                 alerts["danger"] = "Action slug already exists. Please choose another."
-
             else:
                 db.session.add(new_campaign)
                 db.session.commit()
+
+                base_data["redirect_alerts"] = {
+                    "success": "Campaign created.",
+                    "danger": None,
+                    "info": None,
+                    "warning": None,
+                }
                 return redirect(editor_URI)
 
     data = {
@@ -529,7 +537,11 @@ def editor():
         return redirect(insufficient_privileges_URI)
 
     # Default alerts (= None)
-    alerts = base_alerts.copy()
+    if base_data["redirect_alerts"] is None:
+        alerts = base_alerts.copy()
+    else:
+        alerts = base_data["redirect_alerts"]
+        base_data["redirect_alerts"] = None
 
     my_campaigns = dict()
     all_campaigns = dict()
@@ -609,6 +621,30 @@ def edit(slug):
             edit_campaign.allow_anonymous = allow_anonymous
 
             db.session.commit()
+
+            base_data["redirect_alerts"] = {
+                "success": "Campaign updated.",
+                "danger": None,
+                "info": None,
+                "warning": None,
+            }
+            return redirect(editor_URI)
+
+        if request.form.get("mode") == "close_activate":
+            if request.form["is_active"] == "Active":
+                is_active = True
+            else:
+                is_active = False
+
+            edit_campaign.is_active = is_active
+            db.session.commit()
+
+            base_data["redirect_alerts"] = {
+                "success": "Campaign updated.",
+                "danger": None,
+                "info": None,
+                "warning": None,
+            }
             return redirect(editor_URI)
 
         if request.form.get("mode") == "delete_campaign":
@@ -617,7 +653,7 @@ def edit(slug):
                 db.session.commit()
                 return redirect(editor_URI)
             else:
-                alerts["info"] = "Please confirm your response with \"Delete\""
+                alerts["info"] = "Please confirm your response with \"delete\"."
             db.session.commit()
             return redirect(editor_URI)
 
@@ -636,6 +672,7 @@ def edit(slug):
         "form_text": edit_campaign.action_text,
         "form_sort_alphabetical": edit_campaign.sort_alphabetical,
         "form_allow_anonymous": edit_campaign.allow_anonymous,
+        "is_active": edit_campaign.is_active,
     }
 
     return render_template("edit.html", **(base_data | data))
