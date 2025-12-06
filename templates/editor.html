@@ -42,14 +42,14 @@
 
 <div class="admin-top">
     <p>
-      <u>Click on a campaign to edit or delete.</u>
+      Click on a campaign name to edit or delete the campaign. Click on <i class="bi bi-eye-fill"></i> to view the campaign.
     </p>
     <h3>My campaigns</h3>
 
     <div class="campaign-list">
         {% for name, desc in my_campaigns.items() %}
         <p class="campaign-entries">
-            <a href="/{{ name }}/edit"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
+            <a href="/{{ name }}"><i class="bi bi-eye-fill" style="margin-right: 1em;"></i></a><a href="/{{ name }}/edit"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
         </p>
         {% endfor %}
     </div>
@@ -60,7 +60,7 @@
     <div class="campaign-list">
         {% for name, desc in all_campaigns.items() %}
         <p class="campaign-entries">
-            <a href="/{{ name }}/edit"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
+            <a href="/{{ name }}"><i class="bi bi-eye-fill" style="margin-right: 1em;"></i></a><a href="/{{ name }}/edit"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
         </p>
         {% endfor %}
     </div>

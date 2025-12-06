@@ -11,7 +11,7 @@ from waitress import serve
 import orcid
 
 import config
-from db_models import db, User, Admin, Campaign, UserRole
+from db_models import db, Signatory, Admin, Campaign, UserRole
 from utils import get_orcid_name, checksum
 
 
@@ -190,12 +190,12 @@ def action(slug):
     action_data = Campaign.query.filter_by(action_slug=slug).first()
 
     # Create list of signatories and counts
-    total_signatures = len(User.query.filter_by(campaign=slug).all())
-    anonymous_signatures = len(User.query.filter_by(anonymous=True, campaign=slug).all())
+    total_signatures = len(Signatory.query.filter_by(campaign=slug).all())
+    anonymous_signatures = len(Signatory.query.filter_by(anonymous=True, campaign=slug).all())
     if action_data.sort_alphabetical:
-        visible_signatures = User.query.filter_by(anonymous=False, campaign=slug).order_by(User.name.asc()).all()
+        visible_signatures = Signatory.query.filter_by(anonymous=False, campaign=slug).order_by(Signatory.name.asc()).all()
     else:
-        visible_signatures = User.query.filter_by(anonymous=False, campaign=slug).all()
+        visible_signatures = Signatory.query.filter_by(anonymous=False, campaign=slug).all()
 
     data = {
         "action_kind": action_data.action_kind,
@@ -292,7 +292,7 @@ def user(slug):
         else:
             role_id = result.role_id
 
-    user = User.query.filter_by(orcid=session["orcid"], campaign=slug).first()
+    user = Signatory.query.filter_by(orcid=session["orcid"], campaign=slug).first()
     action_data = Campaign.query.filter_by(action_slug=slug).first()
 
     # Default alerts
@@ -307,7 +307,7 @@ def user(slug):
 
             # The user is not yet in the database
             if user is None:
-                user = User(
+                user = Signatory(
                     orcid=session["orcid"], name=session["name"], campaign=slug)
                 db.session.add(user)
                 db.session.commit()
@@ -331,7 +331,7 @@ def user(slug):
             # Check the confirmation option
             if request.form["confirmation"].lower() == "yes":
                 # Delete user account
-                User.query.filter_by(orcid=session["orcid"], campaign=slug).delete()
+                Signatory.query.filter_by(orcid=session["orcid"], campaign=slug).delete()
                 # Commit to database
                 db.session.commit()
                 # Logout
@@ -423,7 +423,7 @@ def admin():
                     # Add new user
                     user = Admin(orcid=user_id, name=orcid_name, role_id=role_id)
                     db.session.add(user)
-                    alerts["success"] = "New user added"
+                    alerts["success"] = "New user added to admin database."
                 elif user is None and role_id == 1:
                     alerts["warning"] = "User does not exist and can not be deleted."
                 elif role_id > 1:
@@ -687,7 +687,9 @@ def edit(slug):
 
         if request.form.get("mode") == "delete_campaign":
             if request.form["confirmation"].lower() == "delete":
+                # delete campaign and all signatories
                 Campaign.query.filter_by(action_slug=slug).delete()
+                Signatory.query.filter_by(campaign=slug).delete()
                 db.session.commit()
                 return redirect(editor_URI)
             else:

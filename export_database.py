@@ -1,4 +1,4 @@
-from db_models import User, Admin, Campaign
+from db_models import Signatory, Admin, Campaign
 from app import app
 
 campaigns_file = "campaigns.txt"
@@ -9,7 +9,7 @@ with app.app_context():
 
     with open(signatories_file, "w") as f:
         f.write("ID, ORCID, Name, Affiliation, Campaign, Anonymous\n")
-        for user in User.query.all():
+        for user in Signatory.query.all():
             f.write(f"{user.id}, {user.orcid}, {user.name}, {user.affiliation}, {user.campaign}, {user.anonymous}\n")
 
     with open(admins_file, "w") as f:

@@ -4,16 +4,16 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
-class User(db.Model):
+class Signatory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     orcid = db.Column(db.String(length=19), nullable=False)
     name = db.Column(db.String, nullable=False)
-    campaign = db.Column(db.String, db.ForeignKey("campaign.action_slug", ondelete='CASCADE'), nullable=False)
+    campaign = db.Column(db.String, db.ForeignKey("campaign.action_slug"), nullable=False)
     affiliation = db.Column(db.String)
     anonymous = db.Column(db.Boolean, nullable=False, default=False)
 
     def __repr__(self):
-        return "<User %s>" % self.orcid
+        return "<Signatory %s>" % self.orcid
 
 
 class Admin(db.Model):
