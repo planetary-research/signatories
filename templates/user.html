@@ -3,6 +3,11 @@
 {{ super() }}
 {% endblock %}
 {% block title %}Sign{% endblock %}
+
+{% block nav %}
+  {% include "nav-admin.html" %}
+{% endblock %}
+
 {% block alert %}
 
 {% if alert.info is not none %}
@@ -87,14 +92,14 @@
 <div class="remove">
     <h3>Remove my signature</h3>
     <p>
-    If you wish to remove your signature and delete all your data related to this {{ action_kind | lower }}, type "yes" in the input box below.
+    If you would like to remove your signature and delete all your data related to this {{ action_kind | lower }}, type "delete" in the input box below.
     </p>
 
     <form action="{{ user_uri_defined }}" method="POST" id="delete_account">
         <!-- Column 1: input box -->
         <div class="row col-md-8">
             <input type="hidden" name="mode" value="delete">
-            <input type="text" class="form-control" name="confirmation" placeholder="Remove signature?">
+            <input type="text" class="form-control" name="confirmation" placeholder="">
         </div>
         <!-- Column 2: submit button -->
         <div class="col-md-2">

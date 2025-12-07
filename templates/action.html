@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% block title %}{{ action_kind }}{% endblock %}
+
+{% block nav %}
+  {% include "nav-admin.html" %}
+{% endblock %}
+
 {% block content %}
     <!-- Introduction -->
     <div class="extra-margin">
@@ -24,12 +29,20 @@
     </div>
     {% endif %}
 
-    <div class="toggle-signatories">
-        <p>Total signatories: {{ total_signatures }}</p>
-        <p><a class="toggle-text" data-toggle="collapse" aria-expanded="false" data-target="#show-signatories" aria-controls="show-signatories"><i class="bi bi-arrows-expand" style="font-size: 0.9em; padding-right: 0.9em;"></i>show / hide</a></p>
+    <div>
+      <p>
+        Created: {{ action_created.date() }}
+        {% if action_closed is not none %}
+        <br />Closed: {{ action_closed.date() }}
+        {% endif %}
+        <p>
     </div>
 
-    <div class="collapse show user-list" id="show-signatories">
+    <div class="toggle-signatories">
+        <p>Total signatories: {{ total_signatures }}</p>
+    </div>
+
+    <div class="user-list" id="show-signatories">
         {% for result in visible_signatures %}
         <div class="row">
             <div class="col-md-3">

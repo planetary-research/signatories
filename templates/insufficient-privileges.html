@@ -2,18 +2,21 @@
 
 {% block title %}Insufficient privileges{% endblock %}
 
+{% block nav %}
+  {% include "nav-admin.html" %}
+{% endblock %}
+
 {% block content %}
 
-<!-- Introduction -->
 <div class="text-no-header main-text">
     <p>
-    You do not have sufficient privileges to access the adminisration settings.
+    You do not have sufficient privileges to access the administration settings.
     </p>
     <p>
       If you would like to create a campaign, please provide the
       <a href="mailto:{{ contact_email }}">site administrator</a> with your
       ORCID iD. After you are added to the administrator
-      database, you will be able to create campaigns and then edit or delete
+      database, you will be able to create campaigns and modify, delete or close
       those for which you are the owner.
     </p>
     <div class="return-to-signatories">

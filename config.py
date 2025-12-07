@@ -41,7 +41,7 @@ db_URI = "sqlite:////" + dbpath
 
 # Default parameters for the home page
 action_name = "Signatories"
-action_short_description = "Say yes to open source signing!"
+action_short_description = "Open source signing of statements and petitions"
 action_kind = "Introduction"
 action_path = "/"
 favicon = os.getenv("favicon")

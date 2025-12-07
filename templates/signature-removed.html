@@ -2,9 +2,12 @@
 
 {% block title %}Signature removed{% endblock %}
 
+{% block nav %}
+  {% include "nav-admin.html" %}
+{% endblock %}
+
 {% block content %}
 
-<!-- Introduction -->
 <div class="text-no-header main-text">
     <p>
     Your signature has been removed from the list of signatories.
@@ -13,6 +16,5 @@
         <a class="btn btn-primary btn-md" href="{{ action_path }}">View the list of signatories</a>
     </div>
 </div>
-
 
 {% endblock %}

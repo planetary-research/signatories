@@ -3,7 +3,21 @@
 {{ super() }}
 {% endblock %}
 {% block title %}Create campaign{% endblock %}
+
+{% block nav %}
+  {% include "nav-admin.html" %}
+{% endblock %}
+
 {% block alert %}
+
+{% if alert.info is not none %}
+<div class="alert alert-info alert-dismissable" role="alert">
+    {{ alert.info }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
 
 {% if alert.success is not none %}
 <div class="alert alert-success alert-dismissable" role="alert">
@@ -35,13 +49,14 @@
 {% endblock %}
 {% block content %}
 
-{% include "nav-admin.html" %}
-
 <div class="edit-top">
     <h3>Edit campaign</h3>
     <p>
-      To edit this campaign, fill in the following fields and then click on the button "Update".
+      To edit this campaign, fill in the fields below and then click on the button "Update".
     </p>
+    <p><br />Owner: <a class="external" href="https://orcid.org/{{ owner_orcid }}">{{ owner_name }}</a><br />
+     Created: {{ creation_date }}
+   </p>
 
     <form action="{{ edit_uri }}" method="POST" id="edit_campaign">
         <input type="hidden" name="mode" value="edit_campaign">
@@ -67,7 +82,7 @@
         </div>
 
         <div class="form-choice-margin">
-            <p>Sort signatories alphabetially:</p>
+            <p>Sort signatories alphabetically:</p>
             <input type="radio" id="no-sort" name="sort_alphabetical" value="False" required {% if form_sort_alphabetical is false %}checked{% endif %}>
             <label for="no-sort">False</label><br>
             <input type="radio" id="sort" name="sort_alphabetical" value="True" {% if form_sort_alphabetical is true %}checked{% endif %}>
@@ -96,8 +111,8 @@
     <h3>Activate or close campaign</h3>
     <p>
       When a campaign is closed, no further users will be able to sign it.
-      Closed campaigs will be accessible by their previous URL, but they will
-      not appears in the list of active campaings on the website home page.
+      Closed campaigns will remain accessible by their previous URLs, but they will
+      not appear in the list of active campaigns on the website home page.
     </p>
 
     <form action="{{ edit_uri }}" method="POST" id="close_activate">
@@ -124,7 +139,7 @@
 <div class="edit-bottom">
     <h3>Delete campaign</h3>
     <p>
-    To delete this campaign, type "delete" in the box below.
+    To delete this campaign, type "delete" in the box below:
     </p>
 
     <form action="{{ edit_uri }}" method="POST" id="delete_campaign">

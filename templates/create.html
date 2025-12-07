@@ -3,7 +3,21 @@
 {{ super() }}
 {% endblock %}
 {% block title %}Create campaign{% endblock %}
+
+{% block nav %}
+  {% include "nav-admin.html" %}
+{% endblock %}
+
 {% block alert %}
+
+{% if alert.info is not none %}
+<div class="alert alert-info alert-dismissable" role="alert">
+    {{ alert.info }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
 
 {% if alert.success is not none %}
 <div class="alert alert-success alert-dismissable" role="alert">
@@ -34,8 +48,6 @@
 
 {% endblock %}
 {% block content %}
-
-{% include "nav-admin.html" %}
 
 <div class="admin-top">
     <h3>Create a new campaign</h3>
@@ -72,7 +84,7 @@
         </div>
 
         <div class="form-choice-margin">
-            <p>Sort signatories alphabetially:</p>
+            <p>Sort signatories alphabetically:</p>
             <input type="radio" id="no-sort" name="sort_alphabetical" value="False" required {% if form_sort_alphabetical is false %}checked{% endif %}>
             <label for="no-sort">False</label><br>
             <input type="radio" id="sort" name="sort_alphabetical" value="True" {% if form_sort_alphabetical is true %}checked{% endif %}>

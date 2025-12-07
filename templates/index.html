@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Signatories{% endblock %}
+
+{% block nav %}
+  {% include "nav-admin.html" %}
+{% endblock %}
+
 {% block content %}
     <!-- Introduction -->
     <div class="extra-margin">
@@ -29,7 +34,7 @@
       If you would like to create a campaign, please provide the
       <a href="mailto:{{ contact_email }}">site administrator</a> with your
       ORCID iD. They will give you access to editor controls that will allow you
-      to create campaigns, or to modify, delete or close campaigns for which you
+      to create campaings and modify, delete or close those campaigns for which you
       are the owner.
       </p>
     </div>
@@ -61,6 +66,9 @@
         </p>
         {% endif %}
         {% endfor %}
+        {% if campaigns.items()|length == 2 %}
+        <p class="campaign-entries">None</p>
+        {% endif %}
     </div>
 
 

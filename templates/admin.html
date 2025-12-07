@@ -3,7 +3,21 @@
 {{ super() }}
 {% endblock %}
 {% block title %}Admin page{% endblock %}
+
+{% block nav %}
+  {% include "nav-admin.html" %}
+{% endblock %}
+
 {% block alert %}
+
+{% if alert.info is not none %}
+<div class="alert alert-info alert-dismissable" role="alert">
+    {{ alert.info }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
 
 {% if alert.success is not none %}
 <div class="alert alert-success alert-dismissable" role="alert">
@@ -35,13 +49,11 @@
 {% endblock %}
 {% block content %}
 
-{% include "nav-admin.html" %}
-
 <div class="admin-top">
     <h3>Add/delete users or update permissions</h3>
     <p>
-      Update or delete a user's access permissions based on their ORCID iD.
-      If the ORCID iD does not exist in the database, a new user will be created.
+      Update or delete a user's access permissions using their ORCID iD.
+      If the ORCID iD does not exist in the admin database, a new user will be created.
     </p>
 
     <form action="{{ admin_uri }}" method="POST", id="modify_user">

@@ -1,7 +1,7 @@
 # Petition parameters
 ACTION_KIND = "Petition"  # "Petition", "Declaration", "Letter of Support", etc.
 ACTION_NAME = "Demo Petition (no anonymous signatures)"
-ACTION_SHORT_DESCRIPTION = "Sign this demo petition!"
+ACTION_SHORT_DESCRIPTION = "I like demos"
 ACTION_TEXT = '''
 <p>
 This is a demo petition that demonstrates the functionality of the
@@ -10,7 +10,7 @@ Signatories web app. In this campaign, anonymous signatures are not allowed.
 <p>
 To sign this demo petition, click on the link below. This will open a login
 screen with <a href="https://orcid.org">ORCID</a>, and after you sign in you
-will be redirected back to this site. At this point, you will be given the
+will be redirected back to this site. At that point, you will be given the
 option to have your name appear in the signatory list and optionally to add your
 professional affiliation. After clicking on "Sign" you will be redicted to a
 thank you page where you can consult the updated list of signatories. If you

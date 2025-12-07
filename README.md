@@ -17,7 +17,7 @@ ORCID account may sign at most once, and anonymous participants are assured to
 have an ORCID account.
 
 Administrators can assign users as editors.
-Editors can create campaigns, or modify, delete or close campaigns for which they
+Editors can create campaigns, or modify, delete or close those for which they
 are the owner.
 
 This code is based on the Planetary Research
