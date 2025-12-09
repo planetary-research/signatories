@@ -1,5 +1,8 @@
 # About
 
+[![DOI](https://zenodo.org/badge/1102002001.svg)](https://zenodo.org/badge/latestdoi/1102002001)
+[![SWH](https://archive.softwareheritage.org/badge/origin/https://github.com/planetary-research/signatories//)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/planetary-research/signatories)
+
 **Signatories** is a simple web-based program that allows a person to sign
 an online petition, a declaration, a statement, or any form of communication
 that requires community support. Designed for academics, signing is accomplished
