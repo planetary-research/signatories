@@ -5,7 +5,7 @@ version: "v1.0"
 license: "BSD-3-Clause"
 type: software
 doi: 10.5281/zenodo.17868387
-date-released: 20125-12-09
+date-released: 2025-12-09
 url: "https://signatories.planetary-research.org"
 authors:
   - given-names: Mark
