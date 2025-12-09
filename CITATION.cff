@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Planetary Research Signatories"
+version: "v1.0"
+license: "BSD-3-Clause"
+type: software
+doi: 10.5281/zenodo.17868387
+date-released: 20125-12-09
+url: "https://signatories.planetary-research.org"
+authors:
+  - given-names: Mark
+    family-names: Wieczorek
+    affiliation: Institut de physique du globe de Paris (IPGP)
+    orcid: "https://orcid.org/0000-0001-7007-4222"
+  - given-names: Benoît
+    family-names: Seignovert
+    affiliation: Observatoire des Sciences de l'Univers Nantes Atlantique (Osuna)
+    orcid: "https://orcid.org/0000-0001-6533-275X"
+keywords:
+  - planetary research
+  - planetary science
