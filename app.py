@@ -33,7 +33,7 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = config.db_URI
 app.config["SECRET_KEY"] = config.cookie_secret
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=7)
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=2)
 app.config.from_object(__name__)
 
 """ Database """
