@@ -28,6 +28,10 @@ if orcid_member == 1:
     orcid_member = True
 else:
     orcid_member = False
+if os.getenv("everyone_is_editor").lower() == "true":
+    everyone_is_editor = True
+else:
+    everyone_is_editor = False
 
 
 # Database
@@ -37,6 +41,10 @@ dbdir = os.path.join(basedir, "db")
 dbname = "signatories.db"
 dbpath = os.path.abspath(os.path.join(dbdir, dbname))
 db_URI = "sqlite:////" + dbpath
+if os.getenv("show_examples").lower() == "true":
+    show_examples = True
+else:
+    show_examples = False
 
 
 # Default parameters for the home page
