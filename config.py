@@ -47,12 +47,12 @@ else:
     show_examples = False
 
 
-# Default parameters for the home page
-action_name = "Signatories"
-action_short_description = "Open source signing of statements and petitions"
-action_kind = "Introduction"
-action_path = "/"
+# Default parameters for the header and home page
 favicon = os.getenv("favicon")
+action_name = os.getenv("action_name")
+action_short_description = os.getenv("action_short_description")
+action_path = os.getenv("action_path")
+action_kind = os.getenv("action_kind")
 if os.getenv("show_examples").lower() == "true":
     show_examples = True
 else:
