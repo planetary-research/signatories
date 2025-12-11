@@ -18,7 +18,7 @@ else:
     orcid_url = "https://sandbox.orcid.org/"
     signatories_url = '/'
 
-# Load secrets from .env file
+# Load ORCID and admin parameters from .env file
 cookie_secret = os.getenv("cookie_secret")
 client_ID = os.getenv("client_ID")
 client_secret = os.getenv("client_secret")
@@ -28,6 +28,10 @@ if orcid_member == 1:
     orcid_member = True
 else:
     orcid_member = False
+if os.getenv("everyone_is_editor").lower() == "true":
+    everyone_is_editor = True
+else:
+    everyone_is_editor = False
 
 
 # Database
@@ -37,17 +41,29 @@ dbdir = os.path.join(basedir, "db")
 dbname = "signatories.db"
 dbpath = os.path.abspath(os.path.join(dbdir, dbname))
 db_URI = "sqlite:////" + dbpath
+if os.getenv("show_examples").lower() == "true":
+    show_examples = True
+else:
+    show_examples = False
 
 
-# Default parameters for the home page
-action_name = "Signatories"
-action_short_description = "Open source signing of statements and petitions"
-action_kind = "Introduction"
-action_path = "/"
+# Default parameters for the header and home page
 favicon = os.getenv("favicon")
+action_name = os.getenv("action_name")
+action_short_description = os.getenv("action_short_description")
+action_path = os.getenv("action_path")
+action_kind = os.getenv("action_kind")
+if os.getenv("show_examples").lower() == "true":
+    show_examples = True
+else:
+    show_examples = False
+
 
 # Default parameters for the footer
 footer_url_name = os.getenv("footer_url_name")
 footer_url = os.getenv("footer_url")
-thank_prc = os.getenv("thank_prc")
+if os.getenv("thank_prc").lower() == "true":
+    thank_prc = True
+else:
+    thank_prc = False
 contact_email = os.getenv("contact_email")
