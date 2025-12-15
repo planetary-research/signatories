@@ -68,12 +68,12 @@
 
         <div>
             <p class="create-item-middle">Action name</p>
-            <input type="text" class="form-control" name="action_name" placeholder="" value="{{ form_name }}">
+            <input type="text" class="form-control" name="action_name" placeholder="" value="{{ form_name | safe }}">
         </div>
 
         <div>
             <p class="create-item-middle">Short description</p>
-            <input type="text" class="form-control" name="action_short_description" placeholder="" value="{{ form_short_description }}">
+            <input type="text" class="form-control" name="action_short_description" placeholder="" value="{{ form_short_description | safe }}">
         </div>
 
         <div>

@@ -24,8 +24,8 @@
     <header>
         <div class="header">
             <div class="container">
-                <h1><a href={{ action_path }}>{{ action_name }}</a></h1>
-                <h3 class="short">{{ action_short_description }}</h3>
+                <h1><a href={{ action_path }}>{{ action_name | safe }}</a></h1>
+                <h3 class="short">{{ action_short_description | safe }}</h3>
            </div>
         </div>
     </header>

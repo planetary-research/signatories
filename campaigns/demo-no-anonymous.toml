@@ -1,7 +1,7 @@
 # Petition parameters
 ACTION_KIND = "Petition"  # "Petition", "Declaration", "Letter of Support", etc.
-ACTION_NAME = "Demo Petition (no anonymous signatures)"
-ACTION_SHORT_DESCRIPTION = "I like demos"
+ACTION_NAME = "Example Petition (no anonymous signatures)"
+ACTION_SHORT_DESCRIPTION = "Example petition with no anonymous signatories"
 ACTION_TEXT = '''
 <p>
 This is a demo petition that demonstrates the functionality of the
