@@ -58,7 +58,7 @@
     <div class="campaign-list">
         {% for name, desc in my_campaigns.items() %}
         <p class="campaign-entries">
-            <a href="/{{ name }}"><i class="bi {% if desc[2] %}bi-eye{% else %}bi-eye-slash{% endif %}" style="margin-right: 1.2em;"></i></a><a href="/{{ name }}/edit"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
+            <a href="/{{ name }}"><i class="bi {% if desc[2] %}bi-eye{% else %}bi-eye-slash{% endif %}" style="margin-right: 1.2em;"></i></a><a href="/{{ name }}/edit"><span style="font-weight: bold">{{ desc[0] | safe }}</span></a> — {{ desc[1] | safe }}
         </p>
         {% endfor %}
         {% if my_campaigns.items()|length == 0 %}
@@ -72,7 +72,7 @@
     <div class="campaign-list">
         {% for name, desc in all_campaigns.items() %}
         <p class="campaign-entries">
-            <a href="/{{ name }}"><i class="bi {% if desc[2] %}bi-eye{% else %}bi-eye-slash{% endif %}" style="margin-right: 1.2em;"></i></a><a href="/{{ name }}/edit"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
+            <a href="/{{ name }}"><i class="bi {% if desc[2] %}bi-eye{% else %}bi-eye-slash{% endif %}" style="margin-right: 1.2em;"></i></a><a href="/{{ name }}/edit"><span style="font-weight: bold">{{ desc[0] | safe }}</span></a> — {{ desc[1] | safe }}
         </p>
         {% endfor %}
     </div>

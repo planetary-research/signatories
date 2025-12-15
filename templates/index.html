@@ -48,7 +48,7 @@
         {% for name, desc in campaigns.items() %}
         {% if name == "demo" or name == "demo-no-anonymous" %}
         <p class="campaign-entries">
-            <a href="/{{ name }}"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
+            <a href="/{{ name }}"><span style="font-weight: bold">{{ desc[0] | safe }}</span></a> — {{ desc[1] | safe }}
         </p>
         {% endif %}
         {% endfor %}
@@ -63,7 +63,7 @@
         {% for name, desc in campaigns.items() %}
         {% if name != "demo" and name != "demo-no-anonymous" %}
         <p class="campaign-entries">
-            <a href="/{{ name }}"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
+            <a href="/{{ name }}"><span style="font-weight: bold">{{ desc[0] | safe }}</span></a> — {{ desc[1] | safe }}
         </p>
         {% endif %}
         {% endfor %}
