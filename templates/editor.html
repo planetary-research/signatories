@@ -51,14 +51,14 @@
 
 <div class="admin-top">
     <p>
-      To edit or delete a campaign, click on the campaign name. To view a campaign, click on <i class="bi bi-eye"></i> (open campaigns) or <i class="bi bi-eye-fill"></i> (closed campaigns).
+      To edit or delete a campaign, click on the campaign name. To view a campaign, click on <i class="bi bi-eye"></i> (open campaigns) or <i class="bi bi-eye-slash"></i> (closed campaigns).
     </p>
     <h3>My campaigns</h3>
 
     <div class="campaign-list">
         {% for name, desc in my_campaigns.items() %}
         <p class="campaign-entries">
-            <a href="/{{ name }}"><i class="bi {% if desc[2] %}bi-eye{% else %}bi-eye-fill{% endif %}" style="margin-right: 1.2em;"></i></a><a href="/{{ name }}/edit"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
+            <a href="/{{ name }}"><i class="bi {% if desc[2] %}bi-eye{% else %}bi-eye-slash{% endif %}" style="margin-right: 1.2em;"></i></a><a href="/{{ name }}/edit"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
         </p>
         {% endfor %}
         {% if my_campaigns.items()|length == 0 %}
@@ -72,7 +72,7 @@
     <div class="campaign-list">
         {% for name, desc in all_campaigns.items() %}
         <p class="campaign-entries">
-            <a href="/{{ name }}"><i class="bi {% if desc[2] %}bi-eye{% else %}bi-eye-fill{% endif %}" style="margin-right: 1.2em;"></i></a><a href="/{{ name }}/edit"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
+            <a href="/{{ name }}"><i class="bi {% if desc[2] %}bi-eye{% else %}bi-eye-slash{% endif %}" style="margin-right: 1.2em;"></i></a><a href="/{{ name }}/edit"><span style="font-weight: bold">{{ desc[0] }}</span></a> — {{ desc[1] }}
         </p>
         {% endfor %}
     </div>

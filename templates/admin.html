@@ -50,17 +50,17 @@
 {% block content %}
 
 <div class="admin-top">
-    <h3>Add/delete users or update permissions</h3>
+    <h3>Add/remove administrators or update permissions</h3>
     <p>
-      Update or delete a user's access permissions using their ORCID iD.
+      Update or remove a user's access permissions using their ORCID iD.
       If the ORCID iD does not exist in the admin database, a new user will be created.
     </p>
 
     <form action="{{ admin_uri }}" method="POST", id="modify_user">
       <div class="row col-md-2">
           <select name="user_role" class="btn">
-          {% for role in user_roles %}
-          <option value="{{ role.role_id }}"> {{ role.name }}</option>
+          {% for option in modify_options %}
+          <option value="{{ option[0] }}"> {{ option[1] }}</option>
           {% endfor %}
           </select>
       </div>
@@ -76,7 +76,7 @@
 
 <hr />
 
-<div class="admin-middle">
+<div class="admin-middle-1">
     <h3>Backup database</h3>
     <p>
         Download a copy of the complete database.
@@ -91,8 +91,35 @@
 
 <hr />
 
+<div class="admin-middle">
+    <h3>Delete user</h3>
+    <p>
+        Delete all signatures associated with a given ORCID.
+    </p>
+
+    <form action="{{ admin_uri }}" method="POST", id="delete_ban_user">
+      <div class="row col-md-2">
+          <select name="user_option" class="btn">
+          {% for option in delete_options %}
+          <option value="{{ option[0] }}"> {{ option[1] }}</option>
+          {% endfor %}
+          </select>
+      </div>
+      <div class="col-md-4">
+          <input type="hidden" name="mode" value="delete_ban_user">
+          <input type="text" class="form-control" name="user_id" placeholder="User ORCID iD">
+      </div>
+      <div class="col-md-6">
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+
+</div>
+
+<hr />
+
 <div class="admin-bottom">
-    <h3>Database</h3>
+    <h3>Admin database</h3>
     <button data-toggle="collapse" aria-expanded="false" data-target="#show-admins" aria-controls="show-admins" class="btn btn-primary btn-sm">Show admins: {{ admins|length }}</button>
     <button data-toggle="collapse" aria-expanded="false" data-target="#show-editors" aria-controls="show-editors" class="btn btn-primary btn-sm">Show editors: {{ editors|length }}</button>
 
