@@ -89,6 +89,7 @@ user_URI = "/<slug>/user"
 thank_you_URI = "/<slug>/thank-you"
 signature_removed_URI = "/<slug>/signature-removed"
 privacy_URI = "/privacy"
+faq_URI = "/faq"
 action_URI = "/<slug>"
 admin_URI = "/admin"
 insufficient_privileges_URI = "/insufficient-privileges"
@@ -102,6 +103,7 @@ base_data = {
     "logout_uri": logout_URI,
     "user_uri": user_URI,
     "privacy_uri": privacy_URI,
+    "faq_uri": faq_URI,
     "thank_you_uri": thank_you_URI,
     "signature_removed_URI": signature_removed_URI,
     "admin_uri": admin_URI,
@@ -308,6 +310,30 @@ def privacy():
         "role_id": role_id,
     }
     return render_template("privacy.html", **(base_data | data))
+
+
+@app.route(faq_URI)
+def faq():
+    # Show the faq page
+    if session.get("orcid") is None:
+        role_id = 0
+    elif base_data["everyone_is_editor"] is True:
+        user = Admin.query.filter_by(orcid=session["orcid"]).first()
+        if user is not None:
+            role_id = user.role_id
+        else:
+            role_id = 2
+    else:
+        user = Admin.query.filter_by(orcid=session["orcid"]).first()
+        if user is None:
+            role_id = 0
+        else:
+            role_id = user.role_id
+
+    data = {
+        "role_id": role_id,
+    }
+    return render_template("faq.html", **(base_data | data))
 
 
 @app.route(user_URI, methods=["POST", "GET"])

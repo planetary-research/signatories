@@ -11,16 +11,26 @@
 <div class="main-text">
     <h2>Privacy policy</h2>
     <p>
-        This application will store a user's ORCID iD, their full name, and optionally,
-        their professional affiliation. Users can choose to delete all personal information
-        at any time.
+        When a campaign is signed by a user, this application will store the
+        signer's ORCID, full name, and professional affiliation (if provided).
+        For each signed campaign, the application will also store the campaign
+        name, and whether the user's signature is public or anonymous.
     </p>
     <p>
-        When a user logs in, a session is created and stored in a cookie.
-        This cookie is used only to identify the user and to enable the basic
-        website functionalities. This cookie will be automatically removed when
-        the user logs out, or after a predefined period of time.
+        When an action is siged publically, all information that is stored in the
+        signatory database is available on the public facing website. No other
+        information (such as IP addresses) is stored. Anonymous signatories are stored
+        in the same database as public signatories. The only people who can
+        access this databse are the system administrators, and they will never
+        share this database with others.
     </p>
+    <p>
+        When a user signs in via ORCID, a cookie will be stored on their
+        computer that will be used to identify the user and to enable the
+        basic website functionalities. This cookie will expire after two hours
+        or when the user logs out.
+    </p>
+
 </div>
 
 {% endblock %}
