@@ -17,7 +17,7 @@
 
     {%if is_active is true %}
     <div class="orcid-box">
-      <p><a class="btn btn-default btn-lg" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind }}</a> <span class="orcid-text">To participate, authenticate with your <a href="https://orcid.org" target="_blank" class="external">ORCID</a> account</span
+      <p><a class="btn btn-default btn-lg" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind }}</a> <span class="orcid-text">To participate, authenticate with your <a href="https://orcid.org" target="_blank" class="external">ORCID</a> account</span>
       </p>
     </div>
     {% else %}
@@ -35,7 +35,7 @@
         {% if action_closed is not none %}
         <br />Closed: {{ action_closed.date() }}
         {% endif %}
-        <p>
+      </p>
     </div>
 
     <div class="toggle-signatories">
