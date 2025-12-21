@@ -603,9 +603,10 @@ def create():
         action_name="",
         action_short_description="",
         action_text="",
-        sort_alphabetical=None,
-        allow_anonymous=None,
+        sort_alphabetical=False,
+        allow_anonymous=True,
         owner_orcid=None,
+        is_active=True,
     )
     # If an update is pushed
     if request.method == "POST":
@@ -618,6 +619,12 @@ def create():
                 allow_anonymous = True
             else:
                 allow_anonymous = False
+            if request.form["activate_campaign"] == 'True':
+                is_active = True
+                closed_date = None
+            else:
+                is_active = False
+                closed_date = datetime.datetime.now(datetime.UTC)
 
             action_slug = escape(request.form["action_slug"])
             new_campaign = Campaign(
@@ -630,6 +637,8 @@ def create():
                 allow_anonymous=allow_anonymous,
                 owner_orcid=session["orcid"],
                 owner_name=session["name"],
+                is_active=is_active,
+                closed_date=closed_date,
             )
 
             if Campaign.query.filter_by(action_slug=action_slug).first() is not None:
@@ -662,6 +671,7 @@ def create():
         "form_text": new_campaign.action_text,
         "form_sort_alphabetical": new_campaign.sort_alphabetical,
         "form_allow_anonymous": new_campaign.allow_anonymous,
+        "form_activate_campaign": new_campaign.is_active,
     }
 
     return render_template("create.html", **(base_data | data))

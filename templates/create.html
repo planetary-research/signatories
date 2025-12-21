@@ -59,17 +59,17 @@
         <input type="hidden" name="mode" value="create_campaign">
 
         <div>
-            <p class="create-item-top">Action kind (Petition, Statement, Declaration, Letter of support, etc.)</p>
+            <p class="create-item-top">Action kind (petition, statement, declaration, letter of support, open letter). Used in the button "Sign the ...".</p>
             <input type="text" class="form-control" name="action_kind" placeholder="" value="{{ form_kind }}">
         </div>
 
         <div>
-            <p class="create-item-middle">Action name</p>
+            <p class="create-item-middle">Action title</p>
             <input type="text" class="form-control" name="action_name" placeholder="" value="{{ form_name }}">
         </div>
 
         <div>
-            <p class="create-item-middle">Short description</p>
+            <p class="create-item-middle">Action subtitle</p>
             <input type="text" class="form-control" name="action_short_description" placeholder="" value="{{ form_short_description }}">
         </div>
 
@@ -84,7 +84,7 @@
         </div>
 
         <div class="form-choice-margin">
-            <p>Sort signatories alphabetically:</p>
+            <p>Sort signatories alphabetically (by first name). If False, signatories will be ordered chronologically.</p>
             <input type="radio" id="no-sort" name="sort_alphabetical" value="False" required {% if form_sort_alphabetical is false %}checked{% endif %}>
             <label for="no-sort">False</label><br>
             <input type="radio" id="sort" name="sort_alphabetical" value="True" {% if form_sort_alphabetical is true %}checked{% endif %}>
@@ -92,10 +92,18 @@
         </div>
 
         <div class="form-choice-margin">
-            <p>Allow anonymous signatories:</p>
+            <p>Allow anonymous signatories. If True, the number of anonymous signatories will be tabulated at the bottom of the list.</p>
             <input type="radio" id="no-sort" name="allow_anonymous" value="False" required {% if form_allow_anonymous is false %}checked{% endif %}>
             <label for="no-sort">False</label><br>
             <input type="radio" id="sort" name="allow_anonymous" value="True" {% if form_allow_anonymous is true %}checked{% endif %}>
+            <label for="sort">True</label><br>
+        </div>
+
+        <div class="form-choice-margin">
+            <p>Activate campaign on creation. If False, it will be necessary to activate the campaign later using the edit button.</p>
+            <input type="radio" id="no-sort" name="activate_campaign" value="False" required {% if form_activate_campaign is false %}checked{% endif %}>
+            <label for="no-sort">False</label><br>
+            <input type="radio" id="sort" name="activate_campaign" value="True" {% if form_activate_campaign is true %}checked{% endif %}>
             <label for="sort">True</label><br>
         </div>
 
