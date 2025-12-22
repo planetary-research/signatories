@@ -374,11 +374,7 @@ def user(slug):
                 db.session.add(user)
                 db.session.commit()
 
-            # If the affiliation is empty, set to None in the database
-            if affiliation == "":
-                user.affiliation = None
-            else:
-                user.affiliation = affiliation
+            user.affiliation = affiliation
             if anonymous == "True":
                 user.anonymous = True
             else:
@@ -405,8 +401,6 @@ def user(slug):
         in_database = True
         affiliation = user.affiliation
         anonymous = user.anonymous
-        if affiliation is None:
-            affiliation = ''
         if user.name == '':
             alerts["danger"] = "Your ORCID user name is marked as private and will not be shown. " \
                 "Please change the visibility of your name in your ORCID account."
