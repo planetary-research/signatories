@@ -459,6 +459,8 @@ def admin():
     delete_options = [[1, "Delete"]]  # [2, "Ban"]
     alerts = base_alerts.copy()
 
+    orphans = len(Campaign.query.filter_by(action_slug='').all())
+
     # If an update is pushed
     if request.method == "POST":
 
@@ -542,6 +544,13 @@ def admin():
         if request.form.get("mode") == "backup_db":
             return send_file(config.dbpath, as_attachment=True)
 
+        # Delete database orphans
+        if request.form.get("mode") == "delete_orphans":
+            Campaign.query.filter_by(action_slug='').delete()
+            db.session.commit()
+            alerts["success"] = "Deleted orphan campaigns"
+            orphans = 0
+
     # Create a list of administrators and editors and count all users
     admins = Admin.query.filter_by(role_id=3).order_by(Admin.name.asc()).all()
     editors = Admin.query.filter_by(role_id=2).order_by(Admin.name.asc()).all()
@@ -559,6 +568,7 @@ def admin():
         "alert": alerts,
         "editors": editors,
         "admins": admins,
+        "orphans": orphans,
         "page": 'admin'
     }
 
@@ -643,6 +653,10 @@ def create():
 
             if Campaign.query.filter_by(action_slug=action_slug).first() is not None:
                 alerts["danger"] = "Action slug already exists. Please choose another."
+            elif action_slug == '':
+                alerts["danger"] = "Action slug cannot be an empty string."
+            elif ' ' in action_slug:
+                alerts["danger"] = "Action slug cannot contain spaces."
             else:
                 db.session.add(new_campaign)
                 db.session.commit()

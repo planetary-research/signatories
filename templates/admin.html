@@ -83,7 +83,6 @@
     </p>
 
     <form action="{{ admin_uri }}" method="POST", id="backup_db">
-        <!-- <input type="hidden" name="mode" value="backup_db"> -->
         <button type="submit" class="btn btn-success" name="mode" value="backup_db">Backup DB</button>
     </form>
 
@@ -115,6 +114,25 @@
     </form>
 
 </div>
+
+{% if orphans > 0 %}
+  <hr />
+
+  <div class="admin-middle-1">
+      <h3>Database orphans</h3>
+      <p>
+          The database has campaigns where the action slug is an empty string.
+      </p>
+
+      <form action="{{ admin_uri }}" method="POST", id="delete_orphans">
+        {% if orphans == 1 %}
+          <button type="submit" class="btn btn-danger" name="mode" value="delete_orphans">Delete {{ orphans }} orphan</button>
+        {% else %}
+          <button type="submit" class="btn btn-danger" name="mode" value="delete_orphans">Delete {{ orphans }} orphans</button>
+        {% endif %}
+      </form>
+    </div>
+{% endif %}
 
 <hr />
 
