@@ -7,6 +7,7 @@ from flask import Flask
 from flask import request, session
 from flask import redirect, render_template
 from flask import send_from_directory, send_file
+from flask_ckeditor import CKEditor
 from markupsafe import escape
 from waitress import serve
 import orcid
@@ -29,6 +30,7 @@ else:
 
 """ App configuration """
 app = Flask(__name__)
+ckeditor = CKEditor(app)
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = config.db_URI

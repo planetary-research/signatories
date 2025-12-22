@@ -47,6 +47,7 @@
 {% endif %}
 
 {% endblock %}
+
 {% block content %}
 
 <div class="admin-top">
@@ -56,11 +57,11 @@
       If the ORCID iD does not exist in the admin database, a new user will be created.
     </p>
 
-    <form action="{{ admin_uri }}" method="POST", id="modify_user">
+    <form action="{{ admin_uri }}" method="POST" id="modify_user">
       <div class="row col-md-2">
           <select name="user_role" class="btn">
           {% for option in modify_options %}
-          <option value="{{ option[0] }}"> {{ option[1] }}</option>
+          <option value="{{ option[0] }}">{{ option[1] }}</option>
           {% endfor %}
           </select>
       </div>
@@ -82,7 +83,7 @@
         Download a copy of the complete database.
     </p>
 
-    <form action="{{ admin_uri }}" method="POST", id="backup_db">
+    <form action="{{ admin_uri }}" method="POST" id="backup_db">
         <button type="submit" class="btn btn-success" name="mode" value="backup_db">Backup DB</button>
     </form>
 
@@ -96,11 +97,11 @@
         Delete all signatures associated with a given ORCID.
     </p>
 
-    <form action="{{ admin_uri }}" method="POST", id="delete_ban_user">
+    <form action="{{ admin_uri }}" method="POST" id="delete_ban_user">
       <div class="row col-md-2">
           <select name="user_option" class="btn">
           {% for option in delete_options %}
-          <option value="{{ option[0] }}"> {{ option[1] }}</option>
+          <option value="{{ option[0] }}">{{ option[1] }}</option>
           {% endfor %}
           </select>
       </div>
@@ -116,22 +117,22 @@
 </div>
 
 {% if orphans > 0 %}
-  <hr />
+<hr />
 
-  <div class="admin-middle-1">
-      <h3>Database orphans</h3>
-      <p>
-          The database has campaigns where the action slug is an empty string.
-      </p>
+<div class="admin-middle-1">
+  <h3>Database orphans</h3>
+  <p>
+      The database has campaigns where the action slug is an empty string.
+  </p>
 
-      <form action="{{ admin_uri }}" method="POST", id="delete_orphans">
-        {% if orphans == 1 %}
-          <button type="submit" class="btn btn-danger" name="mode" value="delete_orphans">Delete {{ orphans }} orphan</button>
-        {% else %}
-          <button type="submit" class="btn btn-danger" name="mode" value="delete_orphans">Delete {{ orphans }} orphans</button>
-        {% endif %}
-      </form>
-    </div>
+  <form action="{{ admin_uri }}" method="POST" id="delete_orphans">
+    {% if orphans == 1 %}
+      <button type="submit" class="btn btn-danger" name="mode" value="delete_orphans">Delete {{ orphans }} orphan</button>
+    {% else %}
+      <button type="submit" class="btn btn-danger" name="mode" value="delete_orphans">Delete {{ orphans }} orphans</button>
+    {% endif %}
+  </form>
+</div>
 {% endif %}
 
 <hr />
@@ -204,6 +205,5 @@
     </div>
 
 </div>
-
 
 {% endblock %}

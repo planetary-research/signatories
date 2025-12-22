@@ -1,67 +1,67 @@
 {% extends "base.html" %}
-{% block title %}{{ action_kind }}{% endblock %}
+
+{% block title %}{{ action_kind | capitalize }}{% endblock %}
 
 {% block nav %}
   {% include "nav-admin.html" %}
 {% endblock %}
 
 {% block content %}
-    <!-- Introduction -->
-    <div class="extra-margin">
-        <h3> {{ action_kind | upper }}</h3>
-    </div>
+<div class="extra-margin">
+    <h3> {{ action_kind | upper }}</h3>
+</div>
 
-    <div class="extra-margin action_text">
-            {{ action_text | safe }}
-    </div>
+<div class="extra-margin action_text">
+    {{ action_text | safe }}
+</div>
 
-    {%if is_active is true %}
-    <div class="orcid-box">
-      <p><a class="btn btn-default btn-lg" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind }}</a> <span class="orcid-text">To participate, authenticate with your <a href="https://orcid.org" target="_blank" class="external">ORCID</a> account</span>
-      </p>
+{% if is_active is true %}
+<div class="orcid-box">
+  <p><a class="btn btn-default btn-lg" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind | lower }}</a> <span class="orcid-text">To participate, authenticate with your <a href="https://orcid.org" target="_blank" class="external">ORCID</a> account</span>
+  </p>
+</div>
+{% else %}
+<div class="alert alert-warning alert-dismissable" role="alert">
+    This campaign is closed and is not accepting further signatures.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+<div>
+  <p>
+    Created: {{ action_created.date() }}
+    {% if action_closed is not none %}
+    <br />Closed: {{ action_closed.date() }}
+    {% endif %}
+  </p>
+</div>
+
+<div class="toggle-signatories">
+    <p>Total signatories: {{ total_signatures }}</p>
+</div>
+
+<div class="user-list" id="show-signatories">
+    {% for result in visible_signatures %}
+    <div class="row">
+        <div class="col-md-3">
+            <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" ><span style="font-weight: bold">{{ result.name }}</span></a>
+        </div>
+        <div class="col-md-9">
+            {{ result.affiliation }}
+        </div>
+
     </div>
-    {% else %}
-    <div class="alert alert-warning alert-dismissable" role="alert">
-        This campaign is closed and is not accepting further signatures.
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+    {% endfor %}
+    {% if anonymous_signatures > 0 %}
+    <div class="row extra-margin">
+        <div class="col-md-12">
+            Anonymous signatories with ORCID accounts: {{ anonymous_signatures }}
+        </div>
     </div>
     {% endif %}
 
-    <div>
-      <p>
-        Created: {{ action_created.date() }}
-        {% if action_closed is not none %}
-        <br />Closed: {{ action_closed.date() }}
-        {% endif %}
-      </p>
-    </div>
-
-    <div class="toggle-signatories">
-        <p>Total signatories: {{ total_signatures }}</p>
-    </div>
-
-    <div class="user-list" id="show-signatories">
-        {% for result in visible_signatures %}
-        <div class="row">
-            <div class="col-md-3">
-                <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" ><span style="font-weight: bold">{{ result.name }}</span></a>
-            </div>
-            <div class="col-md-9">
-                {{ result.affiliation }}
-            </div>
-
-        </div>
-        {% endfor %}
-        {% if anonymous_signatures > 0 %}
-        <div class="row extra-margin">
-            <div class="col-md-12">
-                Anonymous signatories with ORCID accounts: {{ anonymous_signatures }}
-            </div>
-        </div>
-        {% endif %}
-
-    </div>
+</div>
 
 {% endblock %}

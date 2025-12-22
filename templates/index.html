@@ -6,71 +6,70 @@
 {% endblock %}
 
 {% block content %}
-    <!-- Introduction -->
-    <div class="extra-margin">
-        <h3> {{ action_kind | upper }}</h3>
-    </div>
+<div class="extra-margin">
+    <h3> {{ action_kind | upper }}</h3>
+</div>
 
-    <div class="extra-margin action_text">
-      <p>
-      Signatories is a simple web-based program that allows a person to sign
-      an online petition, a declaration, a statement, or any form of communication
-      that is looking for community support. Designed for academics, signing
-      is accomplished by authenticating with an Open Researcher and Contributor
-      ID account (<a href="https://orcid.org" target="_blank">ORCID</a>).
-      </p>
-      <p>
-      Users with editor privileges can create, edit, close, and delete their
-      campaigns. When creating a campaign, editors can choose to allow for
-      anonymous signatures or not. Active campaigns can be accessed from the
-      server home page or from a unique and persistent web address.
-      </p>
-      <p>
-      Signatories to a campaign are required to authenticate with an ORCID account.
-      An ORCID account may sign a campaign at most once, and anonymous participants
-      are assured to have an ORCID account. Signatories may choose to add their
-      professional affiliation, and they can modify their preferences or remove
-      their signature after signing. When a signatory's name is visible, any
-      public visitor may click on it to inspect their ORCID profile.
-      </p>
-      <p>
-      If you would like editor privileges to create a campaign, please contact the
-      <a href="mailto:{{ contact_email }}">site administrator</a> and provide your
-      ORCID.
-      </p>
-    </div>
+<div class="extra-margin action_text">
+  <p>
+  Signatories is a simple web-based program that allows a person to sign
+  an online petition, a declaration, a statement, or any form of communication
+  that is looking for community support. Designed for academics, signing
+  is accomplished by authenticating with an Open Researcher and Contributor
+  ID account (<a href="https://orcid.org" target="_blank">ORCID</a>).
+  </p>
+  <p>
+  Users with editor privileges can create, edit, close, and delete their
+  campaigns. When creating a campaign, editors can choose to allow for
+  anonymous signatures or not. Active campaigns can be accessed from the
+  server home page or from a unique and persistent web address.
+  </p>
+  <p>
+  Signatories to a campaign are required to authenticate with an ORCID account.
+  An ORCID account may sign a campaign at most once, and anonymous participants
+  are assured to have an ORCID account. Signatories may choose to add their
+  professional affiliation, and they can modify their preferences or remove
+  their signature after signing. When a signatory's name is visible, any
+  public visitor may click on it to inspect their ORCID profile.
+  </p>
+  <p>
+  If you would like editor privileges to create a campaign, please contact the
+  <a href="mailto:{{ contact_email }}">site administrator</a> and provide your
+  ORCID.
+  </p>
+</div>
 
-    {% if show_examples is true %}
-    <div>
-        <h3>EXAMPLES</h3>
-    </div>
+{% if show_examples is true %}
+<div>
+    <h3>EXAMPLES</h3>
+</div>
 
-    <div class="campaign-list">
-        {% for name, desc in campaigns.items() %}
-        {% if name == "demo" or name == "demo-no-anonymous" %}
-        <p class="campaign-entries">
-            <a href="/{{ name }}"><span style="font-weight: bold">{{ desc[0] | safe }}</span></a> — {{ desc[1] | safe }}
-        </p>
-        {% endif %}
-        {% endfor %}
-    </div>
+<div class="campaign-list">
+    {% for name, desc in campaigns.items() %}
+    {% if name == "demo" or name == "demo-no-anonymous" %}
+    <p class="campaign-entries">
+        <a href="/{{ name }}"><span style="font-weight: bold">{{ desc[0] | safe }}</span></a> — {{ desc[1] | safe }}
+    </p>
     {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
 
-    <div>
-        <h3>ACTIVE CAMPAIGNS</h3>
-    </div>
+<div>
+    <h3>ACTIVE CAMPAIGNS</h3>
+</div>
 
-    <div class="campaign-list">
-        {% for name, desc in campaigns.items() %}
-        {% if name != "demo" and name != "demo-no-anonymous" %}
-        <p class="campaign-entries">
-            <a href="/{{ name }}"><span style="font-weight: bold">{{ desc[0] | safe }}</span></a> — {{ desc[1] | safe }}
-        </p>
-        {% endif %}
-        {% endfor %}
-        {% if campaigns.items()|length == 2 %}
-        <p class="campaign-entries">None</p>
-        {% endif %}
-    </div>
+<div class="campaign-list">
+    {% for name, desc in campaigns.items() %}
+    {% if name != "demo" and name != "demo-no-anonymous" %}
+    <p class="campaign-entries">
+        <a href="/{{ name }}"><span style="font-weight: bold">{{ desc[0] | safe }}</span></a> — {{ desc[1] | safe }}
+    </p>
+    {% endif %}
+    {% endfor %}
+    {% if campaigns.items()|length == 2 %}
+    <p class="campaign-entries">None</p>
+    {% endif %}
+</div>
 
 {% endblock %}
