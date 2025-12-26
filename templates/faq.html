@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Frequently asked questions{% endblock %}
+{% block title %}Signatories - Frequently asked questions{% endblock %}
 
 {% block nav %}
   {% include "nav-admin.html" %}
@@ -15,31 +15,31 @@
     <p>
       The code that we use is available on
       <a href="https://github.com/planetary-research/signatories" class="external">Github</a> and
-      everyone is free to inspect the code. We encourage users to inform us of
+      everyone is free to inspect it. We encourage users to inform us of
       any bugs, and we are open to contributions that will improve the
       functionality of the application.
     </p>
 
-    <h3>Can anonymous signatures be accessed?</h3>
+    <h3>Are anonymous signatures secure?</h3>
     <p>
       All signatures to a campaign, both public and anonymous, are stored in a
-      database on the server. The only users who can access this database are
+      database on the server. The only people who can access this database are
       the administrators of the application and any system administrators that
-      have direct access to the server. Editors who create a campaign cannot
-      access the identity of anonymous signatories in the campaign.
+      have root access to the server. Editors who create a campaign and users
+      who sign a campaign cannot access the identity of anonymous signatories.
     </p>
     <p>
       The act of authenticating with ORCID does not prove in any way that a
       campaign was signed. Authentication occurs before the user decides to
-      submit their signature. Furthermore, the user could authenticate with
+      submit their signature, and the user could authenticate with
       ORCID just to test the example petitions that are on the server.
     </p>
 
-    <h3>Is my signature stored with ORCID?</h3>
+    <h3>Are any data stored with ORCID?</h3>
     <p>
       No. Authenticating with ORCID is used only to ensure that each signatory
       is associated with an ORCID account and to obtain the name associated
-      with the account. No data is stored on ORCID servers and ORCID can
+      with the account. No data are stored on ORCID servers and ORCID can
       not access the signatories database.
     </p>
 

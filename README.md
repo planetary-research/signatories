@@ -5,23 +5,21 @@
 
 **Signatories** is a simple web-based program that allows a person to sign
 an online petition, a declaration, a statement, or any form of communication
-that requires community support. Designed for academics, signing is accomplished
-by authenticating with an account at [ORCID](https://orcid.org).
+that is looking for community support. Designed for academics, signing
+is accomplished by authenticating with an Open Researcher and Contributor
+ID account ([ORCID](https://orcid.org)).
 
-Campaigns can choose to allow for anonymous signatures or not. Signatories
-to a campaign may choose to add their professional affiliation, and they can
-modify their preferences or remove their signature after signing. When the
-signatory's name is visible, any user may click on it to inspect their ORCID
-profile.
+Users with editor privileges can create, edit, close, and delete their
+campaigns. When creating a campaign, editors can choose to allow for
+anonymous signatures or not. Active campaigns can be accessed from the
+server home page or from a unique and persistent web address.
 
-By requiring an account at ORCID to sign, not only are bogus signatures
-avoided, but this helps to limit participants to the academic community. An
-ORCID account may sign at most once, and anonymous participants are assured to
-have an ORCID account.
-
-Administrators can assign users as editors.
-Editors can create campaigns, or modify, delete or close those for which they
-are the owner.
+Signatories to a campaign are required to authenticate with an ORCID account.
+An ORCID account may sign a campaign at most once, and anonymous participants
+are assured to have an ORCID account. Signatories may choose to add their
+professional affiliation, and they can modify their preferences or remove
+their signature after signing. When a signatory's name is visible, any
+public visitor may click on it to inspect their ORCID profile.
 
 This code is based on the Planetary Research
 [Reviewer expertise database](https://review.planetary-research.org), which is
@@ -58,13 +56,11 @@ everyone_is_editor = False
 # Set favicon (use "" for none). File name is with respect to static/img
 favicon = "favicon.ico"
 
-# Default text for header
-action_name = "Signatories"
-action_short_description = "Open source signing of statements and petitions"
-action_path = "/"
-
-# Default main text
-action_kind = "Introduction"
+# Default parameters for the home page
+site_title = "Signatories"
+site_subtitle = "Open source signing of statements and petitions"
+site_path = "/"
+site_header = "Introduction"
 
 # URL and name of a link displayed in the website footer, such as the association website
 footer_url_name = "My-Organization"

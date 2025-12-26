@@ -83,20 +83,21 @@ for file in files:
 
 """ Default URLs """
 
-home_URI = "/"
-logout_URI = "/logout"
-user_URI = "/<slug>/user"
-thank_you_URI = "/<slug>/thank-you"
-signature_removed_URI = "/<slug>/signature-removed"
-privacy_URI = "/privacy"
-faq_URI = "/faq"
-action_URI = "/<slug>"
-admin_URI = "/admin"
-insufficient_privileges_URI = "/insufficient-privileges"
-create_URI = "/create"
-editor_URI = "/editor"
-edit_URI = "/<slug>/edit"
+home_URI = config.site_path
+logout_URI = os.path.join(config.site_path, "logout")
+user_URI = os.path.join(config.site_path, "<slug>", "user")
+thank_you_URI = os.path.join(config.site_path, "<slug>", "thank-you")
+signature_removed_URI = os.path.join(config.site_path, "<slug>", "signature-removed")
+privacy_URI = os.path.join(config.site_path, "privacy")
+faq_URI = os.path.join(config.site_path, "faq")
+action_URI = os.path.join(config.site_path, "<slug>")
+admin_URI = os.path.join(config.site_path, "admin")
+insufficient_privileges_URI = os.path.join(config.site_path, "insufficient-privileges")
+create_URI = os.path.join(config.site_path, "create")
+editor_URI = os.path.join(config.site_path, "editor")
+edit_URI = os.path.join(config.site_path, "<slug>", "edit")
 
+action_template = "action-with-sidebar.html"  # default template for actions
 
 base_data = {
     "home_uri": home_URI,
@@ -112,10 +113,6 @@ base_data = {
     "user_URI_defined": None,
     "thank_you_URI_defined": None,
     "signature_removed_URI_defined": None,
-    "action_kind": config.action_kind,
-    "action_name": config.action_name,
-    "action_path": config.action_path,
-    "action_short_description": config.action_short_description,
     "signatories_url": config.signatories_url,
     "footer_url_name": config.footer_url_name,
     "footer_url": config.footer_url,
@@ -170,8 +167,14 @@ def home():
     campaign_list = dict()
     # Create list of signatory campaigns
     for row in Campaign.query.filter_by(is_active=True).all():
-        campaign_list[row.action_slug] = [row.action_name, row.action_short_description]
+        campaign_list[row.action_slug] = [
+            row.action_name, row.action_short_description,
+            os.path.join(config.site_path, row.action_slug)]
     data = {
+        "header_title": config.site_title,
+        "header_subtitle": config.site_subtitle,
+        "header_path": config.site_path,
+        "text_header": config.site_header,
         "campaigns": campaign_list,
         "page": "home",
         "role_id": role_id,
@@ -207,7 +210,12 @@ def action(slug):
     # check if the campaign exists
     result = Campaign.query.filter_by(action_slug=slug).first()
     if not result:
-        return render_template("campaign-not-found.html", **(base_data))
+        data = {
+            "header_title": config.site_title,
+            "header_subtitle": config.site_subtitle,
+            "header_path": config.site_path,
+        }
+        return render_template("campaign-not-found.html", **(base_data | data))
 
     action_data = Campaign.query.filter_by(action_slug=slug).first()
 
@@ -220,11 +228,12 @@ def action(slug):
         visible_signatures = Signatory.query.filter_by(anonymous=False, campaign=slug).all()
 
     data = {
+        "header_title": action_data.action_name,
+        "header_subtitle": action_data.action_kind.upper(),
+        "header_path": os.path.join(config.site_path, slug),
         "action_kind": action_data.action_kind,
-        "action_name": action_data.action_name,
-        "action_short_description": action_data.action_short_description,
+        "text_header": action_data.action_short_description,
         "action_text": action_data.action_text,
-        "action_path": "/" + action_data.action_slug,
         "action_created": action_data.creation_date,
         "action_closed": action_data.closed_date,
         "authorization_uri": URI,
@@ -234,11 +243,11 @@ def action(slug):
         "is_active": action_data.is_active,
         "role_id": role_id,
     }
-    base_data["user_URI_defined"] = "/" + slug + "/user"
-    base_data["thank_you_URI_defined"] = "/" + slug + "/thank-you"
-    base_data["signature_removed_URI_defined"] = "/" + slug + "/signature-removed"
+    base_data["user_URI_defined"] = os.path.join(config.site_path, slug, "user")
+    base_data["thank_you_URI_defined"] = os.path.join(config.site_path, slug, "thank-you")
+    base_data["signature_removed_URI_defined"] = os.path.join(config.site_path, slug, "signature-removed")
 
-    return render_template("action.html", **(base_data | data))
+    return render_template(action_template, **(base_data | data))
 
 
 @app.route("/authorization-code-callback", methods=["GET"])
@@ -307,6 +316,9 @@ def privacy():
             role_id = user.role_id
 
     data = {
+        "header_title": config.site_title,
+        "header_subtitle": config.site_subtitle,
+        "header_path": config.site_path,
         "role_id": role_id,
     }
     return render_template("privacy.html", **(base_data | data))
@@ -331,6 +343,9 @@ def faq():
             role_id = user.role_id
 
     data = {
+        "header_title": config.site_title,
+        "header_subtitle": config.site_subtitle,
+        "header_path": config.site_path,
         "role_id": role_id,
     }
     return render_template("faq.html", **(base_data | data))
@@ -410,11 +425,11 @@ def user(slug):
         anonymous = None
 
     data = {
+        "header_path": os.path.join(config.site_path, slug),
+        "header_title": action_data.action_name,
+        "header_subtitle": action_data.action_short_description,
         "action_kind": action_data.action_kind,
-        "action_name": action_data.action_name,
-        "action_short_description": action_data.action_short_description,
         "action_text": action_data.action_text,
-        "action_path": "/" + action_data.action_slug,
         "name": session["name"],
         "affiliation": affiliation,
         "anonymous": anonymous,
@@ -550,9 +565,9 @@ def admin():
     editors = Admin.query.filter_by(role_id=2).order_by(Admin.name.asc()).all()
 
     data = {
-        "action_name": session["name"],
-        "action_short_description": session["orcid"],
-        "action_path": admin_URI,
+        "header_title": session["name"],
+        "header_subtitle": session["orcid"],
+        "header_path": editor_URI,
         "name": session["name"],
         "orcid_id": session["orcid"],
         "role": role.name.capitalize(),
@@ -664,9 +679,9 @@ def create():
                 return redirect(editor_URI)
 
     data = {
-        "action_name": session["name"],
-        "action_short_description": session["orcid"],
-        "action_path": admin_URI,
+        "header_title": session["name"],
+        "header_subtitle": session["orcid"],
+        "header_path": editor_URI,
         "name": session["name"],
         "orcid_id": session["orcid"],
         "role_id": role_id,
@@ -725,16 +740,24 @@ def editor():
     # Create list of signatory campaigns
     for row in Campaign.query.order_by(Campaign.action_name.asc()).all():
         if row.owner_orcid == session["orcid"]:
-            my_campaigns[row.action_slug] = [row.action_name, row.action_short_description, row.is_active]
+            my_campaigns[row.action_slug] = [
+                row.action_name, row.action_short_description,
+                os.path.join(config.site_path, row.action_slug),
+                row.is_active
+            ]
 
     if role_id == 3:
         for row in Campaign.query.order_by(Campaign.action_name.asc()).all():
-            all_campaigns[row.action_slug] = [row.action_name, row.action_short_description, row.is_active]
+            all_campaigns[row.action_slug] = [
+                row.action_name, row.action_short_description,
+                os.path.join(config.site_path, row.action_slug),
+                row.is_active
+            ]
 
     data = {
-        "action_name": session["name"],
-        "action_short_description": session["orcid"],
-        "action_path": editor_URI,
+        "header_title": session["name"],
+        "header_subtitle": session["orcid"],
+        "header_path": editor_URI,
         "name": session["name"],
         "orcid_id": session["orcid"],
         "role_id": role_id,
@@ -854,9 +877,9 @@ def edit(slug):
             db.session.commit()
 
     data = {
-        "action_name": session["name"],
-        "action_short_description": session["orcid"],
-        "action_path": admin_URI,
+        "header_title": session["name"],
+        "header_subtitle": session["orcid"],
+        "header_path": editor_URI,
         "name": session["name"],
         "orcid_id": session["orcid"],
         "role_id": role_id,
@@ -898,10 +921,10 @@ def thank_you(slug):
     action_data = Campaign.query.filter_by(action_slug=slug).first()
 
     data = {
+        "header_title": action_data.action_name,
+        "header_subtitle": action_data.action_short_description,
+        "header_path": os.path.join(config.site_path, slug),
         "action_kind": action_data.action_kind,
-        "action_name": action_data.action_name,
-        "action_short_description": action_data.action_short_description,
-        "action_path": "/" + action_data.action_slug,
         "role_id": role_id,
     }
     base_data["user_URI_defined"] = None
@@ -937,10 +960,10 @@ def signature_removed(slug):
     action_data = Campaign.query.filter_by(action_slug=slug).first()
 
     data = {
+        "header_title": action_data.action_name,
+        "header_subtitle": action_data.action_short_description,
+        "header_path": os.path.join(config.site_path, slug),
         "action_kind": action_data.action_kind,
-        "action_name": action_data.action_name,
-        "action_short_description": action_data.action_short_description,
-        "action_path": "/" + action_data.action_slug,
         "role_id": role_id,
     }
     base_data["user_URI_defined"] = None
@@ -957,7 +980,12 @@ def signature_removed(slug):
 
 @app.route(insufficient_privileges_URI)
 def insufficient_privileges():
-    return render_template("insufficient-privileges.html", **base_data)
+    data = {
+        "header_title": config.site_title,
+        "header_subtitle": config.site_subtitle,
+        "header_path": config.site_path,
+    }
+    return render_template("insufficient-privileges.html", **(base_data | data))
 
 
 @app.route(logout_URI)
@@ -976,7 +1004,12 @@ def logout():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template("404.html", **(base_data)), 404
+    data = {
+        "header_title": config.site_title,
+        "header_subtitle": config.site_subtitle,
+        "header_path": config.site_path,
+    }
+    return render_template("404.html", **(base_data | data)), 404
 
 
 if __name__ == "__main__":

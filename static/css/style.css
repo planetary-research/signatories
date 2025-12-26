@@ -3,6 +3,14 @@
     width: 950px;
   }
 }
+@media(max-width: 700px) {
+  td {
+    display: table-row;
+  }
+  tr {
+    margin: 20em;
+  }
+}
 
 body {
   padding: 0;
@@ -80,10 +88,20 @@ div.main-text {
   font-size: 0.8em;
   margin-left: 1em;
 }
-
+.orcid-text-sidebar {
+  color: #666;
+  font-size: 0.8em;
+  margin-left: 0em;
+  line-height: 1em;
+}
 .orcid-box {
   margin-top: 3em;
   margin-bottom: 3em;
+}
+.sidebar-text {
+  margin-top: 3em;
+  font-size: 0.8em;
+  line-height: 1.4em;
 }
 
 .toggle-text {

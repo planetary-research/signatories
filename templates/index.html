@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Signatories{% endblock %}
+{% block title %}Signatories - Home{% endblock %}
 
 {% block nav %}
   {% include "nav-admin.html" %}
@@ -7,7 +7,7 @@
 
 {% block content %}
 <div class="extra-margin">
-    <h3> {{ action_kind | upper }}</h3>
+    <h3>{{ text_header | upper }}</h3>
 </div>
 
 <div class="extra-margin action_text">
@@ -48,7 +48,7 @@
     {% for name, desc in campaigns.items() %}
     {% if name == "demo" or name == "demo-no-anonymous" %}
     <p class="campaign-entries">
-        <a href="/{{ name }}"><span style="font-weight: bold">{{ desc[0] | safe }}</span></a> — {{ desc[1] | safe }}
+        <a href="{{ desc[2] }}"><span style="font-weight: bold">{{ desc[0] | safe }}</span> — {{ desc[1] | safe }}</a>
     </p>
     {% endif %}
     {% endfor %}
@@ -63,7 +63,7 @@
     {% for name, desc in campaigns.items() %}
     {% if name != "demo" and name != "demo-no-anonymous" %}
     <p class="campaign-entries">
-        <a href="/{{ name }}"><span style="font-weight: bold">{{ desc[0] | safe }}</span></a> — {{ desc[1] | safe }}
+        <a href="{{ desc[2] }}"><span style="font-weight: bold">{{ desc[0] | safe }}</span> — {{ desc[1] | safe }}</a>
     </p>
     {% endif %}
     {% endfor %}

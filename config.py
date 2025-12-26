@@ -10,13 +10,13 @@ if (public_domain := os.getenv("public_domain")) is not None:
     sandbox = False
     code_callback_URI = f"{public_domain}/authorization-code-callback"
     orcid_url = "https://orcid.org/"
-    signatories_url = public_domain
+    signatories_url = os.path.join(public_domain, os.getenv("site_path"))
 
 else:
     sandbox = True
     code_callback_URI = f"http://127.0.0.1:{port}/authorization-code-callback"
     orcid_url = "https://sandbox.orcid.org/"
-    signatories_url = '/'
+    signatories_url = os.getenv("site_path")
 
 # Load ORCID and admin parameters from .env file
 cookie_secret = os.getenv("cookie_secret")
@@ -47,12 +47,12 @@ else:
     show_examples = False
 
 
-# Default parameters for the header and home page
+# Default parameters for the home page
 favicon = os.getenv("favicon")
-action_name = os.getenv("action_name")
-action_short_description = os.getenv("action_short_description")
-action_path = os.getenv("action_path")
-action_kind = os.getenv("action_kind")
+site_title = os.getenv("site_title")
+site_subtitle = os.getenv("site_subtitle")
+site_path = os.getenv("site_path")
+site_header = os.getenv("site_header")
 if os.getenv("show_examples").lower() == "true":
     show_examples = True
 else:
