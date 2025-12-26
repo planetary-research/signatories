@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}{{ action_kind | capitalize | safe }} - {{ header_title | safe }}{% endblock %}
+
+{% block nav %}
+  {% include "nav-admin.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="extra-margin">
+  <h3><b>{{ text_header }}</b></h3>
+</div>
+
+<table>
+  <tr>
+    <td style="vertical-align: top; padding-top: 0.8em;">
+      <div class="action_text" style="margin-bottom: 2em;">
+        {{ action_text | safe }}
+      </div>
+
+    </td>
+
+    <td style="padding-left: 3em; vertical-align: top; padding-top: 1.1em;">
+      {% if is_active is true %}
+      <div>
+        <p><a class="btn btn-default btn-md" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind | lower }}</a>
+        </p>
+        <p>
+        <span class="orcid-text-sidebar">Authenticate with your <a href="https://orcid.org" target="_blank" class="external">ORCID</a> account to sign.</span>
+        </p>
+      </div>
+      {% else %}
+      <div class="alert alert-warning">
+        This campaign is closed and is not accepting further signatures.
+      </div>
+      {% endif %}
+
+      <div class="sidebar-text">
+        <p>
+          Created: {{ action_created.date() }}
+          {% if action_closed is not none %}
+          <br />Closed: {{ action_closed.date() }}
+          {% endif %}
+        </p>
+        <p>
+          Total signatories: {{ total_signatures }}
+        </p>
+      </div>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <div class="user-list" id="show-signatories">
+          {% for result in visible_signatures %}
+          <div class="row">
+              <div class="col-md-3" style="padding-left: 0;">
+                  <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" ><span style="font-weight: bold">{{ result.name }}</span></a>
+              </div>
+              <div class="col-md-9">
+                  {{ result.affiliation }}
+              </div>
+          </div>
+          {% endfor %}
+
+          {% if anonymous_signatures > 0 %}
+          <div class="row extra-margin">
+              <div class="col-md-12" style="padding-left: 0;">
+                  Anonymous signatories with ORCID accounts: {{ anonymous_signatures }}
+              </div>
+          </div>
+          {% endif %}
+
+      </div>
+    </td>
+  </tr>
+</table>
+
+{% endblock %}
