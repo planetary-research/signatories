@@ -83,7 +83,7 @@ div.main-text {
 .orcid-text {
   color: #666;
   font-size: 0.8em;
-  margin-left: 1em;
+  margin-left: 1.2em;
 }
 .orcid-text-sidebar {
   color: #666;
@@ -98,7 +98,7 @@ div.main-text {
 .sidebar-text {
   margin-top: 3em;
   font-size: 0.8em;
-  line-height: 1.4em;
+  line-height: 1em;
 }
 
 .toggle-text {
@@ -130,10 +130,6 @@ div.main-text {
 .user-row {
   line-height: 1.4em;
   padding-bottom: 0.4em;
-}
-
-.toggle-signatories {
-  margin-bottom: 2em;
 }
 
 .campaign-list {

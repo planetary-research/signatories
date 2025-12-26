@@ -2,6 +2,7 @@ import os
 import re
 import datetime
 from datetime import timedelta
+from io import BytesIO
 import tomllib
 from flask import Flask
 from flask import request, session
@@ -10,6 +11,7 @@ from flask import send_from_directory, send_file
 from markupsafe import escape
 from waitress import serve
 import orcid
+from pyexcel_ods3 import save_data
 
 import config
 from db_models import db, Signatory, Admin, Campaign, UserRole
@@ -186,7 +188,7 @@ def home():
     return render_template("index.html", **(base_data | data))
 
 
-@app.route(action_URI)
+@app.route(action_URI, methods=["POST", "GET"])
 def action(slug):
     # Show the campaign
     if session.get("orcid") is None:
@@ -227,6 +229,17 @@ def action(slug):
     else:
         visible_signatures = Signatory.query.filter_by(anonymous=False, campaign=slug).all()
 
+    if request.method == "POST":
+        if request.form.get("mode") == "download-ods":
+            visible_signatures_list = []
+            for row in visible_signatures:
+                visible_signatures_list.append([row.name, row.affiliation, row.orcid, 'https://orcid.org/'+row.orcid])
+                ods_output = {slug: visible_signatures_list}
+            ods_bytes = BytesIO()
+            save_data(ods_bytes, ods_output)
+            ods_bytes.seek(0)  # Reset the pointer to the beginning of the file
+            return send_file(ods_bytes, as_attachment=True, download_name=slug+".ods")
+
     data = {
         "header_title": action_data.action_name,
         "header_subtitle": action_data.action_kind.upper(),
@@ -242,6 +255,7 @@ def action(slug):
         "visible_signatures": visible_signatures,
         "is_active": action_data.is_active,
         "role_id": role_id,
+        "download_uri": os.path.join(config.site_path, slug),
     }
     base_data["user_URI_defined"] = os.path.join(config.site_path, slug, "user")
     base_data["thank_you_URI_defined"] = os.path.join(config.site_path, slug, "thank-you")
