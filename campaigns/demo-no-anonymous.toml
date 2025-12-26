@@ -22,7 +22,7 @@ only necessary to choose to sign it again. You will be given the option to
 either update your information or to remove your name altogether.
 </p>
 <p>
-To see how it works, sign this petition by clicking the link below!
+To see how it works, sign the petition!
 </p>
 '''
 ACTION_SLUG = "demo-no-anonymous"  # unique name appended to the URL.
