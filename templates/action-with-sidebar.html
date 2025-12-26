@@ -9,7 +9,7 @@
 {% block content %}
 
 <div class="extra-margin">
-  <h3><b>{{ text_header }}</b></h3>
+  <h3><b>{{ text_header | safe }}</b></h3>
 </div>
 
 <table>
@@ -23,13 +23,9 @@
 
     <td style="padding-left: 3em; vertical-align: top; padding-top: 1.1em;">
       {% if is_active is true %}
-      <div>
-        <p><a class="btn btn-default btn-md" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind | lower }}</a>
-        </p>
-        <p>
-        <span class="orcid-text-sidebar">Authenticate with your <a href="https://orcid.org" target="_blank" class="external">ORCID</a> account to sign.</span>
-        </p>
-      </div>
+      <p><a class="btn btn-default btn-md" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind | lower }}</a>
+      </p>
+      <p class="orcid-text-sidebar">Authenticate with your <a href="https://orcid.org" target="_blank" class="external">ORCID</a> account to sign.</p>
       {% else %}
       <div class="alert alert-warning">
         This campaign is closed and is not accepting further signatures.
