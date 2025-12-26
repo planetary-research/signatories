@@ -49,9 +49,9 @@
 
   <tr>
     <td>
-      <div class="user-list" id="show-signatories">
+      <div class="user-list">
           {% for result in visible_signatures %}
-          <div class="row">
+          <div class="row user-row">
               <div class="col-md-3" style="padding-left: 0;">
                   <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" ><span style="font-weight: bold">{{ result.name }}</span></a>
               </div>

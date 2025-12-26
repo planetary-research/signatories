@@ -922,7 +922,7 @@ def thank_you(slug):
 
     data = {
         "header_title": action_data.action_name,
-        "header_subtitle": action_data.action_short_description,
+        "header_subtitle": action_data.action_kind.upper(),
         "header_path": os.path.join(config.site_path, slug),
         "action_kind": action_data.action_kind,
         "role_id": role_id,
@@ -961,7 +961,7 @@ def signature_removed(slug):
 
     data = {
         "header_title": action_data.action_name,
-        "header_subtitle": action_data.action_short_description,
+        "header_subtitle": action_data.action_kind.upper(),
         "header_path": os.path.join(config.site_path, slug),
         "action_kind": action_data.action_kind,
         "role_id": role_id,

@@ -123,10 +123,13 @@ div.main-text {
   margin-bottom: 3em;
   padding: 0;
   margin-top: 0;
-  line-height: 1.4em;
 }
 .user-list#show-admins {
   margin-bottom: 0em;
+}
+.user-row {
+  line-height: 1.4em;
+  padding-bottom: 0.4em;
 }
 
 .toggle-signatories {
