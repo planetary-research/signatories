@@ -233,7 +233,9 @@ def action(slug):
         if request.form.get("mode") == "download-ods":
             visible_signatures_list = []
             for row in visible_signatures:
-                visible_signatures_list.append([row.name, row.affiliation, row.orcid, 'https://orcid.org/'+row.orcid])
+                if row.affiliation is None:
+                    affiliation = ''
+                visible_signatures_list.append([row.name, affiliation, row.orcid, 'https://orcid.org/'+row.orcid])
             ods_output = {slug: visible_signatures_list}
             ods_bytes = BytesIO()
             save_data(ods_bytes, ods_output)
