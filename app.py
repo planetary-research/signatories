@@ -235,6 +235,9 @@ def action(slug):
             for row in visible_signatures:
                 if row.affiliation is None:
                     affiliation = ''
+                else:
+                    affiliation = row.affiliation
+    
                 visible_signatures_list.append([row.name, affiliation, row.orcid, 'https://orcid.org/'+row.orcid])
             ods_output = {slug: visible_signatures_list}
             ods_bytes = BytesIO()
