@@ -137,6 +137,24 @@
 
 <hr />
 
+<div class="edit-middle">
+    <h3>Reset creation date</h3>
+    <p>
+      Click the button below to reset the campaign creation date to today.
+    </p>
+
+    <form action="{{ edit_uri }}" method="POST" id="reset_date">
+        <input type="hidden" >
+        <div>
+          <button type="submit" class="btn btn-warning" name="mode" value="reset_date">Reset creation date</button>
+        </div>
+
+    </form>
+
+</div>
+
+<hr />
+
 <div class="edit-bottom">
     <h3>Delete campaign</h3>
     <p>

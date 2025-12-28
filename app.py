@@ -860,15 +860,29 @@ def edit(slug):
             if request.form["is_active"] == "Active":
                 is_active = True
                 edit_campaign.closed_date = None
+                alert_text = "Campaign activated."
             else:
                 is_active = False
                 edit_campaign.closed_date = datetime.datetime.now(datetime.UTC)
+                alert_text = "Campaign deactivated."
 
             edit_campaign.is_active = is_active
             db.session.commit()
 
             base_data["redirect_alerts"] = {
-                "success": "Campaign updated.",
+                "success": alert_text,
+                "danger": None,
+                "info": None,
+                "warning": None,
+            }
+            return redirect(editor_URI)
+
+        if request.form.get("mode") == "reset_date":
+            edit_campaign.creation_date = datetime.datetime.now(datetime.UTC)
+            db.session.commit()
+
+            base_data["redirect_alerts"] = {
+                "success": "Campaign creation date updated.",
                 "danger": None,
                 "info": None,
                 "warning": None,
