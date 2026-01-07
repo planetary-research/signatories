@@ -157,7 +157,7 @@
         {% for result in admins %}
         <div class="row extra-margin">
             <div class="col-md-3">
-                <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank"><span style="font-weight: bold">{{ result.name }}</span></a>
+                <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank"><span style="font-weight: bold">{{ result.name | safe }}</span></a>
             </div>
             <div class="col-md-3">
                 {{ result.orcid }} &nbsp;
@@ -188,7 +188,7 @@
         {% for result in editors %}
         <div class="row extra-margin">
             <div class="col-md-3">
-                <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank"><span style="font-weight: bold">{{ result.name }}</span></a>
+                <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank"><span style="font-weight: bold">{{ result.name | safe }}</span></a>
             </div>
             <div class="col-md-3">
                 {{ result.orcid }} &nbsp;

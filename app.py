@@ -237,7 +237,7 @@ def action(slug):
                     affiliation = ''
                 else:
                     affiliation = row.affiliation
-    
+
                 visible_signatures_list.append([row.name, affiliation, row.orcid, 'https://orcid.org/'+row.orcid])
             ods_output = {slug: visible_signatures_list}
             ods_bytes = BytesIO()
@@ -259,6 +259,7 @@ def action(slug):
         "anonymous_signatures": anonymous_signatures,
         "visible_signatures": visible_signatures,
         "is_active": action_data.is_active,
+        "allow_anonymous": action_data.allow_anonymous,
         "role_id": role_id,
         "download_uri": os.path.join(config.site_path, slug),
     }

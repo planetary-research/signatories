@@ -41,6 +41,10 @@
           Closed: {{ action_closed.date() }}
           {% endif %}
         </p>
+        <p>
+          Allow anonymous: {% if allow_anonymous is true %}Yes{% else %}No{% endif %}
+        </p>
+
         <form action="{{ download_uri }}" method="POST" id="download-ods">
             <p><button type="submit" name="mode" value="download-ods" class="btn btn-link" style="padding:0; border: 0;">Download signatories</button></p>
         </form>

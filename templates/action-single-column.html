@@ -36,7 +36,9 @@
   <br />Closed: {{ action_closed.date() }}
   {% endif %}
 </p>
-
+<p>
+  Allow anonymous: {% if allow_anonymous is true %}Yes{% else %}No{% endif %}
+</p>
 
 <div>
     <p>Total signatories: {{ total_signatures }}</p>
@@ -50,10 +52,10 @@
     {% for result in visible_signatures %}
     <div class="row">
         <div class="col-md-2" style="padding-left: 0;">
-            <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" ><span style="font-weight: bold">{{ result.name }}</span></a>
+            <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" ><span style="font-weight: bold">{{ result.name | safe }}</span></a>
         </div>
         <div class="col-md-10">
-            {{ result.affiliation }}
+            {{ result.affiliation | safe }}
         </div>
 
     </div>
