@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Signatories - User banned{% endblock %}
+
+{% block nav %}
+  {% include "nav-admin.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="main-text">
+    <h3>USER BANNED</h3>
+    <p>
+        This user has been banned from signing into this server. If you think
+        that this is a mistake, please contact the
+        <a href="mailto:{{ contact_email }}">site administrator</a>.
+    </p>
+
+</div>
+
+{% endblock %}

@@ -25,6 +25,14 @@ class Admin(db.Model):
         return "<Admin %s>" % self.orcid
 
 
+class Block(db.Model):
+    orcid = db.Column(db.String(length=19), primary_key=True)
+    name = db.Column(db.String)
+
+    def __repr__(self):
+        return "<Block %s>" % self.orcid
+
+
 class Campaign(db.Model):
     action_slug = db.Column(db.String, nullable=False, primary_key=True)
     owner_orcid = db.Column(db.String(length=19), default='')

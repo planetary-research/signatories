@@ -14,7 +14,7 @@ import orcid
 from pyexcel_ods3 import save_data
 
 import config
-from db_models import db, Signatory, Admin, Campaign, UserRole
+from db_models import db, Signatory, Admin, Campaign, UserRole, Block
 from utils import get_orcid_name, checksum
 
 
@@ -63,11 +63,23 @@ if not os.path.exists(config.dbpath):
 """ Read files in Campaigns and add to database if they don't already exist """
 files = os.listdir(config.campaigndir)
 
+reserved_actions = [
+    "logout",
+    "privacy",
+    "faq",
+    "admin",
+    "insufficient-privileges",
+    "create",
+    "editor",
+    "user-banned"
+]
+
 for file in files:
     with open(os.path.join(config.campaigndir, file), "rb") as f:
         data = tomllib.load(f)
         with app.app_context():
             result = Campaign.query.filter_by(action_slug=data["ACTION_SLUG"]).first()
+            reserved_actions.append(data["ACTION_SLUG"])
             if not result:
                 print(f"Creating new campaing for file: {file}")
                 new_campaign = Campaign(
@@ -82,6 +94,10 @@ for file in files:
                 db.session.add(new_campaign)
                 db.session.commit()
 
+""" Update database for any new tables """
+with app.app_context():
+    db.create_all()
+    db.session.commit()
 
 """ Default URLs """
 
@@ -98,6 +114,7 @@ insufficient_privileges_URI = os.path.join(config.site_path, "insufficient-privi
 create_URI = os.path.join(config.site_path, "create")
 editor_URI = os.path.join(config.site_path, "editor")
 edit_URI = os.path.join(config.site_path, "<slug>", "edit")
+banned_URI = os.path.join(config.site_path, "user-banned")
 
 action_template = "action-with-sidebar.html"  # default template for actions
 
@@ -288,6 +305,10 @@ def authorize():
         session["name"] = escape(token["name"])
         session.permanent = True
 
+        # check if user is banned
+        if len(Block.query.filter_by(orcid=session["orcid"]).all()) > 0:
+            return redirect(banned_URI)
+
         # Serve the user page
         return redirect(base_data["user_URI_defined"])
 
@@ -311,6 +332,10 @@ def authorize_admin():
         session["orcid"] = escape(token["orcid"])
         session["name"] = escape(token["name"])
         session.permanent = True
+
+        # check if user is banned
+        if len(Block.query.filter_by(orcid=session["orcid"]).all()) > 0:
+            return redirect(banned_URI)
 
         return redirect(editor_URI)
 
@@ -469,8 +494,7 @@ def admin():
 
     # Check if the user is logged in
     if session.get("orcid") is None:
-        print("User session not set")
-        return redirect("/")
+        return redirect(home_URI)
 
     # Query database for user's ORCID
     user = Admin.query.filter_by(orcid=session["orcid"]).first()
@@ -485,7 +509,7 @@ def admin():
 
     role = UserRole.query.filter_by(role_id=user.role_id).first()
     modify_options = [[1, "Remove"], [2, "Editor"], [3, "Administrator"]]
-    delete_options = [[1, "Delete"]]  # [2, "Ban"]
+    delete_options = [[1, "Delete"], [2, "Ban"], [3, "Remove ban"]]
     alerts = base_alerts.copy()
 
     orphans = len(Campaign.query.filter_by(action_slug='').all())
@@ -543,31 +567,43 @@ def admin():
 
             # Check if we are not accidently changing self
             if user_id == session["orcid"]:
-                alerts["danger"] = "You cannot delete your own signatures."
+                alerts["danger"] = "You cannot delete, ban, or unban your own account."
             # Check if the ORCID is valid (4 groups of 4 digits)
             elif (re.match(r"\d{4}-\d{4}-\d{4}-\d{3}[0-9|xX]", user_id.strip()) is None) or not checksum(user_id.strip()):
-                alerts["danger"] = "Invalid ORCID."
-            # All good
+                alerts["danger"] = "Invalid ORCID iD."
+            elif Admin.query.filter_by(orcid=user_id).first() is not None:
+                alerts["danger"] = "Can not delete, ban or unban users with administrator roles."
             else:
-                # See if user is in the admin database
-                user = Admin.query.filter_by(orcid=user_id).first()
-                if user is not None:
-                    alerts["danger"] = "Can not delete or ban users with administrator roles."
-                else:
+                if user_option == 1:
                     result = Signatory.query.filter_by(orcid=user_id).all()
                     num_deleted = len(result)
                     if num_deleted > 0:
                         Signatory.query.filter_by(orcid=user_id).delete()
                         db.session.commit()
                         if num_deleted == 1:
-                            alerts["success"] = f"Deleted {num_deleted} signature associated with ORCID {user_id}."
+                            alerts["success"] = f"Deleted {num_deleted} signature associated with ORCID iD {user_id}."
                         else:
-                            alerts["success"] = f"Deleted {num_deleted} signatures associated with ORCID {user_id}."
-
+                            alerts["success"] = f"Deleted {num_deleted} signatures associated with ORCID iD {user_id}."
                     else:
-                        alerts["info"] = f"No signatures to delete for ORCID {user_id}."
+                        alerts["info"] = f"No signatures to delete for ORCID iD {user_id}."
 
-                    # if user_option == 2: ## Add user to ban list
+                if user_option == 2:
+                    if len(Block.query.filter_by(orcid=user_id).all()) > 0:
+                        alerts["info"] = f"User is already banned: {user_id}"
+                    else:
+                        user = Block(orcid=user_id, name=get_orcid_name(api, user_id))
+                        db.session.add(user)
+                        db.session.commit()
+                        alerts["success"] = f"User banned: {user_id}"
+
+                if user_option == 3:
+                    result = Block.query.filter_by(orcid=user_id).all()
+                    if len(result) > 0:
+                        Block.query.filter_by(orcid=user_id).delete()
+                        db.session.commit()
+                        alerts["success"] = f"Ban removed for ORCID iD: {user_id}"
+                    else:
+                        alerts["info"] = "ORCID iD is not banned."
 
         # Download database file
         if request.form.get("mode") == "backup_db":
@@ -583,6 +619,7 @@ def admin():
     # Create a list of administrators and editors and count all users
     admins = Admin.query.filter_by(role_id=3).order_by(Admin.name.asc()).all()
     editors = Admin.query.filter_by(role_id=2).order_by(Admin.name.asc()).all()
+    blocked = Block.query.order_by(Block.name.asc()).all()
 
     data = {
         "header_title": session["name"],
@@ -597,6 +634,7 @@ def admin():
         "alert": alerts,
         "editors": editors,
         "admins": admins,
+        "blocked": blocked,
         "orphans": orphans,
         "page": 'admin'
     }
@@ -608,13 +646,9 @@ def admin():
 @app.route(create_URI, methods=["POST", "GET"])
 def create():
     # Show the page to create a campaign
-
-    # Check if the user is logged in
     if session.get("orcid") is None:
-        print("User session not set")
-        return redirect("/")
-
-    if base_data["everyone_is_editor"] is False:
+        return redirect(home_URI)
+    elif base_data["everyone_is_editor"] is False:
         # Query database for user's ORCID
         user = Admin.query.filter_by(orcid=session["orcid"]).first()
         if user is None:
@@ -686,6 +720,8 @@ def create():
                 alerts["danger"] = "Action slug cannot be an empty string."
             elif ' ' in action_slug:
                 alerts["danger"] = "Action slug cannot contain spaces."
+            elif action_slug in reserved_actions:
+                alerts["danger"] = "Action slug is reserved. Please choose another."
             else:
                 db.session.add(new_campaign)
                 db.session.commit()
@@ -723,13 +759,9 @@ def create():
 @app.route(editor_URI)
 def editor():
     # Show the editor page with their list of campaigns
-
-    # Check if the user is logged in
     if session.get("orcid") is None:
-        print("User session not set")
-        return redirect("/")
-
-    if base_data["everyone_is_editor"] is False:
+        return redirect(home_URI)
+    elif base_data["everyone_is_editor"] is False:
         # Query database for user's ORCID
         user = Admin.query.filter_by(orcid=session["orcid"]).first()
         if user is None:
@@ -793,13 +825,9 @@ def editor():
 @app.route(edit_URI, methods=["POST", "GET"])
 def edit(slug):
     # Show the page to edit a specific campaign
-
-    # Check if the user is logged in
     if session.get("orcid") is None:
-        print("User session not set")
-        return redirect("/")
-
-    if base_data["everyone_is_editor"] is False:
+        return redirect(home_URI)
+    elif base_data["everyone_is_editor"] is False:
         # Query database for user's ORCID
         user = Admin.query.filter_by(orcid=session["orcid"]).first()
         if user is None:
@@ -1034,6 +1062,24 @@ def logout():
     base_data["signature_removed_URI_defined"] = None
 
     return redirect(home_URI)
+
+
+@app.route(banned_URI)
+def banned():
+    # If a user session exists, close it
+    if session.get("orcid") is not None:
+        session.pop("name", None)
+        session.pop("orcid", None)
+
+        data = {
+            "header_title": config.site_title,
+            "header_subtitle": config.site_subtitle,
+            "header_path": config.site_path,
+            "role_id": 0,
+        }
+        return render_template("user-banned.html", **(base_data | data))
+    else:
+        return redirect(home_URI)
 
 
 @app.errorhandler(404)

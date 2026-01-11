@@ -51,6 +51,7 @@ h3.short {
   margin-top: 0.6em;
   font-size: 1.3em;
 }
+
 h4.orcid {
   margin-top: 0.5em;
 
@@ -78,6 +79,23 @@ div.main-text {
 }
 .main-text p {
   margin-bottom: 0.8em;
+}
+.main-text a {
+  color: #0099BB;
+  text-decoration: none;
+}
+.main-text a:hover {
+  color: #0099BB;
+  text-decoration: underline;
+}
+
+.action-text a {
+  color: #0099BB;
+  text-decoration: none;
+}
+.action-text a:hover {
+  color: #0099BB;
+  text-decoration: underline;
 }
 
 .orcid-text {
@@ -120,12 +138,9 @@ div.main-text {
   font-size: 0.8em;
   margin-left: 1em;
   margin-right: 0;
-  margin-bottom: 3em;
+  margin-bottom: 0em;
   padding: 0;
   margin-top: 0;
-}
-.user-list#show-admins {
-  margin-bottom: 0em;
 }
 .user-row {
   line-height: 1.4em;
@@ -228,15 +243,6 @@ p.campaign-entries {
 
 .center {
   text-align: center;
-}
-
-.action_text a {
-  color: #0099BB;
-  text-decoration: none;
-}
-.action_text a:hover {
-  color: #0099BB;
-  text-decoration: underline;
 }
 
 .header{
