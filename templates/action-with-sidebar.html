@@ -23,7 +23,7 @@
 
     <td style="padding-left: 3em; vertical-align: top; padding-top: 1.1em;">
       {% if is_active is true %}
-      <p><a class="btn btn-default btn-md" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind | title }}</a>
+      <p><a class="btn btn-default btn-md" style="color: black; text-decoration: none;" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind | title }}</a>
       </p>
       <p class="orcid-text-sidebar">Authenticate with your <a href="https://orcid.org" target="_blank" class="external">ORCID</a> account to sign.</p>
       {% else %}
@@ -46,7 +46,7 @@
         </p>
 
         <form action="{{ download_uri }}" method="POST" id="download-ods">
-            <p><button type="submit" name="mode" value="download-ods" class="btn btn-link" style="padding:0; border: 0;">Download signatories</button></p>
+            <p><button type="submit" name="mode" value="download-ods" class="btn btn-link external" style="padding:0; border: 0;">Download signatories</button></p>
         </form>
         <p>
           Total signatories: {{ total_signatures }}
@@ -62,7 +62,7 @@
           {% for result in visible_signatures %}
           <div class="row user-row">
               <div class="col-md-3" style="padding-left: 0;">
-                  <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" ><span style="font-weight: bold">{{ result.name }}</span></a>
+                  <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" style="font-weight: bold; color: #444444;">{{ result.name }}</a>
               </div>
               <div class="col-md-9">
                   {{ result.affiliation }}

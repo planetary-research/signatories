@@ -18,7 +18,7 @@
 
 {% if is_active is true %}
 <div class="orcid-box">
-  <p><a class="btn btn-default btn-lg" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind | lower }}</a> <span class="orcid-text">Authenticate with your <a href="https://orcid.org" target="_blank" class="external">ORCID</a> account to sign.</span>
+  <p><a class="btn btn-default btn-lg" style="color: black; text-decoration: none;" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind | lower }}</a> <span class="orcid-text">Authenticate with your <a href="https://orcid.org" target="_blank" class="external">ORCID</a> account to sign.</span>
   </p>
 </div>
 {% else %}
@@ -45,14 +45,14 @@
 </div>
 
 <form action="{{ download_uri }}" method="POST" id="download-ods">
-    <p style="margin-bottom: 2em;"><button type="submit" name="mode" value="download-ods" class="btn btn-link" style="padding: 0;">Download signatories</button></p>
+    <p style="margin-bottom: 2em;"><button type="submit" name="mode" value="download-ods" class="btn btn-link external" style="padding: 0;">Download signatories</button></p>
 </form>
 
 <div class="user-list">
     {% for result in visible_signatures %}
     <div class="row">
         <div class="col-md-2" style="padding-left: 0;">
-            <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" ><span style="font-weight: bold">{{ result.name | safe }}</span></a>
+            <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" style="font-weight: bold; color: #444444;">{{ result.name | safe }}</a>
         </div>
         <div class="col-md-10">
             {{ result.affiliation | safe }}
