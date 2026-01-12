@@ -23,53 +23,44 @@
 <body>
 
     <header>
-        <div class="header">
-            <div class="container">
-                <h1><a href="{{ header_path }}">{{ header_title | safe }}</a></h1>
-                <h3 class="short">{{ header_subtitle | safe }}</h3>
-           </div>
+        <div class="container">
+            <h1><a href="{{ header_path }}">{{ header_title | safe }}</a></h1>
+            <h3 class="short">{{ header_subtitle | safe }}</h3>
         </div>
     </header>
 
     <main>
-        <div class="container extra-margin">
-            <div class="main-text">
-                {% block alert %}{% endblock %}
-                {% block nav %}{% endblock %}
-
-                <div class="row extra-margin"></div>
-                <div id="content">{% block content %}{% endblock %}</div>
-            </div>
+        <div class="container">
+            {% block alert %}{% endblock %}
+            {% block nav %}{% endblock %}
+            <div class="margin-before-content" id="content">{% block content %}{% endblock %}</div>
         </div>
     </main>
 
     <footer>
-        <div class="footer">
-            <div class="container">
-                <table width="100%">
-                  <td width="85%" style="vertical-align: top;">
+        <div class="container">
+            <table width="100%">
+                <td width="85%" style="vertical-align: top;">
                     <h4><a href="{{ signatories_url }}"><b>Signatories</b></a></h4>
                     <p class="footer-small">
-                      <a href="{{ footer_url }}" target="_blank">{{ footer_url_name }}</a>
+                        <a href="{{ footer_url }}" target="_blank">{{ footer_url_name }}</a>
                     </p>
                     {% if thank_prc is true %}
                     <p class="footer-small">
-                      Created by the <a href="https://coop.planetary-research.org">Planetary Research Cooperative</a>
+                        Created by the <a href="https://coop.planetary-research.org">Planetary Research Cooperative</a>
                     </p>
                     {% endif %}
-
                     <p class="social">
                         <a href="https://github.com/planetary-research/signatories" title="Github"><i class="bi bi-github"></i></a> <a href="mailto:{{ contact_email }}" title="Contact"><i class="bi bi-envelope"></i></a>
                     </p>
-                  </td>
-                  <td style="text-align: left; vertical-align: top;">
+                </td>
+                <td style="text-align: left; vertical-align: top;">
                     <p class="footer-small"><a href="{{ signatories_url }}">Home</a></p>
                     <p class="footer-small"><a href="{{ faq_uri }}">FAQ</a></p>
                     <p class="footer-small"><a href="{{ privacy_uri }}">Privacy Policy</a></p>
                     <p class="footer-small"><a href="{{ authorization_uri_admin }}">Administer</a></p>
-                  </td>
-                </table>
-            </div>
+                </td>
+            </table>
         </div>
     </footer>
 

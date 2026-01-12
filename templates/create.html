@@ -1,12 +1,10 @@
 {% extends "base.html" %}
+
 {% block head %}
 {{ super() }}
 {% endblock %}
 {% block title %}Signatories - Create campaign{% endblock %}
-
-{% block nav %}
-  {% include "nav-admin.html" %}
-{% endblock %}
+{% block nav %}{% include "nav-admin.html" %}{% endblock %}
 
 {% block alert %}
 
@@ -50,58 +48,74 @@
 
 {% block content %}
 
-<div class="admin-top">
-    <h3>Create a new campaign</h3>
+<div class="margin-bottom">
+    <h3>CREATE A NEW CAMPAIGN</h3>
     <p>
-      To create a new campaign, fill in the following fields and then click on the button "Create".
+        To create a new campaign, fill in the following fields and then click on the button "Create".
     </p>
 
     <form action="{{ create_uri }}" method="POST" id="create_campaign">
         <input type="hidden" name="mode" value="create_campaign">
-
         <div>
-            <p class="create-item-top">Action kind (petition, statement, declaration, letter of support, open letter). Used in the button "Sign the xxx".</p>
+            <p class="create-item">
+                Action kind (petition, statement, declaration, letter of support, open letter).
+                Used as a subtitle in the header and in the button "Sign the ...".
+            </p>
             <input type="text" class="form-control" name="action_kind" placeholder="" value="{{ form_kind }}">
         </div>
 
         <div>
-            <p class="create-item-middle">Action title: displayed in the page header</p>
+            <p class="create-item">
+                Action title: displayed in the page header
+            </p>
             <input type="text" class="form-control" name="action_name" placeholder="" value="{{ form_name }}">
         </div>
 
         <div>
-            <p class="create-item-middle">Action subtitle: displayed above the main text</p>
+            <p class="create-item">
+                Action subtitle: displayed above the main text
+            </p>
             <input type="text" class="form-control" name="action_short_description" placeholder="" value="{{ form_short_description }}">
         </div>
 
         <div>
-            <p class="create-item-middle">Action slug: a unique string that will be used as part of the campaign URL</p>
+            <p class="create-item">
+                Action slug: a unique string that will be used as part of the campaign URL
+            </p>
             <input type="text" class="form-control" name="action_slug" placeholder="" value="{{ form_slug }}">
         </div>
 
         <div>
-            <p class="create-item-middle">Action text (input as HTML)</p>
+            <p class="create-item">
+                Action text (input as HTML)
+            </p>
             <textarea class="input form-control" name="action_text" placeholder="" rows="10">{{ form_text }}</textarea>
         </div>
 
-        <div class="form-choice-margin">
-            <p>Sort signatories alphabetically (by first name). If False, signatories will be ordered chronologically with the first signature at the top of the list.</p>
+        <div class="form-choice">
+            <p>
+                Sort signatories alphabetically (by first name). If False, signatories will be ordered chronologically with the first signature at the top of the list.
+            </p>
             <input type="radio" id="no-sort" name="sort_alphabetical" value="False" required {% if form_sort_alphabetical is false %}checked{% endif %}>
             <label for="no-sort">False</label><br>
             <input type="radio" id="sort" name="sort_alphabetical" value="True" {% if form_sort_alphabetical is true %}checked{% endif %}>
             <label for="sort">True</label><br>
         </div>
 
-        <div class="form-choice-margin">
-            <p>Allow anonymous signatories. If True, the number of anonymous signatories will be tabulated at the bottom of the list.</p>
+        <div class="form-choice">
+            <p>
+                Allow anonymous signatories. If True, the number of anonymous signatories will be tabulated at the bottom of the list.
+            </p>
             <input type="radio" id="no-sort" name="allow_anonymous" value="False" required {% if form_allow_anonymous is false %}checked{% endif %}>
             <label for="no-sort">False</label><br>
             <input type="radio" id="sort" name="allow_anonymous" value="True" {% if form_allow_anonymous is true %}checked{% endif %}>
             <label for="sort">True</label><br>
         </div>
 
-        <div class="form-choice-margin">
-            <p>Activate campaign on creation. If False, you will be able to make modifications before opening the campaign for signatures. The campaign will need to be activated later using the Edit button.</p>
+        <div class="form-choice">
+            <p>
+                Activate campaign on creation. If False, you will be able to make modifications before opening the campaign for signatures. The campaign will need to be activated later using the Edit button.
+            </p>
             <input type="radio" id="no-sort" name="activate_campaign" value="False" required {% if form_activate_campaign is false %}checked{% endif %}>
             <label for="no-sort">False</label><br>
             <input type="radio" id="sort" name="activate_campaign" value="True" {% if form_activate_campaign is true %}checked{% endif %}>
@@ -111,7 +125,6 @@
         <div>
           <button type="submit" class="btn btn-success">Create</button>
         </div>
-
     </form>
 
 </div>
