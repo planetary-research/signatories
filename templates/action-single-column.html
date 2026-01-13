@@ -1,43 +1,37 @@
 {% extends "base.html" %}
 
 {% block title %}{{ action_kind | capitalize | safe }} - {{ header_title | safe }}{% endblock %}
-
-{% block nav %}
-  {% include "nav-admin.html" %}
-{% endblock %}
+{% block nav %}{% include "nav-admin.html" %}{% endblock %}
 
 {% block content %}
 
-<div class="extra-margin">
+<div>
     <h3><b>{{ text_header | safe }}</b></h3>
 </div>
 
-<div class="extra-margin action-text">
+<div>
     {{ action_text | safe }}
 </div>
 
 {% if is_active is true %}
 <div class="orcid-box">
-  <p><a class="btn btn-default btn-lg" style="color: black; text-decoration: none;" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind | lower }}</a> <span class="orcid-text">Authenticate with your <a href="https://orcid.org" target="_blank" class="external">ORCID</a> account to sign.</span>
-  </p>
+    <p><a class="btn btn-default btn-lg" style="color: black; text-decoration: none;" href="{{ authorization_uri }}"><img src="{{ url_for('static', filename='img/orcid.svg') }}" style="width: 1.2em; margin-right: 0.6em;" />Sign the {{ action_kind | lower }}</a> <span class="orcid-text">Authenticate with your <a href="https://orcid.org" target="_blank">ORCID</a> account to sign.</span>
+    </p>
 </div>
 {% else %}
-<div class="alert alert-warning alert-dismissable" role="alert">
+<div class="alert alert-warning" role="alert">
     This campaign is closed and is not accepting further signatures.
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
 </div>
 {% endif %}
 
 <p>
-  Created: {{ action_created.date() }}
-  {% if action_closed is not none %}
-  <br />Closed: {{ action_closed.date() }}
-  {% endif %}
+    Created: {{ action_created.date() }}
+    {% if action_closed is not none %}
+    <br />Closed: {{ action_closed.date() }}
+    {% endif %}
 </p>
 <p>
-  Allow anonymous: {% if allow_anonymous is true %}Yes{% else %}No{% endif %}
+    Allow anonymous: {% if allow_anonymous is true %}Yes{% else %}No{% endif %}
 </p>
 
 <div>
@@ -45,19 +39,19 @@
 </div>
 
 <form action="{{ download_uri }}" method="POST" id="download-ods">
-    <p style="margin-bottom: 2em;"><button type="submit" name="mode" value="download-ods" class="btn btn-link external" style="padding: 0;">Download signatories</button></p>
+    <p style="margin-bottom: 2em;"><button type="submit" name="mode" value="download-ods" class="btn btn-link link" style="padding: 0;">Download signatories</button>
+    </p>
 </form>
 
 <div class="user-list">
     {% for result in visible_signatures %}
     <div class="row">
         <div class="col-md-2" style="padding-left: 0;">
-            <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" style="font-weight: bold; color: #444444;">{{ result.name | safe }}</a>
+            <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" class="user-name">{{ result.name | safe }}</a>
         </div>
         <div class="col-md-10">
             {{ result.affiliation | safe }}
         </div>
-
     </div>
     {% endfor %}
     {% if anonymous_signatures > 0 %}

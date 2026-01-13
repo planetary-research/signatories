@@ -1,16 +1,14 @@
 {% extends "base.html" %}
-{% block title %}Signatories - Home{% endblock %}
 
-{% block nav %}
-  {% include "nav-admin.html" %}
-{% endblock %}
+{% block title %}Signatories - Home{% endblock %}
+{% block nav %}{% include "nav-admin.html" %}{% endblock %}
 
 {% block content %}
-<div class="extra-margin">
+<div>
     <h3>{{ text_header | upper }}</h3>
 </div>
 
-<div class="extra-margin action-text">
+<div>
   <p>
   Signatories is a simple web-based program that allows a person to sign
   an online petition, a declaration, a statement, or any form of communication
@@ -48,7 +46,7 @@
     {% for name, desc in campaigns.items() %}
     {% if name == "demo" or name == "demo-no-anonymous" %}
     <p class="campaign-entries">
-        <a href="{{ desc[2] }}"><span style="font-weight: bold">{{ desc[0] | safe }}</span> — {{ desc[1] | safe }}</a>
+        <a href="{{ desc[2] }}"><b>{{ desc[0] | safe }}</b> — {{ desc[1] | safe }}</a>
     </p>
     {% endif %}
     {% endfor %}
@@ -63,7 +61,7 @@
     {% for name, desc in campaigns.items() %}
     {% if name != "demo" and name != "demo-no-anonymous" %}
     <p class="campaign-entries">
-        <a href="{{ desc[2] }}"><span style="font-weight: bold">{{ desc[0] | safe }}</span> — {{ desc[1] | safe }}</a>
+        <a href="{{ desc[2] }}"><b>{{ desc[0] | safe }}</b> — {{ desc[1] | safe }}</a>
     </p>
     {% endif %}
     {% endfor %}

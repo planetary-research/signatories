@@ -1,12 +1,10 @@
 {% extends "base.html" %}
+
 {% block head %}
 {{ super() }}
 {% endblock %}
 {% block title %}Signatories - Edit campaign{% endblock %}
-
-{% block nav %}
-  {% include "nav-admin.html" %}
-{% endblock %}
+{% block nav %}{% include "nav-admin.html" %}{% endblock %}
 
 {% block alert %}
 
@@ -50,48 +48,62 @@
 
 {% block content %}
 
-<div class="edit-top">
-    <h3>Edit campaign</h3>
+<div class="margin-section">
+    <h3>EDIT CAMPAIGN</h3>
     <p>
-      To edit this campaign, fill in the fields below and then click on the button "Update".
+        To edit this campaign, fill in the fields below and then click on the button "Update".
     </p>
-    <p><br />Owner: <a class="external" href="{{ orcid_url }}{{ owner_orcid }}">{{ owner_name }}</a><br />
-     Created: {{ creation_date }}
-   </p>
+    <p>
+        <br />Owner: <a href="{{ orcid_url }}{{ owner_orcid }}">{{ owner_name }}</a><br />
+        Created: {{ creation_date }}
+    </p>
 
     <form action="{{ edit_uri }}" method="POST" id="edit_campaign">
         <input type="hidden" name="mode" value="edit_campaign">
 
         <div>
-            <p class="create-item-top">Action kind (petition, statement, declaration, letter of support, open letter). Used in the button "Sign the ...".</p>
+            <p class="create-item">
+                Action kind (petition, statement, declaration, letter of support, open letter).
+                Used as a subtitle in the header and in the button "Sign the ...".
+            </p>
             <input type="text" class="form-control" name="action_kind" placeholder="" value="{{ form_kind }}">
         </div>
 
         <div>
-            <p class="create-item-middle">Action title</p>
+            <p class="create-item">
+                Action title
+            </p>
             <input type="text" class="form-control" name="action_name" placeholder="" value="{{ form_name | safe }}">
         </div>
 
         <div>
-            <p class="create-item-middle">Action subtitle</p>
+            <p class="create-item">
+                Action subtitle
+            </p>
             <input type="text" class="form-control" name="action_short_description" placeholder="" value="{{ form_short_description | safe }}">
         </div>
 
         <div>
-            <p class="create-item-middle">Action text (input as HTML)</p>
+            <p class="create-item">
+                Action text (input as HTML)
+            </p>
             <textarea class="input form-control" name="action_text" placeholder="" rows="10">{{ form_text }}</textarea>
         </div>
 
-        <div class="form-choice-margin">
-            <p>Sort signatories alphabetically (by first name). If False, signatories will be ordered chronologically.</p>
+        <div class="form-choice">
+            <p>
+                Sort signatories alphabetically (by first name). If False, signatories will be ordered chronologically.
+            </p>
             <input type="radio" id="no-sort" name="sort_alphabetical" value="False" required {% if form_sort_alphabetical is false %}checked{% endif %}>
             <label for="no-sort">False</label><br>
             <input type="radio" id="sort" name="sort_alphabetical" value="True" {% if form_sort_alphabetical is true %}checked{% endif %}>
             <label for="sort">True</label><br>
         </div>
 
-        <div class="form-choice-margin">
-            <p>Allow anonymous signatories. If True, the number of anonymous signatories will be tabulated at the bottom of the list.</p>
+        <div class="form-choice">
+            <p>
+                Allow anonymous signatories. If True, the number of anonymous signatories will be tabulated at the bottom of the list.
+            </p>
             <input type="radio" id="no-sort" name="allow_anonymous" value="False" required {% if form_allow_anonymous is false %}checked{% endif %}>
             <label for="no-sort">False</label><br>
             <input type="radio" id="sort" name="allow_anonymous" value="True" {% if form_allow_anonymous is true %}checked{% endif %}>
@@ -99,16 +111,14 @@
         </div>
 
         <div>
-          <button type="submit" class="btn btn-success">Update</button>
+            <button type="submit" class="btn btn-success">Update</button>
         </div>
-
     </form>
-
 </div>
 
 <hr />
 
-<div class="edit-middle">
+<div class="margin-section">
     <h3>Activate or close campaign</h3>
     <p>
       When a campaign is closed, no further users will be able to sign it.
@@ -119,7 +129,7 @@
     <form action="{{ edit_uri }}" method="POST" id="close_activate">
         <input type="hidden" name="mode" value="close_activate">
 
-        <div class="form-choice-margin">
+        <div class="form-choice">
             <p>Campaign is:</p>
             <input type="radio" id="active" name="is_active" value="Active" required {% if is_active is true %}checked{% endif %}>
             <label for="active">Active</label><br>
@@ -128,34 +138,31 @@
         </div>
 
         <div>
-          <button type="submit" class="btn btn-success">Update</button>
+            <button type="submit" class="btn btn-success">Update</button>
         </div>
-
     </form>
-
 </div>
 
 <hr />
 
-<div class="edit-middle">
+<div class="margin-section">
     <h3>Reset creation date</h3>
     <p>
       Click the button below to reset the campaign creation date to today.
     </p>
 
     <form action="{{ edit_uri }}" method="POST" id="reset_date">
-        <input type="hidden" >
+        <input type="hidden">
         <div>
-          <button type="submit" class="btn btn-warning" name="mode" value="reset_date">Reset creation date</button>
+            <button type="submit" class="btn btn-danger" name="mode" value="reset_date">Reset creation date</button>
         </div>
 
     </form>
-
 </div>
 
 <hr />
 
-<div class="edit-bottom">
+<div class="margin-bottom">
     <h3>Delete campaign</h3>
     <p>
     To delete this campaign, type "delete" in the box below:
@@ -165,14 +172,13 @@
         <input type="hidden" name="mode" value="delete_campaign">
         <div class="row">
             <div class="col-md-6">
-              <input type="text" class="form-control" name="confirmation" placeholder="">
+                <input type="text" class="form-control" name="confirmation" placeholder="">
             </div>
             <div class="col-md-2">
-              <button type="submit" class="btn btn-danger">Delete</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
             </div>
         </div>
     </form>
-
 </div>
 
 {% endblock %}

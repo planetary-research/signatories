@@ -1,12 +1,10 @@
 {% extends "base.html" %}
+
 {% block head %}
 {{ super() }}
 {% endblock %}
 {% block title %}Sign{% endblock %}
-
-{% block nav %}
-  {% include "nav-admin.html" %}
-{% endblock %}
+{% block nav %}{% include "nav-admin.html" %}{% endblock %}
 
 {% block alert %}
 
@@ -55,7 +53,7 @@
     <h4 class="orcid">{{ orcid_id }}</h4>
 </div>
 
-<div class="sign">
+<div class="margin-bottom sign">
     <h3>Sign the {{ action_kind }}</h3>
     {% if allow_anonymous %}
     <p>
@@ -69,7 +67,7 @@
 
     <form action="{{ user_uri_defined }}" method="POST" id="update_info">
         <input type="hidden" name="mode" value="update_info">
-        <div class="form-choice-margin">
+        <div class="form-choice">
             <input type="radio" id="named" name="anonymous" value="False" required {% if anonymous is false %}checked{% endif %}>
             <label for="named">Please show my name in the signatory list</label><br>
             {% if allow_anonymous %}
@@ -77,33 +75,34 @@
             <label for="anonymous">I would like to remain anonymous</label><br>
             {% endif %}
         </div>
-        <div class="row col-md-8">
-            <input type="text" class="form-control" name="affiliation" placeholder="Affiliation (optional)" value="{{ affiliation }}">
-        </div>
-        <div class="col-md-4">
-            <button type="submit" class="btn btn-success">Sign</button>  <a href="{{ logout_uri }}"><button type="button" class="btn btn-primary">Log out</button></a>
+        <div class="row">
+            <div class="col-md-8">
+                <input type="text" class="form-control" name="affiliation" placeholder="Affiliation (optional)" value="{{ affiliation }}">
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-success">Sign</button>  <a href="{{ logout_uri }}"><button type="button" class="btn btn-primary">Log out</button></a>
+            </div>
         </div>
     </form>
-
 </div>
 
 
 {% if in_database is true %}
-<div class="remove">
+<div class="margin-bottom remove">
     <h3>Remove my signature</h3>
     <p>
     If you would like to remove your signature and delete all your data related to this {{ action_kind | lower }}, type "delete" in the input box below.
     </p>
 
     <form action="{{ user_uri_defined }}" method="POST" id="delete_account">
-        <!-- Column 1: input box -->
-        <div class="row col-md-8">
-            <input type="hidden" name="mode" value="delete">
-            <input type="text" class="form-control" name="confirmation" placeholder="">
-        </div>
-        <!-- Column 2: submit button -->
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-danger">Delete</button>
+        <div class="row">
+            <div class="col-md-8">
+                <input type="hidden" name="mode" value="delete">
+                <input type="text" class="form-control" name="confirmation" placeholder="">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
         </div>
     </form>
 
