@@ -21,7 +21,7 @@ professional affiliation, and they can modify their preferences or remove
 their signature after signing. When a signatory's name is visible, any
 public visitor may click on it to inspect their ORCID profile.
 
-This code is based on the Planetary Research
+This code is inspired by the Planetary Research
 [Reviewer expertise database](https://review.planetary-research.org), which is
 in turn based on the [Seismica](https://seismica.library.mcgill.ca/) reviewer
 expertise database that was created originally by
