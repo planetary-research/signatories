@@ -88,7 +88,7 @@ main .campaign-list {
   margin-top: 0em;
 }
 main p.campaign-entries {
-  margin-left: 0.5em;
+  margin-left: 0em;
   margin-bottom: 0.5em;
   margin-top: 0;
 }
@@ -176,14 +176,22 @@ main .extra-margin {
   margin-top: 1.2em;
   margin-bottom: 1.2em;
 }
-
-.nav-links a {
+main .extra-margin-top {
+  margin-top: 1.2em;
+  margin-bottom: 0em;
+}
+main .nav-links a {
   color: white;
   text-decoration: none;
 }
-.nav-links a:hover {
+main .nav-links a:hover {
   color: white;
   text-decoration: none;
+}
+main .admin-list {
+  margin-top: 2.5em;
+  margin-bottom: 0em;
+  font-size: 0.9em;
 }
 
 hr {
@@ -199,7 +207,8 @@ h2 {
   margin-bottom: 1em;
 }
 h2.orcid {
-  margin-top: 1.2em;
+  padding-top: 0em;
+  margin-top: 0em;
   margin-bottom: 0em;
 }
 h3 {

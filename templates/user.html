@@ -48,22 +48,20 @@
 
 {% block content %}
 
-<div>
-    <h2 class="orcid">{{ name }}</h2>
-    <h4 class="orcid">{{ orcid_id }}</h4>
-</div>
-
 <div class="margin-bottom sign">
     <h3>Sign the {{ action_kind }}</h3>
     {% if allow_anonymous %}
     <p>
-        Please choose whether you would like your name to appear in the signatory list or if you would like to remain anonymous, and then click Sign. You may add your professional affiliation (optional) in the text box below. These choices may be updated at any time.
+        Please choose whether you would like your name to appear in the signatory list or if you would like to remain anonymous, and then click <i>Sign</i>. You may add your professional affiliation (optional) in the text box below. These choices may be updated at any time.
     </p>
     {% else %}
     <p>
-        This {{ action_kind }} does not allow anonymous signing. Please choose to add your name to the signatory list and then click Sign. You may add your professional affiliation (optional) in the text box below. These choices may be updated at any time.
+        This {{ action_kind }} does not allow anonymous signing. Please choose to add your name to the signatory list and then click <i>Sign</i>. You may add your professional affiliation (optional) in the text box below. These choices may be updated at any time.
     </p>
     {% endif %}
+    <p>
+        If you do not wish to sign at this time, please click <i>log out</i>.
+    </p>
 
     <form action="{{ user_uri_defined }}" method="POST" id="update_info">
         <input type="hidden" name="mode" value="update_info">
@@ -79,6 +77,8 @@
             <div class="col-md-8">
                 <input type="text" class="form-control" name="affiliation" placeholder="Affiliation (optional)" value="{{ affiliation }}">
             </div>
+        </div>
+        <div class="row extra-margin-top">
             <div class="col-md-4">
                 <button type="submit" class="btn btn-success">Sign</button>  <a href="{{ logout_uri }}"><button type="button" class="btn btn-primary">Log out</button></a>
             </div>

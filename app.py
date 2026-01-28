@@ -185,7 +185,7 @@ def home():
 
     campaign_list = dict()
     # Create list of signatory campaigns
-    for row in Campaign.query.filter_by(is_active=True).all():
+    for row in Campaign.query.filter_by(is_active=True).order_by(Campaign.creation_date.desc()).all():
         campaign_list[row.action_slug] = [
             row.action_name, row.action_short_description,
             os.path.join(config.site_path, row.action_slug)]
@@ -483,6 +483,7 @@ def user(slug):
         "alert": alerts,
         "in_database": in_database,
         "role_id": role_id,
+        "page": "user",
     }
 
     return render_template("user.html", **(base_data | data))
