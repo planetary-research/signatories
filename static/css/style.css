@@ -193,6 +193,10 @@ main .admin-list {
   margin-bottom: 0em;
   font-size: 0.9em;
 }
+main .admin-row {
+  margin-top: 0em;
+  margin-bottom: 0.25em;
+}
 
 hr {
   border-top: 1px solid #000;
@@ -220,6 +224,11 @@ h3.short {
   margin-bottom: 0;
   margin-top: 0.6em;
   font-size: 1.3em;
+}
+h3.orcid {
+  padding-top: 0em;
+  margin-top: 0.25em;
+  margin-bottom: 0em;
 }
 h4 {
   margin-bottom: 0.5em;

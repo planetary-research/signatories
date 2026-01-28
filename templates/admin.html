@@ -152,7 +152,7 @@
             </div>
         </div>
         {% for result in admins %}
-        <div class="row extra-margin">
+        <div class="row admin-row">
             <div class="col-md-3">
                 <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" class="user-name"><b>{{ result.name | safe }}</b></a>
             </div>
@@ -172,7 +172,7 @@
             </div>
         </div>
         {% for result in editors %}
-        <div class="row extra-margin">
+        <div class="row admin-row">
             <div class="col-md-3">
                 <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" class="user-name"><b>{{ result.name | safe }}</b></a>
             </div>
@@ -192,7 +192,7 @@
             </div>
         </div>
         {% for result in blocked %}
-        <div class="row extra-margin">
+        <div class="row admin-row">
             <div class="col-md-3">
                 <a href="{{ orcid_url }}{{ result.orcid }}" target="_blank" class="user-name"><b>{{ result.name | safe }}</b></a>
             </div>
