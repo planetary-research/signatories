@@ -12,6 +12,7 @@ from markupsafe import escape
 from waitress import serve
 import orcid
 from pyexcel_ods3 import save_data
+from feedgen.feed import FeedGenerator
 
 import config
 from db_models import db, Signatory, Admin, Campaign, UserRole, Block
@@ -71,7 +72,9 @@ reserved_actions = [
     "insufficient-privileges",
     "create",
     "editor",
-    "user-banned"
+    "user-banned",
+    "feed",
+    "feeds",
 ]
 
 for file in files:
@@ -1091,6 +1094,41 @@ def page_not_found(e):
         "header_path": config.site_path,
     }
     return render_template("404.html", **(base_data | data)), 404
+
+
+@app.route('/feed/')
+def feeds():
+    fg = FeedGenerator()
+    fg.id(os.path.join(config.site_path, "feeds"))
+    fg.title(config.site_title)
+    fg.subtitle(config.site_subtitle)
+    fg.link(href=config.site_path, rel='alternate')
+    fg.language('en')
+
+    # Create list of feed entries
+    for row in Campaign.query.filter_by(is_active=True).order_by(Campaign.creation_date.asc()).all():
+        fe = fg.add_entry()
+        fe.id(os.path.join(config.site_path, row.action_slug))
+        fe.title(row.action_name)
+        fe.summary(row.action_short_description)
+        fe.link(href=os.path.join(config.site_path, row.action_slug))
+        fe.published(row.creation_date.replace(tzinfo=datetime.UTC))
+        fe.content(row.action_text)
+        print(row.creation_date)
+
+    # Generate the feed as bytes
+    feed_data = fg.atom_str(pretty=True)
+
+    # Create a BytesIO object
+    feed_io = BytesIO(feed_data)
+
+    # Return as downloadable file
+    return send_file(
+        feed_io,
+        as_attachment=False,
+        download_name='atom.xml',  # Filename users see
+        mimetype='application/atom+xml'  # Correct MIME type
+    )
 
 
 if __name__ == "__main__":

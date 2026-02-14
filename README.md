@@ -30,7 +30,7 @@ expertise database that was created originally by
 # Dependencies
 
 ```
-conda create -n signatories python=3.13 python-dotenv flask flask-sqlalchemy sqlalchemy-utils orcid waitress pyexcel-ods3 -c conda-forge
+conda create -n signatories python=3.13 python-dotenv flask flask-sqlalchemy sqlalchemy-utils orcid waitress pyexcel-ods3 feedgen -c conda-forge
 ```
 
 # Instructions
