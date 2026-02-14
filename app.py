@@ -1107,14 +1107,14 @@ def feeds():
 
     # Create list of feed entries
     for row in Campaign.query.filter_by(is_active=True).order_by(Campaign.creation_date.asc()).all():
-        fe = fg.add_entry()
-        fe.id(os.path.join(config.site_path, row.action_slug))
-        fe.title(row.action_name)
-        fe.summary(row.action_short_description)
-        fe.link(href=os.path.join(config.site_path, row.action_slug))
-        fe.published(row.creation_date.replace(tzinfo=datetime.UTC))
-        fe.content(row.action_text)
-        print(row.creation_date)
+        if row.action_slug not in ['demo', 'demo-no-anonymous']:
+            fe = fg.add_entry()
+            fe.id(os.path.join(config.site_path, row.action_slug))
+            fe.title(row.action_name)
+            fe.summary(row.action_short_description)
+            fe.link(href=os.path.join(config.site_path, row.action_slug))
+            fe.published(row.creation_date.replace(tzinfo=datetime.UTC))
+            fe.content(row.action_text)
 
     # Generate the feed as bytes
     feed_data = fg.atom_str(pretty=True)
@@ -1126,8 +1126,8 @@ def feeds():
     return send_file(
         feed_io,
         as_attachment=False,
-        download_name='atom.xml',  # Filename users see
-        mimetype='application/atom+xml'  # Correct MIME type
+        download_name='atom.xml',
+        mimetype='application/atom+xml'
     )
 
 
