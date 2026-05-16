@@ -189,9 +189,11 @@ def home():
     campaign_list = dict()
     # Create list of signatory campaigns
     for row in Campaign.query.filter_by(is_active=True).order_by(Campaign.creation_date.desc()).all():
+        excerpt = row.action_short_description + '. ' + row.action_text
+        total_signatures = len(Signatory.query.filter_by(campaign=row.action_slug).all())
         campaign_list[row.action_slug] = [
-            row.action_name, row.action_short_description,
-            os.path.join(config.site_path, row.action_slug)]
+            row.action_name, excerpt,
+            os.path.join(config.site_path, row.action_slug), row.creation_date, total_signatures]
     data = {
         "header_title": config.site_title,
         "header_subtitle": config.site_subtitle,

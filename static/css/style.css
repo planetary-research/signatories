@@ -87,10 +87,33 @@ main .campaign-list {
   margin-bottom: 4em;
   margin-top: 0em;
 }
+main .campaign-list hr {
+  border: none;
+  height: 1px;
+  background-color: #ccc;
+  margin-bottom: 0.5em;
+  margin-top: 1em;
+}
 main p.campaign-entries {
   margin-left: 0em;
+  margin-right: 1em;
   margin-bottom: 0.5em;
   margin-top: 0;
+}
+main p.campaign-metadata {
+  margin-left: 0em;
+  margin-right: 1em;
+  margin-bottom: 0.5em;
+  color: #666;
+  font-size: 0.9em;
+  line-height: 1em;
+}
+main p.campaign-excerpt {
+  margin-left: 0em;
+  margin-right: 1em;
+  margin-top: 1em;
+  font-size: 0.9em;
+  line-height: 1.2em
 }
 main .orcid-text {
   color: #666;

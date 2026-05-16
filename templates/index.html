@@ -38,11 +38,23 @@
 <div class="campaign-list">
     {% for name, desc in campaigns.items() %}
     {% if name == "demo" or name == "demo-no-anonymous" %}
+    <hr>
     <p class="campaign-entries">
-        <a href="{{ desc[2] }}"><b>{{ desc[0] | safe }}</b> — {{ desc[1] | safe }}</a>
+        <a href="{{ desc[2] }}"><b>{{ desc[0] | safe }}</b></a>
+    </p>
+    <p class="campaign-metadata">
+      Created: {{ desc[3].date() }}
+    </p>
+    <p class="campaign-metadata">
+      Signatories: {{ desc[4] }}
+    </p>
+    <p class="campaign-excerpt">
+      {{ desc[1] | striptags() | safe | truncate(350) }}
     </p>
     {% endif %}
     {% endfor %}
+    <hr>
+
 </div>
 {% endif %}
 
@@ -53,11 +65,22 @@
 <div class="campaign-list">
     {% for name, desc in campaigns.items() %}
     {% if name != "demo" and name != "demo-no-anonymous" %}
+    <hr>
     <p class="campaign-entries">
-        <a href="{{ desc[2] }}"><b>{{ desc[0] | safe }}</b> — {{ desc[1] | safe }}</a>
+        <a href="{{ desc[2] }}"><b>{{ desc[0] | safe }}</b></a>
+    </p>
+    <p class="campaign-metadata">
+      Created: {{ desc[3].date() }}
+    </p>
+    <p class="campaign-metadata">
+      Signatories: {{ desc[4] }}
+    </p>
+    <p class="campaign-excerpt">
+      {{ desc[1] | striptags() | safe | truncate(310) }}
     </p>
     {% endif %}
     {% endfor %}
+    <hr>
     {% if campaigns.items() | length == 2 %}
     <p class="campaign-entries">None</p>
     {% endif %}
