@@ -58,7 +58,7 @@
         <input type="hidden" name="mode" value="create_campaign">
         <div>
             <p class="create-item">
-                Action kind (petition, statement, declaration, letter of support, open letter).
+                Action kind (open letter, letter of support, statement, declaration, petition).
                 Used as a subtitle in the header and in the button "Sign the ...".
             </p>
             <input type="text" class="form-control" name="action_kind" placeholder="" value="{{ form_kind }}">
@@ -73,7 +73,7 @@
 
         <div>
             <p class="create-item">
-                Action subtitle: displayed above the main text
+                Action subtitle: displayed above the main text in bold
             </p>
             <input type="text" class="form-control" name="action_short_description" placeholder="" value="{{ form_short_description }}">
         </div>
@@ -87,9 +87,35 @@
 
         <div>
             <p class="create-item">
-                Action text (input as HTML)
+                Action text
             </p>
-            <textarea class="input form-control" name="action_text" placeholder="" rows="10">{{ form_text }}</textarea>
+
+            <div class="quill-editor" id="editor"></div>
+            <input type="hidden" name="action_text" id="action_text">
+
+            <script>
+                const toolbarOptions = [
+                    [{ 'header': [1, 2, 3, 4, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['link'],
+                    ['blockquote'],
+                    [{ 'list': 'bullet' }, { 'list': 'ordered' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'color': [] }],
+                    [{ 'script': 'sub' }, { 'script': 'super' }],
+                    ['clean']
+                ];
+                const quill = new Quill('#editor', {
+                    modules: {
+                        toolbar: toolbarOptions
+                    },
+                    theme: 'snow'
+                });
+                document.querySelector('form').onsubmit = function() {
+                    var hiddenField = document.getElementById('action_text');
+                    hiddenField.value = document.querySelector('.ql-editor').innerHTML;
+                };
+            </script>
         </div>
 
         <div class="form-choice">
