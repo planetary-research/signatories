@@ -2,6 +2,9 @@
 
 {% block head %}
 {{ super() }}
+<!-- The following two lines are necessary to use Quill editor -->
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 {% endblock %}
 {% block title %}Signatories - Edit campaign{% endblock %}
 {% block nav %}{% include "nav-admin.html" %}{% endblock %}
@@ -85,9 +88,37 @@
 
         <div>
             <p class="create-item">
-                Action text (input as HTML)
+                Action text
             </p>
-            <textarea class="input form-control" name="action_text" placeholder="" rows="10">{{ form_text }}</textarea>
+
+            <div class="quill-editor" id="editor">
+                {{ form_text | safe }}
+            </div>
+            <input type="hidden" name="action_text" id="action_text">
+
+            <script>
+                const toolbarOptions = [
+                    [{ 'header': [1, 2, 3, 4, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['link'],
+                    ['blockquote'],
+                    [{ 'list': 'bullet' }, { 'list': 'ordered' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'color': [] }],
+                    [{ 'script': 'sub' }, { 'script': 'super' }],
+                    ['clean']
+                ];
+                const quill = new Quill('#editor', {
+                    modules: {
+                        toolbar: toolbarOptions
+                    },
+                    theme: 'snow'
+                });
+                document.querySelector('form').onsubmit = function() {
+                    var hiddenField = document.getElementById('action_text');
+                    hiddenField.value = document.querySelector('.ql-editor').innerHTML;
+                };
+            </script>
         </div>
 
         <div class="form-choice">
