@@ -57,7 +57,7 @@
     <div class="campaign-list">
         {% for name, desc in my_campaigns.items() %}
         <p class="campaign-entries">
-            <a href="/{{ name }}"><i class="bi {% if desc[3] %}bi-eye{% else %}bi-eye-slash{% endif %}" style="margin-right: 1.2em;"></i></a><a href="{{ desc[2] }}/edit"><b>{{ desc[0] | safe }}</b> — {{ desc[1] | safe }}</a>
+            <a href="/{{ name }}"><i class="bi {% if desc[3] %}bi-eye{% else %}bi-eye-slash{% endif %}" style="margin-right: 1.2em;"></i></a><a href="{{ desc[2] }}/edit"><b>{{ desc[0] | safe }}</b></a>
         </p>
         {% endfor %}
         {% if my_campaigns.items()|length == 0 %}
@@ -71,7 +71,7 @@
     <div class="campaign-list">
         {% for name, desc in all_campaigns.items() %}
         <p class="campaign-entries">
-            <a href="/{{ name }}"><i class="bi {% if desc[3] %}bi-eye{% else %}bi-eye-slash{% endif %}" style="margin-right: 1.2em;"></i></a><a href="{{ desc[2] }}/edit"><b>{{ desc[0] | safe }}</b> — {{ desc[1] | safe }}</a>
+            <a href="/{{ name }}"><i class="bi {% if desc[3] %}bi-eye{% else %}bi-eye-slash{% endif %}" style="margin-right: 1.2em;"></i></a><a href="{{ desc[2] }}/edit"><b>{{ desc[0] | safe }}</b></a>
         </p>
         {% endfor %}
     </div>
