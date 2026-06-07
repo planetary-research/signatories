@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}{{ action_kind | capitalize | safe }} - {{ header_title | safe }}{% endblock %}
+{% block campaign_header %}{% include "campaign-header.html" %}{% endblock %}
 {% block nav %}{% include "nav-admin.html" %}{% endblock %}
 
 {% block content %}
