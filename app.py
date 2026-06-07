@@ -268,6 +268,8 @@ def action(slug):
             return send_file(ods_bytes, as_attachment=True, download_name=slug+".ods")
 
     data = {
+        "site_title": config.site_title,
+        "site_subtitle": config.site_subtitle,
         "header_title": action_data.action_name,
         "header_subtitle": action_data.action_kind.upper(),
         "header_path": os.path.join(config.site_path, slug),

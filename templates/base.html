@@ -25,6 +25,8 @@
 
 <body>
 
+    <preheader>{% block campaign_header %}{% endblock %}</preheader>
+
     <header>
         <div class="container">
             <h1><a href="{{ header_path }}">{{ header_title | safe }}</a></h1>
@@ -54,7 +56,7 @@
                     </p>
                     {% endif %}
                     <p class="social">
-                        <a href="https://github.com/planetary-research/signatories" title="Github"><i class="bi bi-github"></i></a> <a href="mailto:{{ contact_email }}" title="Contact"><i class="bi bi-envelope"></i></a> <a href="/feed" title="Atom feed" target="_blank"><i class="bi bi-rss"></i></a>
+                        <a href="https://github.com/planetary-research/signatories" title="Github" target="_blank"><i class="bi bi-github"></i></a> <a href="mailto:{{ contact_email }}" title="Contact"><i class="bi bi-envelope"></i></a> <a href="/feed" title="Atom feed" target="_blank"><i class="bi bi-rss"></i></a>
                     </p>
                 </td>
                 <td style="text-align: left; vertical-align: top;">

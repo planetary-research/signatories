@@ -35,6 +35,29 @@ header a:hover {
   color: white;
   text-decoration: underline;
 }
+preheader {
+  background-color: #278;
+  color: #aff;
+  font-weight: bold;
+  font-size: 0.8em;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+  line-height: 1em;
+}
+preheader div {
+  padding-top: 0.7em;
+  padding-bottom: 0em;
+}
+preheader a {
+  color: #aff;
+  text-decoration: none;
+}
+preheader a:hover {
+  color: #aff;
+  text-decoration: underline;
+}
 
 footer {
   margin-top: auto;
