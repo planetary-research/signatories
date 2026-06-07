@@ -9,7 +9,22 @@
 <div class="margin-bottom">
     <h3>FREQUENTLY ASKED QUESTIONS</h3>
 
-    <h3>What information do you store?</h3>
+    <ul>
+      <li><a href="#rss-atom-feeds">How to keep up to date: RSS/Atom feeds</a></li>
+      <li><a href="#information-stored">What information do you store?</a></li>
+      <li><a href="#information-stored-orcid">Are any data stored with ORCID?</a></li>
+      <li><a href="#anonymous-signatatures">Can anyone find out that I signed anonymously?</a></li>
+      <li><a href="#source-code">Can I see the source code?</a></li>
+    </ul>
+
+    <h3 id="rss-atom-feeds">How to keep up to date: RSS/Atom feeds</h3>
+    <p>
+      If you would like to be informed of any new campaigns on this server,
+      it is only necessary to add our
+      <a href="{{ signatories_url }}/feed">RSS/Atom feed</a> to your favorite feed reader.
+    </p>
+
+    <h3 id="information-stored">What information do you store?</h3>
     <p>
       For each signature, we store the user's ORCID, the user name as obtained
       from ORCID, the user affiliation (if provided), the campaign name, and
@@ -18,15 +33,15 @@
       and deleting a signature removes the information from the database.
     </p>
 
-    <h3>Are any data stored with ORCID?</h3>
+    <h3 id="information-stored-orcid">Are any data stored with ORCID?</h3>
     <p>
-      No. Authenticating with ORCID is used only to ensure that each signatory
-      is associated with an ORCID account and to obtain the name associated
-      with the account. No data are stored on ORCID servers and ORCID can
-      not access the signatories database.
+      No. Authenticating with ORCID is used only to prove that you are the owner
+      of an ORCID iD, to obtain the name associated with the account, and to ensure
+      that each signatory is associated with an ORCID account. No data are stored
+      on ORCID servers and ORCID cannot access the signatories database.
     </p>
 
-    <h3>Can anyone find out that I signed anonymously?</h3>
+    <h3 id="anonymous-signatatures">Can anyone find out that I signed anonymously?</h3>
     <p>
       All signatures to a campaign, both public and anonymous, are stored in a
       database on the server. The only people who can access this database are
@@ -35,13 +50,13 @@
       who sign a campaign cannot access the identity of anonymous signatories.
     </p>
     <p>
-      The act of authenticating with ORCID does not prove in any way that a
-      campaign was signed. Authentication occurs before the user decides to
+      We note that the act of authenticating with ORCID does not prove in any way
+      that a campaign was signed. Authentication occurs before the user decides to
       submit their signature, and the user could authenticate with
       ORCID just to test the functionality of the server.
     </p>
 
-    <h3>Can I see the source code?</h3>
+    <h3 id="source-code">Can I see the source code?</h3>
     <p>
       Yes! The code that we use is available on
       <a href="https://github.com/planetary-research/signatories" class="external">Github</a> and

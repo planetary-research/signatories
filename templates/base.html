@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{{ header_subtitle | safe }}">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}" />
@@ -49,11 +50,11 @@
                     </p>
                     {% if thank_prc is true %}
                     <p class="footer-small">
-                        Created by the <a href="https://coop.planetary-research.org">Planetary Research Cooperative</a>
+                        Created by the <a href="https://coop.planetary-research.org" target="_blank">Planetary Research Cooperative</a>
                     </p>
                     {% endif %}
                     <p class="social">
-                        <a href="https://github.com/planetary-research/signatories" title="Github"><i class="bi bi-github"></i></a> <a href="mailto:{{ contact_email }}" title="Contact"><i class="bi bi-envelope"></i></a> <a href="/feed" title="Atom feed"><i class="bi bi-rss"></i></a>
+                        <a href="https://github.com/planetary-research/signatories" title="Github"><i class="bi bi-github"></i></a> <a href="mailto:{{ contact_email }}" title="Contact"><i class="bi bi-envelope"></i></a> <a href="/feed" title="Atom feed" target="_blank"><i class="bi bi-rss"></i></a>
                     </p>
                 </td>
                 <td style="text-align: left; vertical-align: top;">

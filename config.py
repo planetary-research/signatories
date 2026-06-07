@@ -6,17 +6,25 @@ load_dotenv()
 port = os.getenv('port')
 sandbox = True
 
+site_path = os.getenv("site_path")
+
 if (public_domain := os.getenv("public_domain")) is not None:
     sandbox = False
     code_callback_URI = f"{public_domain}/authorization-code-callback"
     orcid_url = "https://orcid.org/"
-    signatories_url = os.path.join(public_domain, os.getenv("site_path"))
+    if site_path == '/':
+        signatories_url = public_domain
+    else:
+        signatories_url = os.path.join(public_domain, os.getenv("site_path")[1:])
 
 else:
     sandbox = True
     code_callback_URI = f"http://127.0.0.1:{port}/authorization-code-callback"
     orcid_url = "https://sandbox.orcid.org/"
-    signatories_url = os.getenv("site_path")
+    if site_path == '/':
+        signatories_url = f"http://127.0.0.1:{port}"
+    else:
+        signatories_url = os.path.join(f"http://127.0.0.1:{port}", os.getenv("site_path")[1:])
 
 # Load ORCID and admin parameters from .env file
 cookie_secret = os.getenv("cookie_secret")
@@ -52,7 +60,6 @@ favicon = os.getenv("favicon")
 site_title = os.getenv("site_title")
 site_subtitle = os.getenv("site_subtitle")
 site_path = os.getenv("site_path")
-site_header = os.getenv("site_header")
 if os.getenv("show_examples").lower() == "true":
     show_examples = True
 else:

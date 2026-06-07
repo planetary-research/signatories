@@ -65,6 +65,12 @@ footer .social {
 footer .social i {
   margin-right: 0.5em;
 }
+footer .social a:link {
+  color: white;
+}
+footer .social a:visited {
+  color: white;
+}
 
 main {
   flex: 1;

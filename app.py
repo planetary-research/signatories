@@ -5,6 +5,7 @@ from datetime import timedelta
 from io import BytesIO
 import tomllib
 from flask import Flask
+from flask import make_response
 from flask import request, session
 from flask import redirect, render_template
 from flask import send_from_directory, send_file
@@ -198,7 +199,6 @@ def home():
         "header_title": config.site_title,
         "header_subtitle": config.site_subtitle,
         "header_path": config.site_path,
-        "text_header": config.site_header,
         "campaigns": campaign_list,
         "page": "home",
         "role_id": role_id,
@@ -1118,19 +1118,9 @@ def feeds():
             fe.published(row.creation_date.replace(tzinfo=datetime.UTC))
             fe.content(row.action_text)
 
-    # Generate the feed as bytes
-    feed_data = fg.atom_str(pretty=True)
-
-    # Create a BytesIO object
-    feed_io = BytesIO(feed_data)
-
-    # Return as downloadable file
-    return send_file(
-        feed_io,
-        as_attachment=False,
-        download_name='atom.xml',
-        mimetype='application/atom+xml'
-    )
+    response = make_response(fg.atom_str(pretty=True))
+    response.headers.set('Content-Type', 'application/atom+xml; charset=utf-8')
+    return response
 
 
 if __name__ == "__main__":
