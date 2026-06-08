@@ -69,9 +69,12 @@ footer {
   padding-top: 2.5em;
   padding-bottom: 3em;
 }
-footer a {
+footer a:link {
   color: white;
   text-decoration: none;
+}
+footer a:visited {
+  color: white;
 }
 footer a:hover {
   color: white;

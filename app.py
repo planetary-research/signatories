@@ -1100,25 +1100,27 @@ def page_not_found(e):
     return render_template("404.html", **(base_data | data)), 404
 
 
-@app.route('/feed/')
+@app.route('/feed')
 def feeds():
     fg = FeedGenerator()
-    fg.id(os.path.join(config.site_path, "feeds"))
+    fg.id(os.path.join(config.signatories_url, "feed"))
     fg.title(config.site_title)
     fg.subtitle(config.site_subtitle)
-    fg.link(href=config.site_path, rel='alternate')
+    fg.link(href=os.path.join(config.signatories_url, "feed"), rel='self')
     fg.language('en')
+    fg.author(name=config.site_title)
+
 
     # Create list of feed entries
     for row in Campaign.query.filter_by(is_active=True).order_by(Campaign.creation_date.asc()).all():
         if row.action_slug not in ['demo', 'demo-no-anonymous']:
             fe = fg.add_entry()
-            fe.id(os.path.join(config.site_path, row.action_slug))
+            fe.id(os.path.join(config.signatories_url, row.action_slug))
             fe.title(row.action_name)
             fe.summary(row.action_short_description)
-            fe.link(href=os.path.join(config.site_path, row.action_slug))
+            fe.link(href=os.path.join(config.signatories_url, row.action_slug))
             fe.published(row.creation_date.replace(tzinfo=datetime.UTC))
-            fe.content(row.action_text)
+            fe.content(row.action_text, type='html')
 
     response = make_response(fg.atom_str(pretty=True))
     response.headers.set('Content-Type', 'application/atom+xml; charset=utf-8')
