@@ -149,6 +149,7 @@ base_data = {
     "redirect_alerts": None,
     "role_id": 0,
     "everyone_is_editor": config.everyone_is_editor,
+    "site_description": config.site_description,
 }
 
 base_alerts = {
@@ -1109,7 +1110,6 @@ def feeds():
     fg.link(href=os.path.join(config.signatories_url, "feed"), rel='self')
     fg.language('en')
     fg.author(name=config.site_title)
-
 
     # Create list of feed entries
     for row in Campaign.query.filter_by(is_active=True).order_by(Campaign.creation_date.asc()).all():
