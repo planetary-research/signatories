@@ -190,6 +190,27 @@
 
 <hr />
 
+<div class="margin-section">
+    <h3>Change ownership</h3>
+    <p>
+      To change the owner of this campaign, enter the ORCID iD of the new owner and click submit. You will no longer be able to edit this campaign after the change is made.
+    </p>
+
+    <form action="{{ edit_uri }}" method="POST" id="change_owner">
+        <div class="row">
+            <div class="col-md-4">
+                <input type="hidden" name="mode" value="change_owner">
+                <input type="text" class="form-control" name="user_id" placeholder="New owner ORCID iD">
+            </div>
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-danger">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<hr />
+
 <div class="margin-bottom">
     <h3>Delete campaign</h3>
     <p>

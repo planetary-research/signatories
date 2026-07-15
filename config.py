@@ -60,6 +60,7 @@ favicon = os.getenv("favicon")
 site_title = os.getenv("site_title")
 site_subtitle = os.getenv("site_subtitle")
 site_path = os.getenv("site_path")
+site_description = os.getenv("site_description")
 if os.getenv("show_examples").lower() == "true":
     show_examples = True
 else:

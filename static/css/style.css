@@ -115,7 +115,7 @@ main p {
   margin-bottom: 0.8em;
 }
 main .campaign-list {
-  margin-bottom: 4em;
+  margin-bottom: 0em;
   margin-top: 0em;
 }
 main .campaign-list hr {
@@ -240,6 +240,9 @@ main .remove {
 }
 main .margin-before-content {
   margin-top: 4em;
+}
+main .margin-before-edit {
+  margin-top: 1.2em;
 }
 main .extra-margin {
   margin-top: 1.2em;

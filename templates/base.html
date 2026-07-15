@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{{ header_subtitle | safe }}">
+    <meta name="description" content="{{ site_description | safe }}">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}" />
@@ -38,6 +38,7 @@
         <div class="container">
             {% block alert %}{% endblock %}
             {% block nav %}{% endblock %}
+            {% block edit_button %}{% endblock %}
             <div class="margin-before-content" id="content">{% block content %}{% endblock %}</div>
         </div>
     </main>
