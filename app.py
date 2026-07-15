@@ -213,6 +213,7 @@ def home():
 
 @app.route(action_URI, methods=["POST", "GET"])
 def action(slug):
+    can_edit = False
     # Show the campaign
     if session.get("orcid") is None:
         role_id = 0
@@ -220,6 +221,8 @@ def action(slug):
         user = Admin.query.filter_by(orcid=session["orcid"]).first()
         if user is not None:
             role_id = user.role_id
+            if role_id == 3:
+                can_edit = True
         else:
             role_id = 2
     else:
@@ -228,6 +231,8 @@ def action(slug):
             role_id = 0
         else:
             role_id = user.role_id
+            if role_id == 3:
+                can_edit = True
 
     # Get the ORCID authentication URI
     URI = api.get_login_url(scope="/authenticate", redirect_uri=config.code_callback_URI)
@@ -241,6 +246,11 @@ def action(slug):
             "header_path": config.site_path,
         }
         return render_template("campaign-not-found.html", **(base_data | data))
+
+    # For editors, check if the user is the job announcement owner
+    if role_id == 2:
+        if result.owner_orcid == session["orcid"]:
+            can_edit = True
 
     action_data = Campaign.query.filter_by(action_slug=slug).first()
 
@@ -287,6 +297,8 @@ def action(slug):
         "allow_anonymous": action_data.allow_anonymous,
         "role_id": role_id,
         "download_uri": os.path.join(config.site_path, slug),
+        "show_edit": can_edit,
+        "edit_URL": os.path.join(config.site_path, result.action_slug, "edit"),
     }
     base_data["user_URI_defined"] = os.path.join(config.site_path, slug, "user")
     base_data["thank_you_URI_defined"] = os.path.join(config.site_path, slug, "thank-you")
@@ -796,23 +808,28 @@ def editor():
         alerts = base_data["redirect_alerts"]
         base_data["redirect_alerts"] = None
 
-    my_campaigns = dict()
+    my_campaigns_active = dict()
+    my_campaigns_inactive = dict()
     all_campaigns = dict()
     # Create list of signatory campaigns
     for row in Campaign.query.order_by(Campaign.action_name.asc()).all():
         if row.owner_orcid == session["orcid"]:
-            my_campaigns[row.action_slug] = [
-                row.action_name, row.action_short_description,
-                os.path.join(config.site_path, row.action_slug),
-                row.is_active
-            ]
+            if row.is_active:
+                my_campaigns_active[row.action_slug] = [
+                    row.action_name,
+                    os.path.join(config.site_path, row.action_slug),
+                ]
+            else:
+                my_campaigns_inactive[row.action_slug] = [
+                    row.action_name,
+                    os.path.join(config.site_path, row.action_slug),
+                ]
 
     if role_id == 3:
         for row in Campaign.query.order_by(Campaign.action_name.asc()).all():
             all_campaigns[row.action_slug] = [
-                row.action_name, row.action_short_description,
+                row.action_name,
                 os.path.join(config.site_path, row.action_slug),
-                row.is_active
             ]
 
     data = {
@@ -824,7 +841,8 @@ def editor():
         "role_id": role_id,
         "alert": alerts,
         "page": 'editor',
-        "my_campaigns": my_campaigns,
+        "my_campaigns_active": my_campaigns_active,
+        "my_campaigns_inactive": my_campaigns_inactive,
         "all_campaigns": all_campaigns,
     }
 

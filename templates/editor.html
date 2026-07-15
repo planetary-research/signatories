@@ -48,32 +48,47 @@
 {% block content %}
 
 <div class="margin-bottom">
-    <h3>EDIT OR DELETE A CAMPAIGN</h3>
+    <h3>MY CAMPAIGNS</h3>
     <p>
-        To edit or delete a campaign, click on the campaign name. To view a campaign, click on <i class="bi bi-eye"></i> (open campaigns) or <i class="bi bi-eye-slash"></i> (closed campaigns).
+        Click on the title to view a campaign, or click on <i class="bi bi-pencil-square"></i> to edit the campaign.
     </p>
-    <h3>My campaigns</h3>
+    <h3>Active campaigns</h3>
 
     <div class="campaign-list">
-        {% for name, desc in my_campaigns.items() %}
+        {% for name, desc in my_campaigns_active.items() %}
         <p class="campaign-entries">
-            <a href="/{{ name }}"><i class="bi {% if desc[3] %}bi-eye{% else %}bi-eye-slash{% endif %}" style="margin-right: 1.2em;"></i></a><a href="{{ desc[2] }}/edit"><b>{{ desc[0] | safe }}</b></a>
+          <a href="{{ desc[1] }}/edit"><i class="bi bi-pencil-square" style="margin-right: 1.2em;"></i></a><a href="/{{ name }}">{{ desc[0] | safe }}</a>
         </p>
         {% endfor %}
-        {% if my_campaigns.items()|length == 0 %}
+        {% if my_campaigns_active.items()|length == 0 %}
+        <p class="campaign-entries">None</p>
+        {% endif %}
+    </div>
+
+    <h3 style="margin-top: 1em;">Closed campaigns</h3>
+    <div class="campaign-list">
+        {% for name, desc in my_campaigns_inactive.items() %}
+        <p class="campaign-entries">
+          <a href="{{ desc[1] }}/edit"><i class="bi bi-pencil-square" style="margin-right: 1.2em;"></i></a><a href="/{{ name }}">{{ desc[0] | safe }}</a>
+        </p>
+        {% endfor %}
+        {% if my_campaigns_inactive.items()|length == 0 %}
         <p class="campaign-entries">None</p>
         {% endif %}
     </div>
 
     {% if role_id == 3 %}
-    <h3>All campaigns</h3>
+    <h3>ADMINISTRATION</h3>
 
     <div class="campaign-list">
         {% for name, desc in all_campaigns.items() %}
         <p class="campaign-entries">
-            <a href="/{{ name }}"><i class="bi {% if desc[3] %}bi-eye{% else %}bi-eye-slash{% endif %}" style="margin-right: 1.2em;"></i></a><a href="{{ desc[2] }}/edit"><b>{{ desc[0] | safe }}</b></a>
+            <a href="{{ desc[1] }}/edit"><i class="bi bi-pencil-square" style="margin-right: 1.2em;"></i></a><a href="/{{ name }}">{{ desc[0] | safe }}</a>
         </p>
         {% endfor %}
+        {% if all_campaigns.items()|length == 0 %}
+        <p class="my-job-entries">None</p>
+        {% endif %}
     </div>
     {% endif %}
 

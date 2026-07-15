@@ -4,6 +4,14 @@
 {% block campaign_header %}{% include "campaign-header.html" %}{% endblock %}
 {% block nav %}{% include "nav-admin.html" %}{% endblock %}
 
+{% block edit_button %}
+{% if show_edit %}
+<div class="margin-before-edit">
+    <p><a href="{{ edit_URL }}"><i class="bi bi-pencil-square"></i>&nbsp;Edit this campaign</a></p>
+</div>
+{% endif %}
+{% endblock %}
+
 {% block content %}
 
 <div>
