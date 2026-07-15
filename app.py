@@ -948,6 +948,44 @@ def edit(slug):
             }
             return redirect(editor_URI)
 
+        if request.form.get("mode") == "change_owner":
+            # Get the user's ORCID
+            user_id = escape(request.form["user_id"])
+
+            # Check if the ORCID is valid (4 groups of 4 digits)
+            if (re.match(r"\d{4}-\d{4}-\d{4}-\d{3}[0-9|xX]", user_id.strip()) is None) or not checksum(user_id.strip()):
+                base_data["redirect_alerts"] = {
+                    "success": None,
+                    "danger": "Invalid ORCID.",
+                    "info": None,
+                    "warning": None,
+                }
+            # All good
+            else:
+                warning_alert = None
+                # Try to get user from DB
+                user = Admin.query.filter_by(orcid=user_id).first()
+                if user is None:
+                    # Try to get public name from orcid profile
+                    orcid_name = get_orcid_name(api, user_id)
+                    if orcid_name == '':
+                        warning_alert = "The ORCID user name is marked as private and will not be shown."
+                else:
+                    orcid_name = user.name
+
+                edit_campaign.owner_orcid = user_id
+                edit_campaign.owner_name = orcid_name
+                db.session.commit()
+
+                base_data["redirect_alerts"] = {
+                    "success": f"Campaign owner was changed to {user_id} ({orcid_name}).",
+                    "danger": None,
+                    "info": None,
+                    "warning": warning_alert,
+                }
+
+            return redirect(editor_URI)
+
         if request.form.get("mode") == "delete_campaign":
             if request.form["confirmation"].lower() == "delete":
                 # delete campaign and all signatories
