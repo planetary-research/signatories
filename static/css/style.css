@@ -220,6 +220,9 @@ main .sidebar-metadata {
   font-size: 0.7em;
   line-height: 1em;
 }
+main .back-button {
+  padding-top: 2em;
+}
 main .link {
   color: #007799;
   text-decoration: none;
