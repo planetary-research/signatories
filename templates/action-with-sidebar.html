@@ -20,8 +20,8 @@
 
 <table>
     <tr>
-        <td style="vertical-align: top; padding-top: 0.8em;">
-            <div class="action-text" style="margin-bottom: 4em;">
+        <td style="vertical-align: top; padding-top: 0.8em; ">
+            <div class="action-text" style="margin-bottom: 2em;">
                 {{ action_text | safe }}
             </div>
         </td>
@@ -60,7 +60,7 @@
                 </p>
 
                 <form action="{{ download_uri }}" method="POST" id="download-ods">
-                    <p><button type="submit" name="mode" value="download-ods" class="btn btn-link link" style="padding:0; border: 0; font-size: 1em; line-height:0em;">Download signatories</button></p>
+                    <p style="padding-bottom: 1em;"><button type="submit" name="mode" value="download-ods" class="btn btn-link link" style="padding:0; border: 0; font-size: 1em; line-height:0em;">Download signatories</button></p>
                 </form>
             </div>
         </td>
@@ -68,7 +68,7 @@
 
     <tr>
         <td>
-            <p style="font-size: 0.8em; font-weight: bold; color: #444; line-height:0;">SIGNATORIES</p>
+            <p style="margin-top: 2em; font-size: 0.8em; font-weight: bold; color: #444; line-height:0;">SIGNATORIES</p>
             <hr style="margin-top: 0; border-color: #aaa;">
             <div class="user-list">
                 {% for result in visible_signatures %}
