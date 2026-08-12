@@ -69,6 +69,10 @@ site_description = "Sign an open letter, a letter of support, an online petition
 footer_url_name = "My-Organization"
 footer_url = "https://my-organization.example.org/"
 
+# Github or Codeberg repository of Signatories
+# github_repo = https://codeberg.org/planetary-research/signatories
+codeberg_repo = https://codeberg.org/planetary-research/signatories
+
 # Show the two example petitions
 show_examples = True
 

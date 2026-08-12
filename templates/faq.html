@@ -59,7 +59,7 @@
     <h3 id="source-code">Can I see the source code?</h3>
     <p>
       Yes! The code that we use is available on
-      <a href="https://github.com/planetary-research/signatories" class="external">Github</a> and
+      {% if github_repo is not none %}<a href="{{ github_repo }}" class="external">Github</a>{% else %}<a href="{{ codeberg_repo }}" class="external">Codeberg</a>{% endif %} and
       everyone is free to inspect it. We encourage users to inform us of
       any bugs, and we are open to contributions that will improve the
       functionality of the application.

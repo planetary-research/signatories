@@ -151,6 +151,8 @@ base_data = {
     "everyone_is_editor": config.everyone_is_editor,
     "site_description": config.site_description,
     "background_image": config.background,
+    "github_repo": config.github_repo,
+    "codeberg_repo": config.codeberg_repo,
 }
 
 base_alerts = {

@@ -76,3 +76,5 @@ if os.getenv("thank_prc").lower() == "true":
 else:
     thank_prc = False
 contact_email = os.getenv("contact_email")
+github_repo = os.getenv("github_repo")
+codeberg_repo = os.getenv("codeberg_repo")
