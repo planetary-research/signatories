@@ -1,0 +1,51 @@
+{
+    "@context": "https://w3id.org/codemeta/3.0",
+    "type": "SoftwareSourceCode",
+    "author": [
+        {
+            "id": "https://orcid.org/0000-0001-7007-4222",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Université Paris Cité, Institut de Physique du Globe  de Paris, CNRS"
+            },
+            "familyName": "Wieczorek",
+            "givenName": "Mark"
+        },
+        {
+            "type": "Role",
+            "schema:author": "https://orcid.org/0000-0001-7007-4222",
+            "roleName": "Developer"
+        }
+    ],
+    "codeRepository": "git+https://codeberg.org/planetary-research/signatories.git",
+    "contributor": [
+        {
+            "id": "https://orcid.org/0000-0001-6533-275X",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Observatoire des Sciences de l'Univers Nantes Atlantique (Osuna), CNRS"
+            },
+            "familyName": "Seignovert",
+            "givenName": "Benoît"
+        },
+        {
+            "type": "Role",
+            "contributor": "https://orcid.org/0000-0001-6533-275X"
+        }
+    ],
+    "dateCreated": "2025-11-27",
+    "description": "Sign an open letter, letter of support, or petition using your ORCID account",
+    "downloadUrl": "https://codeberg.org/planetary-research/signatories/archive/main.tar.gz",
+    "keywords": [
+        "petitions",
+        "open letters",
+        "letters of support"
+    ],
+    "license": "https://spdx.org/licenses/BSD-3-Clause",
+    "name": "Signatories",
+    "programmingLanguage": "Python",
+    "relatedLink": "https://codeberg.org/planetary-research",
+    "issueTracker": "https://codeberg.org/planetary-research/signatories/issues"
+}
