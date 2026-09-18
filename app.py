@@ -1176,6 +1176,7 @@ def feeds():
     fg.title(config.site_title)
     fg.subtitle(config.site_subtitle)
     fg.link(href=os.path.join(config.signatories_url, "feed"), rel='self')
+    fg.link(href=config.signatories_url, rel='alternate', type='text/html')
     fg.language('en')
     fg.author(name=config.site_title)
 
@@ -1186,7 +1187,7 @@ def feeds():
             fe.id(os.path.join(config.signatories_url, row.action_slug))
             fe.title(row.action_name)
             fe.summary(row.action_short_description)
-            fe.link(href=os.path.join(config.signatories_url, row.action_slug))
+            fe.link(href=os.path.join(config.signatories_url, row.action_slug), rel='alternate')
             fe.published(row.creation_date.replace(tzinfo=datetime.UTC))
             fe.content(row.action_text, type='html')
 
