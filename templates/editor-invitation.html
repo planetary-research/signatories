@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Editor invitation{% endblock %}
+
+{% block nav %}
+  {% include "nav-admin.html" %}
+{% endblock %}
+
+{% block alert %}
+
+{% if alert.info is not none %}
+<div class="alert alert-info alert-dismissable" role="alert">
+    {{ alert.info }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% if alert.success is not none %}
+<div class="alert alert-success alert-dismissable" role="alert">
+    {{ alert.success }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% if alert.warning is not none %}
+<div class="alert alert-warning alert-dismissable" role="alert">
+    {{ alert.warning }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% if alert.danger is not none %}
+<div class="alert alert-danger alert-dismissable" role="alert">
+    {{ alert.danger }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="margin-bottom">
+    <p>
+        If you have an editor invitation code, enter it in the box below
+        and click submit.
+    </p>
+
+    <form action="{{ editor_invitation_uri }}" method="POST" id="invitation_code">
+        <input type="hidden" name="mode" value="invitation_code">
+        <p class="create-item">
+        <b>Invitation code</b>
+        </p>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="text" class="form-control" name="code" placeholder="">
+            </div>
+
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="return-to-signatories">
+        <a class="btn btn-primary btn-md" href="{{ home_uri }}">Return to the home page</a>
+    </div>
+</div>
+
+{% endblock %}
