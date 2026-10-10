@@ -119,6 +119,7 @@ create_URI = os.path.join(config.site_path, "create")
 editor_URI = os.path.join(config.site_path, "editor")
 edit_URI = os.path.join(config.site_path, "<slug>", "edit")
 banned_URI = os.path.join(config.site_path, "user-banned")
+editor_invitation_URI = os.path.join(config.site_path, "editor-invitation")
 
 action_template = "action-with-sidebar.html"  # default template for actions
 
@@ -133,6 +134,7 @@ base_data = {
     "admin_uri": admin_URI,
     "create_uri": create_URI,
     "editor_uri": editor_URI,
+    "editor_invitation_uri": editor_invitation_URI,
     "user_URI_defined": None,
     "thank_you_URI_defined": None,
     "signature_removed_URI_defined": None,
@@ -793,8 +795,11 @@ def editor():
         # Query database for user's ORCID
         user = Admin.query.filter_by(orcid=session["orcid"]).first()
         if user is None:
-            print("User is not in the Admin database")
-            return redirect(insufficient_privileges_URI)
+            if config.editor_invitation_secret is None:
+                print("User is not in the Admin database")
+                return redirect(insufficient_privileges_URI)
+            else:
+                return redirect(editor_invitation_URI)
 
         # Check if the user has sufficient permissions
         role_id = user.role_id
@@ -1157,6 +1162,56 @@ def banned():
         return render_template("user-banned.html", **(base_data | data))
     else:
         return redirect(home_URI)
+
+
+@app.route(editor_invitation_URI, methods=["POST", "GET"])
+def editor_invitation():
+    alerts = base_alerts.copy()
+    if session.get("orcid") is None:
+        return redirect(home_URI)
+    elif base_data["everyone_is_editor"] is True:
+        return redirect(editor_URI)
+    elif base_data["everyone_is_editor"] is False:
+        # Query database for user's ORCID
+        user = Admin.query.filter_by(orcid=session["orcid"]).first()
+        if user is None:
+            role_id = 0
+            if config.editor_invitation_secret is None:
+                print("User is not in the Admin database")
+                return redirect(insufficient_privileges_URI)
+        else:
+            role_id = user.role_id
+            if role_id >= 2:
+                return redirect(editor_URI)
+
+    if request.method == "POST":
+        if request.form.get("mode") == "invitation_code":
+            if request.form["code"] == config.editor_invitation_secret:
+                # Try to get user from DB
+                user = Admin.query.filter_by(orcid=session["orcid"]).first()
+                if user is None:
+                    # Try to get public name and email from orcid profile
+                    orcid_name = get_orcid_name(api, session["orcid"])
+                    # Add new user
+                    user = Admin(orcid=session["orcid"], name=orcid_name, role_id=2)
+                    db.session.add(user)
+                else:
+                    user.role_id == 2
+
+                db.session.commit()
+                return redirect(editor_URI)
+
+            else:
+                alerts['danger'] = 'Incorrect invitation code'
+
+    data = {
+        "header_title": config.site_title,
+        "header_subtitle": config.site_subtitle,
+        "header_path": config.site_path,
+        "role_id": role_id,
+        "alert": alerts,
+    }
+    return render_template("editor-invitation.html", **(base_data | data))
 
 
 @app.errorhandler(404)

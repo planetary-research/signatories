@@ -125,7 +125,7 @@ main p.divider {
    padding-bottom: 0em;
 }
 main .action-list-header {
-  color: #555;
+  color: #444;
   margin-top: 1em;
   margin-bottom: 1em;
 
@@ -267,7 +267,9 @@ main .margin-section {
 }
 main .create-item {
   margin-top: 2em;
-  margin-bottom: 0em;
+  margin-bottom: 0.35em;
+  font-size: 0.85em;
+  line-height: 1.4em;
 }
 main .form-choice {
   font-size: 1em;

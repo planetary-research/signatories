@@ -21,11 +21,18 @@ professional affiliation, and they can modify their preferences or remove
 their signature after signing. When a signatory's name is visible, any
 public visitor may click on it to inspect their ORCID profile.
 
-This code is inspired by the Planetary Research
-[Reviewer expertise database](https://review.planetary-research.org), which is
-in turn based on the [Seismica](https://seismica.library.mcgill.ca/) reviewer
-expertise database that was created originally by
-[Martijn van den Ende](https://github.com/martijnende).
+This code is inspired by the Open Journal Tools
+[Reviewer expertise database](https://codeberg.org/open-journal-tools/reviewer-expertise-database).
+
+# Features
+
+* Create a campaign effortlessly by filling out a simple form and using a graphical editor.
+* Edit or delete a campaign at a later date.
+* Generate RSS/Atom feeds for all new campaigns.
+* Allow anyone with an ORCID account to sign a campaign.
+* Branding is placed in a single file, so there is no need to edit the code.
+* Give editor access by entering an invitation code.
+* Administrator controls to ban users, delete campaigns, edit campaigns, change campaign ownership and more.
 
 # Dependencies
 
@@ -49,9 +56,14 @@ port = 3000  # port used by the web server when in sandbox mode
 # Orcid ID of the site admin that is added to the database at creation
 admin_orcid = 'xxxx-xxxx-xxxx-xxxx'
 
-# If everyone_is_editor is False, admins must add editors to database manually.
-# Otherwise, everyone with an ORCID account is an editor.
+# If everyone_is_editor is False, editors must be added manually to the database
+# by admins or have an editor invitation code. Otherwise, everyone with an
+# ORCID account is an editor.
 everyone_is_editor = False
+
+# If everyone_is editor is False, allow users to become an editor by entering
+# the following editor invitation code (use None to disable)
+editor_invitation_secret = None
 
 # Set favicon (use "" for none). File name is with respect to static/img
 favicon = "favicon.ico"

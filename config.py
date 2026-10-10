@@ -40,6 +40,10 @@ if os.getenv("everyone_is_editor").lower() == "true":
     everyone_is_editor = True
 else:
     everyone_is_editor = False
+if os.getenv("editor_invitation_secret").lower() == "none":
+    editor_invitation_secret = None
+else:
+    editor_invitation_secret = os.getenv("editor_invitation_secret")
 
 
 # Database
